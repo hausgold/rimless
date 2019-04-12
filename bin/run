@@ -1,0 +1,12 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require 'bundler/setup'
+require 'rimless'
+require 'pp'
+
+$stdout.sync = true
+
+exit 1 if ARGV.empty?
+
+ARGV.each { |cmd| eval(cmd); $stdout.flush }

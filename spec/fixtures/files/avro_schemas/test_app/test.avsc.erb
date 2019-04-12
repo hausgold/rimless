@@ -1,0 +1,22 @@
+{
+  "name": "test",
+  "namespace": "<%= namespace %>",
+  "type": "record",
+  "fields": [
+    {
+      "name": "name",
+      "type": "string"
+    },
+    {
+      "name": "include",
+      "type": "<%= namespace %>.include"
+    },
+    {
+      "name": "deep",
+      "type": {
+        "type": "map",
+        "values": "string"
+      }
+    }
+  ]
+}
