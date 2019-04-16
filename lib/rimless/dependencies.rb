@@ -22,7 +22,7 @@ module Rimless
         # should be available, otherwise the message producing just
         # fails/raise.
         return if Rimless.configuration.kafka_brokers.empty? \
-          || !Rimless.configuration.client_id
+          || Rimless.configuration.client_id.blank?
 
         WaterDrop.setup do |config|
           # Activate message delivery and use the default logger
@@ -49,7 +49,7 @@ module Rimless
         # available. Its fine to skip this for scenarios where not the full
         # application configuration is available (eg. on Rails asset
         # precompilations, etc)
-        return unless Rimless.configuration.schema_registry_url
+        return if Rimless.configuration.schema_registry_url.blank?
 
         # Setup a global available Apache Avro decoder/encoder with support for
         # the Confluent Schema Registry, but first create a helper instance
