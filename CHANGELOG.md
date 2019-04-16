@@ -1,3 +1,7 @@
+### 0.1.3
+
+* Check for unset and empty values while configuring dependencies
+
 ### 0.1.2
 
 * Skip the configuration of the AvroTurf gem in case no schema registry URL is
