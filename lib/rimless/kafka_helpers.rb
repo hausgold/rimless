@@ -10,9 +10,7 @@ module Rimless
       # Generate a common topic name for Apache Kafka while taking care of
       # configured prefixes.
       #
-      # @param name [String, Symbol] the topic name
-      # @param app [String, Symbol] a different application name, by default
-      #   the local app
+      # @param args [Array<Mixed>] the relative topic name
       # @return [String] the complete topic name
       #
       # @example Name only
