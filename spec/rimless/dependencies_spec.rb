@@ -28,12 +28,12 @@ RSpec.describe Rimless::Dependencies do
 
     it 'sets the client id' do
       expect(Rimless.configuration).to \
-        receive(:client_id).once.and_call_original
+        receive(:client_id).at_least(:once).and_call_original
     end
 
     it 'sets the kafka brokers' do
       expect(Rimless.configuration).to \
-        receive(:kafka_brokers).once.and_call_original
+        receive(:kafka_brokers).at_least(:once).and_call_original
     end
   end
 

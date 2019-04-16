@@ -16,6 +16,14 @@ module Rimless
 
       # Set sensible defaults for the +WaterDrop+ gem.
       def configure_waterdrop
+        # Skip WaterDrop configuration when no brokers/client id is available,
+        # because it will raise. Its fine to have none available for situations
+        # like Rails asset precompilations, etc. - on runtime the settings
+        # should be available, otherwise the message producing just
+        # fails/raise.
+        return if Rimless.configuration.kafka_brokers.empty? \
+          || !Rimless.configuration.client_id
+
         WaterDrop.setup do |config|
           # Activate message delivery and use the default logger
           config.deliver = true
