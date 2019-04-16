@@ -46,7 +46,7 @@ RSpec.describe Rimless::Dependencies do
 
     it 'sets the schema registry url' do
       expect(Rimless.configuration).to \
-        receive(:schema_registry_url).once.and_call_original
+        receive(:schema_registry_url).at_least(:once).and_call_original
     end
 
     # rubocop:disable RSpec/AnyInstance because it cannot be substituted

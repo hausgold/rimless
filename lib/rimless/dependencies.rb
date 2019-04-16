@@ -45,6 +45,12 @@ module Rimless
       # Set sensible defaults for the +AvroTurf+ gem and (re)compile the Apache
       # Avro schema templates (ERB), so the gem can handle them properly.
       def configure_avro_turf
+        # No need to configure AvroTurf when no schema registry URL is
+        # available. Its fine to skip this for scenarios where not the full
+        # application configuration is available (eg. on Rails asset
+        # precompilations, etc)
+        return unless Rimless.configuration.schema_registry_url
+
         # Setup a global available Apache Avro decoder/encoder with support for
         # the Confluent Schema Registry, but first create a helper instance
         avro_utils = Rimless::AvroUtils.new
