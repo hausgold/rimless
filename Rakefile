@@ -54,12 +54,12 @@ end
 
 # Configure all code statistics directories
 vendors = [
-  # @TODO: Add your library structure here
-  # [:unshift, 'Clients', 'lib/hausgold/client'],
-  # [:unshift, 'Top-levels', 'lib', %r{lib(/hausgold)?/[^/]+\.rb$}],
-  # [:unshift, 'Clients specs', 'spec/client'],
-  # [:unshift, 'Top-levels specs', 'spec',
-  #  %r{spec/rimless(_spec\.rb|/[^/]+\.rb$)}]
+  [:unshift, 'RSpec matchers', 'lib/rimless/rspec'],
+  [:unshift, 'RSpec matchers specs', 'spec/rimless/rspec'],
+
+  [:unshift, 'Top-levels', 'lib', %r{lib(/rimless)?/[^/]+\.rb$}],
+  [:unshift, 'Top-levels specs', 'spec',
+   %r{spec/rimless(_spec\.rb|/[^/]+\.rb$)}]
 ].reverse
 
 vendors.each do |method, type, dir, pattern|
