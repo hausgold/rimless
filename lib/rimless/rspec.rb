@@ -36,5 +36,7 @@ RSPEC_CONFIGURER.configure do |config|
       .to_rack(FakeConfluentSchemaRegistryServer)
     # Clear any cached data
     FakeConfluentSchemaRegistryServer.clear
+    # Reconfigure the Rimless AvroTurf instance
+    Rimless.configure_avro_turf
   end
 end
