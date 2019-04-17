@@ -1,3 +1,9 @@
+### 0.1.4
+
+* Reconfigure (reset) the AvroTurf instance on tests to avoid caching issues
+  (on failed tests the message decoding was not working which results in
+  unrelated errors, instead of showing the actual test failure)
+
 ### 0.1.3
 
 * Check for unset and empty values while configuring dependencies
