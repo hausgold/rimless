@@ -116,7 +116,7 @@ endif
 clean-images:
 	# Clean build images
 ifeq ($(MAKE_ENV),docker)
-	@-$(DOCKER) images | $(GREP) hausgold-sdk \
+	@-$(DOCKER) images | $(GREP) rimless \
 		| $(AWK) '{ print $$3 }' \
 		| $(XARGS) -rn1 $(DOCKER) rmi -f
 endif

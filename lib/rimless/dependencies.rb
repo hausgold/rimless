@@ -2,6 +2,8 @@
 
 module Rimless
   # The top-level dependencies helpers.
+  #
+  # rubocop:disable Metrics/BlockLength because its an Active Support concern
   module Dependencies
     extend ActiveSupport::Concern
 
@@ -66,4 +68,5 @@ module Rimless
       end
     end
   end
+  # rubocop:enable Metrics/BlockLength
 end
