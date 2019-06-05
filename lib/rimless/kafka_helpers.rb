@@ -50,7 +50,7 @@ module Rimless
       # @param topic [String, Symbol, Hash{Symbol => Mixed}] the destination
       #   Apache Kafka topic
       def sync_message(data:, schema:, topic:, **args)
-        encoded = Rimless.avro.encode(data, schema_name: schema.to_s)
+        encoded = Rimless.encode(data, schema: schema)
         sync_raw_message(data: encoded, topic: topic, **args)
       end
       alias_method :message, :sync_message
@@ -66,7 +66,7 @@ module Rimless
       # @param topic [String, Symbol, Hash{Symbol => Mixed}] the destination
       #   Apache Kafka topic
       def async_message(data:, schema:, topic:, **args)
-        encoded = Rimless.avro.encode(data, schema_name: schema.to_s)
+        encoded = Rimless.encode(data, schema: schema)
         async_raw_message(data: encoded, topic: topic, **args)
       end
 

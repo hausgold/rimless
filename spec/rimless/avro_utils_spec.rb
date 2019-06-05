@@ -71,6 +71,7 @@ RSpec.describe Rimless::AvroUtils do
     let(:file) { instance.output_path.join('test', 'test.file') }
 
     before do
+      Rimless.configuration.env = 'development'
       FileUtils.mkdir_p(File.dirname(file))
       File.write(file, 'test')
     end
@@ -99,7 +100,14 @@ RSpec.describe Rimless::AvroUtils do
   end
 
   describe '#render_file' do
-    before { instance.clear }
+    let(:dest) do
+      instance.output_path.join('development', 'test_app', 'test.avsc').to_s
+    end
+
+    before do
+      Rimless.configuration.env = 'development'
+      instance.clear
+    end
 
     it 'creates the desired output file' do
       expect { instance.render_file(src) }.to \
@@ -109,7 +117,7 @@ RSpec.describe Rimless::AvroUtils do
     it 'replaces the ERB variables' do
       instance.render_file(src)
       expect(YAML.load_file(dest)).to \
-        include('namespace' => 'test.test_app')
+        include('namespace' => 'development.test_app')
     end
 
     it 'checks for correct JSON' do

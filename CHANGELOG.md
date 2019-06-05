@@ -1,3 +1,22 @@
+### 0.2.0
+
+* Added the `Rimless.encode` (`.avro_encode`) and `Rimless.decode`
+  (`.avro_decode`) helpers/shortcuts to simplify the interaction with the
+  Apache Avro library
+  * The `.encode` method automatically performs input data sanitation and
+    supports deep relative (to the local namespace) schema resolution. This
+    allows you to access deeply located schemes relative by just providing a
+    leading period (eg. `.deep.a.b.c` becomes
+    `development.your_app.deep.a.b.c`)
+* The `.message`, '.sync_message', '.async_message' helpers now make use of the
+  new `.encode` functionality which adds transparent data sanitation and schema
+  name features
+* At the `test` environment the compiled Avro schemas output path is not
+  deleted anymore, instead the compiled schemas are overwritten. This may keep
+  dead schemas, but it allows parallel test execution without flaws. The removal
+  of the compiled schema directory caused previously file read errors when a
+  parallel process started a recompilation.
+
 ### 0.1.4
 
 * Reconfigure (reset) the AvroTurf instance on tests to avoid caching issues
