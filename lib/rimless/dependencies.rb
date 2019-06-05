@@ -55,14 +55,14 @@ module Rimless
 
         # Setup a global available Apache Avro decoder/encoder with support for
         # the Confluent Schema Registry, but first create a helper instance
-        avro_utils = Rimless::AvroUtils.new
+        Rimless.avro_utils = Rimless::AvroUtils.new
         # Compile our Avro schema templates to ready-to-consume Avro schemas
-        avro_utils.recompile_schemas
+        Rimless.avro_utils.recompile_schemas
         # Register a global Avro messaging instance
         Rimless.avro = AvroTurf::Messaging.new(
           logger: Rimless.logger,
-          namespace: avro_utils.namespace,
-          schemas_path: avro_utils.output_path,
+          namespace: Rimless.avro_utils.namespace,
+          schemas_path: Rimless.avro_utils.output_path,
           registry_url: Rimless.configuration.schema_registry_url
         )
       end

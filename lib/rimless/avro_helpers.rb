@@ -8,6 +8,41 @@ module Rimless
     class_methods do
       # A top-level avro instance
       mattr_accessor :avro
+      # A shared AvroUtils instance
+      mattr_accessor :avro_utils
+
+      # A shortcut to encode data using the specified schema to the Apache Avro
+      # format. This also applies data sanitation to avoid issues with the low
+      # level Apache Avro library (symbolized keys, etc) and it allows
+      # deep-relative schema names. When you pass +.deep.deep+ for example
+      # (leading period) it will prefix the schema name with the local
+      # namespace (so it becomes absolute).
+      #
+      # @param data [Mixed] the data structure to encode
+      # @param schema [String, Symbol] name of the schema that should be used
+      # @param opts [Hash{Symbol => Mixed}] additional options
+      # @return [String] the Apache Avro blob
+      def avro_encode(data, schema:, **opts)
+        data = avro_sanitize(data)
+
+        # When the deep-relative form (+.deep.deep[..]+) is present, we add our
+        # local namespace, so Avro can resolve it
+        schema = avro_utils.namespace + schema.to_s \
+          if schema.to_s.start_with? '.'
+
+        avro.encode(data, schema_name: schema.to_s, **opts)
+      end
+      alias_method :encode, :avro_encode
+
+      # A shortcut to parse a blob of Apache Avro data.
+      #
+      # @param data [String] the Apache Avro blob
+      # @param opts [Hash{Symbol => Mixed}] additional options
+      # @return [Mixed] the decoded data structure
+      def avro_decode(data, **opts)
+        avro.decode(data, **opts).deep_symbolize_keys!
+      end
+      alias_method :decode, :avro_decode
 
       # The Apache Avro Ruby gem requires simple typed hashes for encoding.
       # This forces us to convert eg. Grape entity representations into simple

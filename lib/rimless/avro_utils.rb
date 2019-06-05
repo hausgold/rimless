@@ -61,7 +61,12 @@ module Rimless
 
     # Clear previous compiled Avro schema files to provide a clean rebuild.
     def clear
-      FileUtils.rm_rf(output_path)
+      # In a test environment, especially with parallel test execution the
+      # recompiling of Avro schemas is error prone due to the deletion of the
+      # configuration (output) directory. This leads to random failures due to
+      # file read calls to temporary not existing files. So we just keep the
+      # files and just overwrite them in place while testing.
+      FileUtils.rm_rf(output_path) unless Rimless.env.test?
       FileUtils.mkdir_p(output_path)
     end
 

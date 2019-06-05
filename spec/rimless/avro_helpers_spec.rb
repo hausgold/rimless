@@ -3,6 +3,64 @@
 RSpec.describe Rimless::AvroHelpers do
   let(:described_class) { Rimless }
 
+  describe '.avro_decode' do
+    let(:blob) do
+      Rimless.avro.encode({ 'id' => 'uuid' }, schema_name: 'include')
+    end
+
+    it 'decodes a binary blob' do
+      expect(described_class.avro_decode(blob)).to be_eql(id: 'uuid')
+    end
+  end
+
+  describe '.avro_encode' do
+    let(:include_data) { { id: 'uuid' } }
+    let(:schema_data) { { name: 'test' } }
+
+    it 'sanitizes the input data' do
+      expect(described_class).to \
+        receive(:avro_sanitize).with(include_data).once.and_call_original
+      described_class.avro_encode(include_data, schema: 'include')
+    end
+
+    it 'sanitizes symbol schema names' do
+      expect(described_class.avro).to \
+        receive(:encode).with(anything, schema_name: 'include').once
+      described_class.avro_encode(include_data, schema: :include)
+    end
+
+    context 'with absolute schema name' do
+      let(:schema) { 'test.test_app.include' }
+
+      it 'keeps the schema name' do
+        expect(described_class.avro).to \
+          receive(:encode).with(anything, schema_name: schema).once
+        described_class.avro_encode(include_data, schema: schema)
+      end
+    end
+
+    context 'with flat relative schema name' do
+      let(:schema) { 'include' }
+
+      it 'keeps the schema name' do
+        expect(described_class.avro).to \
+          receive(:encode).with(anything, schema_name: schema).once
+        described_class.avro_encode(include_data, schema: schema)
+      end
+    end
+
+    context 'with deep relative schema name' do
+      let(:schema) { '.deep.schema' }
+
+      it 'resolves the relative schema name' do
+        expect(described_class.avro).to \
+          receive(:encode).with(anything,
+                                schema_name: 'test.test_app.deep.schema').once
+        described_class.avro_encode(schema_data, schema: schema)
+      end
+    end
+  end
+
   describe '.avro_schemaless_h' do
     let(:deep) { { a: { b: { c: { bool: true, int: 1, str: 'test' } } } } }
     let(:flat) do

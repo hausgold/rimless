@@ -23,6 +23,7 @@ opinionated framework which sets up solid conventions for producing messages.
     - [Confluent Schema Registry Subject](#confluent-schema-registry-subject)
   - [Organize and write schema definitions](#organize-and-write-schema-definitions)
   - [Producing messages](#producing-messages)
+  - [Encoding/Decoding messages](#encodingdecoding-messages)
     - [Handling of schemaless deep blobs](#handling-of-schemaless-deep-blobs)
   - [Writing tests for your messages](#writing-tests-for-your-messages)
 - [Development](#development)
@@ -254,8 +255,11 @@ Rimless.message(data: user, schema: :user_v1, topic: :users)
 Rimless.async_message(data: user, schema: :user_v1, topic: :users)
 
 # In cases you just want the encoded Apache Avro binary blob, you can encode it
-# directly via the AvroTurf gem
-encoded = Rimless.avro.encode(user, schema_name: 'user_v1')
+# directly with our simple helper like this:
+encoded = Rimless.encode(user, schema: 'user_v1')
+# Next to this wrapped shortcut (see Encoding/Decoding messages section for
+# details), we provide access to our configured AvroTurf gem instance via
+# +Rimless.avro+, so you can also use +Rimless.avro.encode(user, ..)+
 
 # You can also send raw messages with the rimless gem, so encoding of your
 # message must be done before
@@ -273,6 +277,30 @@ Rimless.message(data: user, schema: :user_v1,
 # And for the sake of completeness, you can also send raw
 # messages asynchronously
 Rimless.async_raw_message(data: encoded, topic: :users)
+```
+
+### Encoding/Decoding messages
+
+By convention we focus on the [Apache Avro](https://avro.apache.org/) data
+format. This is provided by the [AvroTurf](https://rubygems.org/gems/avro_turf)
+gem and the rimless gem adds some neat helpers on top of it. Here are a few
+examples to show how rimless can be used to encode/decode Apache Avro data:
+
+```ruby
+# Encode a data structure (no matter of symbolized, or stringified keys, or
+# non-simple types) to Apache Avro format
+encoded = Rimless.encode(user, schema: 'user_v1')
+
+# Works the same for symbolized schema names
+encoded = Rimless.encode(user, schema: :user_v1)
+
+# Also supports the resolution of deep relative schemes
+# (+.user.address+ becomes +<ENV>.<APP>.user.address+)
+encoded = Rimless.encode(user.address, schema: '.user.address')
+
+# Decoding Apache Avro data is even more simple. The resulting data structure
+# is deeply key-symbolized.
+decoded = Rimless.decode('your-avro-binary-data-here')
 ```
 
 #### Handling of schemaless deep blobs

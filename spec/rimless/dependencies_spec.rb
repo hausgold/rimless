@@ -56,6 +56,12 @@ RSpec.describe Rimless::Dependencies do
     end
     # rubocop:enable RSpec/AnyInstance
 
+    it 'sets the global AvroUtils handle' do
+      Rimless.avro_utils = nil
+      expect { described_class.configure_avro_turf }.to \
+        change(Rimless, :avro_utils).from(nil).to(Rimless::AvroUtils)
+    end
+
     it 'sets the global Apache Avro handle' do
       Rimless.avro = nil
       expect { described_class.configure_avro_turf }.to \
