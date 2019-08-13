@@ -17,11 +17,27 @@ RSPEC_CONFIGURER.configure do |config|
   config.include Rimless::RSpec::Helpers
   config.include Rimless::RSpec::Matchers
 
+  # Take care of the initial test configuration.
+  config.before(:suite) do
+    # This allows parallel test execution without race conditions on the
+    # compiled Apache Avro schemas.  So when each test have its own compiled
+    # schema repository it cannot conflict while refreshing it.
+    unless ENV['TEST_ENV_NUMBER'].nil?
+      Rimless.configure do |conf|
+        num = ENV['TEST_ENV_NUMBER']
+        num = '1' if num.empty?
+
+        conf.compiled_avro_schema_path = \
+          conf.compiled_avro_schema_path.join("test-worker-#{num}")
+      end
+    end
+  end
+
   # Stub all Confluent Schema Registry requests and handle them gracefully with
   # the help of the faked (inlined) Schema Registry server. This allows us to
   # perform the actual Apache Avro message encoding/decoding without the need
   # to have a Schema Registry up and running.
-  config.before do
+  config.before(:each) do
     # Get the Excon connection from the AvroTurf instance
     connection = Rimless.avro.instance_variable_get(:@registry)
                         .instance_variable_get(:@upstream)
@@ -36,17 +52,6 @@ RSPEC_CONFIGURER.configure do |config|
       .to_rack(FakeConfluentSchemaRegistryServer)
     # Clear any cached data
     FakeConfluentSchemaRegistryServer.clear
-
-    # This allows parallel test execution without race conditions on the
-    # compiled Apache Avro schemas.  So when each test have its own compiled
-    # schema repository it cannot conflict while refreshing it.
-    unless ENV['TEST_ENV_NUMBER'].nil?
-      Rimless.configure do |conf|
-        conf.compiled_avro_schema_path = conf.compiled_avro_schema_path.join(
-          "test-worker-#{ENV['TEST_ENV_NUMBER']}"
-        )
-      end
-    end
 
     # Reconfigure the Rimless AvroTurf instance
     Rimless.configure_avro_turf
