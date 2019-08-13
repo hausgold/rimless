@@ -36,6 +36,18 @@ RSPEC_CONFIGURER.configure do |config|
       .to_rack(FakeConfluentSchemaRegistryServer)
     # Clear any cached data
     FakeConfluentSchemaRegistryServer.clear
+
+    # This allows parallel test execution without race conditions on the
+    # compiled Apache Avro schemas.  So when each test have its own compiled
+    # schema repository it cannot conflict while refreshing it.
+    unless ENV['TEST_ENV_NUMBER'].nil?
+      Rimless.configure do |conf|
+        conf.compiled_avro_schema_path = conf.compiled_avro_schema_path.join(
+          "test-worker-#{ENV['TEST_ENV_NUMBER']}"
+        )
+      end
+    end
+
     # Reconfigure the Rimless AvroTurf instance
     Rimless.configure_avro_turf
   end
