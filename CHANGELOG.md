@@ -1,3 +1,11 @@
+### 0.2.1
+
+* Added support for the
+  [parallel_tests](https://github.com/grosser/parallel_tests) gem and
+  reconfigure the compiled schema directory to be unique per running test
+  thread.  This fixes all race conditions which slow down or break user test
+  suites.
+
 ### 0.2.0
 
 * Added the `Rimless.encode` (`.avro_encode`) and `Rimless.decode`
