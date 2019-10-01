@@ -50,12 +50,12 @@ module Rimless
     # rubocop:disable Security/JSONLoad because we wrote the file contents
     def validate_file(dest)
       JSON.load(dest)
-    rescue JSON::ParserError => err
+    rescue JSON::ParserError => e
       path = File.expand_path(dest.is_a?(File) ? dest.path : dest.to_s)
       prefix = "Invalid JSON detected: #{path}"
-      Rimless.logger.fatal("#{prefix}\n#{err.message}")
-      err.message.prepend("#{prefix} - ")
-      raise err
+      Rimless.logger.fatal("#{prefix}\n#{e.message}")
+      e.message.prepend("#{prefix} - ")
+      raise e
     end
     # rubocop:enable Security/JSONLoad
 
