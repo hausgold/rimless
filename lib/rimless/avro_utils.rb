@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
 module Rimless
-  # Due to dynamic contrains on the Apache Avro schemas we need to compile our
+  # Due to dynamic constrains on the Apache Avro schemas we need to compile our
   # schema templates to actual ready-to-consume schemas. The namespace part of
   # the schemas and cross-references to other schemas must be rendered
   # according to the dynamic namespace prefix which reflects the application
-  # environment.  Unfortunately we need to mess around with actual files to
+  # environment. Unfortunately we need to mess around with actual files to
   # support the Avro and AvroTurf gems.
   class AvroUtils
     attr_reader :namespace, :env
