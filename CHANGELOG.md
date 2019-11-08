@@ -1,3 +1,7 @@
+### 0.3.0
+
+* Upgraded the avro_turf gem (`~> 0.11.0`) (#5)
+
 ### 0.2.1
 
 * Added support for the
