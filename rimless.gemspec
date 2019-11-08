@@ -24,7 +24,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ['lib']
 
   spec.add_runtime_dependency 'activesupport', '>= 4.2.0'
-  spec.add_runtime_dependency 'avro_turf', '~> 0.8.1'
+  spec.add_runtime_dependency 'avro_turf', '~> 0.11.0'
   spec.add_runtime_dependency 'sinatra'
   spec.add_runtime_dependency 'sparsify', '~> 1.1'
   spec.add_runtime_dependency 'waterdrop', '~> 1.2'
