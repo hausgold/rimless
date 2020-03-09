@@ -45,9 +45,7 @@ RSpec.describe Rimless::ConfigurationHandling do
     end
 
     context 'without Rails application available' do
-      before { ::Rails = OpenStruct.new(application: nil) }
-
-      after { Object.send(:remove_const, :Rails) }
+      before { stub_const('Rails', OpenStruct.new(application: nil)) }
 
       it 'returns nil' do
         expect(described_class.local_app_name).to be(nil)

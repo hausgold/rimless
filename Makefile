@@ -26,12 +26,13 @@ RM ?= rm
 XARGS ?= xargs
 
 # Container binaries
-BUNDLE ?= bundle
 APPRAISAL ?= appraisal
+BUNDLE ?= bundle
+GEM ?= gem
 RAKE ?= rake
-YARD ?= yard
 RAKE ?= rake
 RUBOCOP ?= rubocop
+YARD ?= yard
 
 # Files
 GEMFILES ?= $(subst _,-,$(patsubst $(GEMFILES_DIR)/%.gemfile,%,\
@@ -75,6 +76,8 @@ install:
 	# Install the dependencies
 	@$(MKDIR) -p $(VENDOR_DIR)
 	@$(call run-shell,$(BUNDLE) check || $(BUNDLE) install --path $(VENDOR_DIR))
+	@$(call run-shell,GEM_HOME=vendor/bundle/ruby/$${RUBY_MAJOR}.0 \
+		$(GEM) install bundler -v "~> 1.0")
 	@$(call run-shell,$(BUNDLE) exec $(APPRAISAL) install)
 
 update: install

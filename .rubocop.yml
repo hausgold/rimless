@@ -8,12 +8,12 @@ Documentation:
 
 AllCops:
   DisplayCopNames: true
-  TargetRubyVersion: 2.3
+  TargetRubyVersion: 2.5
   Exclude:
     - bin/**/*
     - vendor/**/*
     - build/**/*
-    - gemfiles/vendor/**/*
+    - gemfiles/**/*
 
 Metrics/BlockLength:
   Exclude:
