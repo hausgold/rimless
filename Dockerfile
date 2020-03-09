@@ -1,4 +1,4 @@
-FROM hausgold/ruby:2.3
+FROM hausgold/ruby:2.5
 MAINTAINER Hermann Mayer <hermann.mayer@hausgold.de>
 
 # Update system gem

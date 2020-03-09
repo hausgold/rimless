@@ -1,3 +1,7 @@
+### 0.4.0
+
+* Dropped support for Ruby 2.3/2.4 and added support for Rails 6.0 (#6)
+
 ### 0.3.0
 
 * Upgraded the avro_turf gem (`~> 0.11.0`) (#5)
