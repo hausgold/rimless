@@ -6,6 +6,7 @@ require 'avro_turf/test/fake_confluent_schema_registry_server'
 require 'rimless'
 require 'rimless/rspec/helpers'
 require 'rimless/rspec/matchers'
+require 'karafka/testing/rspec/helpers'
 
 # RSpec 1.x and 2.x compatibility
 #
@@ -13,9 +14,16 @@ require 'rimless/rspec/matchers'
 raise 'No RSPEC_CONFIGURER is defined, webmock is missing?' \
   unless defined?(RSPEC_CONFIGURER)
 
+# rubocop:disable Metrics/BlockLength because we have to configure
+#   RSpec properly
 RSPEC_CONFIGURER.configure do |config|
   config.include Rimless::RSpec::Helpers
   config.include Rimless::RSpec::Matchers
+
+  # Set the custom +consumer+ type for consumer spec files
+  config.define_derived_metadata(file_path: %r{/spec/consumers/}) do |meta|
+    meta[:type] = :consumer
+  end
 
   # Take care of the initial test configuration.
   config.before(:suite) do
@@ -37,7 +45,7 @@ RSPEC_CONFIGURER.configure do |config|
   # the help of the faked (inlined) Schema Registry server. This allows us to
   # perform the actual Apache Avro message encoding/decoding without the need
   # to have a Schema Registry up and running.
-  config.before(:each) do
+  config.before(:each) do |example|
     # Get the Excon connection from the AvroTurf instance
     connection = Rimless.avro.instance_variable_get(:@registry)
                         .instance_variable_get(:@upstream)
@@ -55,5 +63,10 @@ RSPEC_CONFIGURER.configure do |config|
 
     # Reconfigure the Rimless AvroTurf instance
     Rimless.configure_avro_turf
+
+    # When the example type is a Kafka consumer, we must initialize
+    # the Karafka framework first.
+    Rimless.consumer.initialize! if example.metadata[:type] == :consumer
   end
 end
+# rubocop:enable Metrics/BlockLength

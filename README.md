@@ -23,6 +23,11 @@ opinionated framework which sets up solid conventions for producing messages.
     - [Confluent Schema Registry Subject](#confluent-schema-registry-subject)
   - [Organize and write schema definitions](#organize-and-write-schema-definitions)
   - [Producing messages](#producing-messages)
+  - [Consuming messages](#consuming-messages)
+    - [Routing messages to consumers](#routing-messages-to-consumers)
+    - [Consuming event messages](#consuming-event-messages)
+    - [Listing consumer routes](#listing-consumer-routes)
+    - [Starting the consumer process(es)](#starting-the-consumer-processes)
   - [Encoding/Decoding messages](#encodingdecoding-messages)
     - [Handling of schemaless deep blobs](#handling-of-schemaless-deep-blobs)
   - [Writing tests for your messages](#writing-tests-for-your-messages)
@@ -80,6 +85,9 @@ Rimless.configure do |conf|
   # The Confluent Schema Registry API URL,
   # set to HAUSGOLD defaults when not set
   conf.schema_registry_url = 'http://your.schema-registry.local'
+
+  # The Sidekiq job queue to use for consuming jobs
+  config.consumer_job_queue = 'default'
 end
 ```
 
@@ -98,6 +106,7 @@ available configuration options:
 * **KAFKA_CLIENT_ID**: The Apache Kafka client identifier, falls back the the local application name.
 * **KAFKA_BROKERS**: A comma separated list of Apache Kafka brokers for cluster discovery (Plaintext, no-auth/no-SSL only for now) (eg. `kafka://your.domain:9092,kafka..`)
 * **KAFKA_SCHEMA_REGISTRY_URL**: The Confluent Schema Registry API URL to use for schema registrations.
+* **KAFKA_SIDEKIQ_JOB_QUEUE**: The Sidekiq job queue to use for consuming jobs. Falls back to `default`.
 
 ### Conventions
 
@@ -277,6 +286,138 @@ Rimless.message(data: user, schema: :user_v1,
 # And for the sake of completeness, you can also send raw
 # messages asynchronously
 Rimless.async_raw_message(data: encoded, topic: :users)
+```
+
+### Consuming messages
+
+The rimless gem makes it super easy to build consumer logic right into your
+(Rails, standalone) application by utilizing the [Karafka
+framework](https://github.com/karafka/karafka) under the hood. When you have
+the rimless gem already installed you are ready to rumble to setup your
+application to consume Apache Kafka messages. Just run the `$ rake
+rimless:install` and all the consuming setup is done for you.
+
+Afterwards you find the `karafka.rb` file at the root of your project together
+with an example consumer (including specs). The default configuration follows
+the base conventions and ships some opinions on the architecture. The
+architecture looks like this:
+
+```
+              +----[Apache Kafka]
+              |
+     fetch message batches
+              |
+              v
+  +-----------------------------+
+  | Karafka/Rimless Consumer    |    +--------------------------------------+
+  |   Shares a single consumer  |--->| Sidekiq                              |
+  |   group, multiple processes |    |   Runs the consumer class (children  |
+  +-----------------------------+    |   of Rimless::BaseConsumer) for each |
+                                     |   message (Rimless::ConsumerJob),    |
+                                     |   one message per job                |
+                                     +--------------------------------------+
+```
+
+This architecture allows the consumer process to run mostly non-blocking and
+the messages can be processed concurrently via Sidekiq. (including the error
+handling and retrying)
+
+#### Routing messages to consumers
+
+The `karafka.rb` file at the root of your project is dedicated to configure the
+consumer process, including the routing table. The routing is as easy as it
+gets by following this pattern: `topic => consumer`. Here comes a the full
+examples:
+
+```ruby
+# Setup the topic-consumer routing table and boot the consumer application
+Rimless.consumer.topics(
+  { app: :your_app, name: :your_topic } => CustomConsumer
+).boot!
+```
+
+The key side of the hash is anything which is understood by the `Rimless.topic`
+method. With one addition: you can change `:name` to `:names` and pass an array
+of strings or symbols to listen to multiple application topics with a single
+configuration line.
+
+```ruby
+Rimless.consumer.topics(
+  { app: :your_app, names: %i[a b c] } => CustomConsumer
+).boot!
+
+# is identical to:
+
+Rimless.consumer.topics(
+  { app: :your_app, name: :a } => CustomConsumer,
+  { app: :your_app, name: :b } => CustomConsumer,
+  { app: :your_app, name: :c } => CustomConsumer
+).boot!
+```
+
+#### Consuming event messages
+
+By convention it makes sense to produce messages with various event types on a
+single Apache Kafka topic. This is fine, they just must follow a single
+constrain: each message must contain an `event`-named field at the Apache Avro
+schema with a dedicated name. This allow to structure data at Kafka like this:
+
+```
+Topic: production.users-api.users
+Events: user_created, user_updated, user_deleted
+```
+
+While respecting this convention your consumer classes will be super clean. See
+the following example: (we keep the users api example)
+
+```ruby
+class UserApiConsumer < ApplicationConsumer
+  def user_created(schema_field1:, optional_schema_field2: nil)
+    # Do whatever you need when a user was created
+  end
+end
+```
+
+Just name a method like the name of the event and specify all Apache Avro
+schema fields of it, except the event field. The messages will be automatically
+decoded with the help of the schema registry. All hashes/arrays ship deeply
+symbolized keys for easy access.
+
+**Heads up!** All messages with events which are not reflected by a method will
+just be ignored.
+
+See the automatically generated spec (`spec/consumers/custom_consumer_spec.rb`)
+for an example on how to test this.
+
+#### Listing consumer routes
+
+The rimless gem ships a simple tool to view all your consumer routes and the
+event messages it reacts on. Just run:
+
+```shell
+# Print all Apache Kafka consumer routes
+$ rake rimless:routes
+
+#    Topic: users-api.users
+# Consumer: UserApiConsumer
+#   Events: user_created
+```
+
+#### Starting the consumer process(es)
+
+From system integration perspective you just need to start the consumer
+processes and Sidekiq to get the thing going. Rimless allows you to start the
+consumer with `$ rake rimless:consumer` or you can just use the [Karafka
+binary](https://github.com/karafka/karafka/wiki/Fetching-messages) to start the
+consumer (`$ bundle exec karafka server`). Both work identically.
+
+When running inside a Rails application the consumer application initialization
+is automatically done for Sidekiq. Otherwise you need to initialize the
+consumer application manually with:
+
+```ruby
+# Manual consumer application initialization
+Sidekiq.configure_server { Rimless.consumer.initialize! }
 ```
 
 ### Encoding/Decoding messages

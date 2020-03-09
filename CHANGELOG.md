@@ -1,6 +1,7 @@
-### 0.4.0
+### 1.0.0
 
 * Dropped support for Ruby 2.3/2.4 and added support for Rails 6.0 (#6)
+* Implemented a simple opinionated Kafka consumer setup (#7)
 
 ### 0.3.0
 
