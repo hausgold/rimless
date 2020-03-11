@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-if defined?(Rails) && !Rails.env.production?
+if defined?(Rails) && Rails.env.development?
   require 'rspec/core/rake_task'
 
   task :stats do

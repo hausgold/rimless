@@ -1,3 +1,9 @@
+### 1.0.2
+
+* Only load the statistics rake task when Rails is available and the
+  environment is development (instead of not production, this may cause issues
+  for +canary+ or +stage+ Rails environments)
+
 ### 1.0.1
 
 * Added the missing +Karafka::Testing::RSpec::Helpers+ include to the
