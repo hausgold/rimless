@@ -24,6 +24,11 @@ RSpec.describe Rimless::KafkaHelpers do
       expect(described_class.topic(name: 'app', app: :test)).to \
         be_eql('test.test.app')
     end
+
+    it 'produces the correct topic name with kebab-cased symbols' do
+      expect(described_class.topic(name: :new_customers, app: :test_api)).to \
+        be_eql('test.test-api.new-customers')
+    end
   end
 
   describe '.sync_message' do

@@ -11,6 +11,8 @@ require 'active_support/core_ext/hash'
 require 'active_support/core_ext/string'
 require 'waterdrop'
 require 'avro_turf/messaging'
+require 'karafka'
+require 'karafka-sidekiq-backend'
 require 'sparsify'
 require 'erb'
 require 'pp'
@@ -24,6 +26,16 @@ module Rimless
   autoload :AvroUtils, 'rimless/avro_utils'
   autoload :KafkaHelpers, 'rimless/kafka_helpers'
   autoload :Dependencies, 'rimless/dependencies'
+  autoload :BaseConsumer, 'rimless/base_consumer'
+  autoload :Consumer, 'rimless/consumer'
+  autoload :ConsumerJob, 'rimless/consumer_job'
+
+  # All Karafka-framework related components
+  module Karafka
+    autoload :Base64Interchanger, 'rimless/karafka/base64_interchanger'
+    autoload :PassthroughMapper, 'rimless/karafka/passthrough_mapper'
+    autoload :AvroDeserializer, 'rimless/karafka/avro_deserializer'
+  end
 
   # Load standalone code
   require 'rimless/version'
@@ -34,4 +46,5 @@ module Rimless
   include Rimless::AvroHelpers
   include Rimless::KafkaHelpers
   include Rimless::Dependencies
+  include Rimless::Consumer
 end

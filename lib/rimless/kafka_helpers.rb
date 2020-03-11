@@ -35,7 +35,7 @@ module Rimless
 
         raise ArgumentError, 'No name given' if name.nil?
 
-        "#{Rimless.topic_prefix(app)}#{name}"
+        "#{Rimless.topic_prefix(app)}#{name}".tr('_', '-')
       end
       # rubocop:enable Metrics/AbcSize
 

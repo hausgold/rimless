@@ -20,6 +20,18 @@ module Rimless
     config.after_initialize do
       # Reconfigure our dependencies
       Rimless.configure_dependencies
+
+      # Load the Karafka application inside the Sidekiq server application
+      if defined? Sidekiq
+        Sidekiq.configure_server do
+          Rimless.consumer.initialize!
+        end
+      end
+    end
+
+    # Load all our Rake tasks if we're supposed to do
+    rake_tasks do
+      Dir[File.join(__dir__, 'tasks', '*.rake')].each { |file| load file }
     end
   end
 end

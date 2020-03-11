@@ -25,6 +25,9 @@ Gem::Specification.new do |spec|
 
   spec.add_runtime_dependency 'activesupport', '>= 4.2.0'
   spec.add_runtime_dependency 'avro_turf', '~> 0.11.0'
+  spec.add_runtime_dependency 'karafka', '~> 1.3'
+  spec.add_runtime_dependency 'karafka-sidekiq-backend', '~> 1.3'
+  spec.add_runtime_dependency 'karafka-testing', '~> 1.3'
   spec.add_runtime_dependency 'sinatra'
   spec.add_runtime_dependency 'sparsify', '~> 1.1'
   spec.add_runtime_dependency 'waterdrop', '~> 1.2'
@@ -34,7 +37,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'bundler', '>= 1.16', '< 3'
   spec.add_development_dependency 'factory_bot', '~> 4.11'
   spec.add_development_dependency 'railties', '>= 4.2.0'
-  spec.add_development_dependency 'rake', '~> 10.0'
+  spec.add_development_dependency 'rake', '~> 13.0'
   spec.add_development_dependency 'rdoc', '~> 6.1'
   spec.add_development_dependency 'redcarpet', '~> 3.4'
   spec.add_development_dependency 'rspec', '~> 3.0'

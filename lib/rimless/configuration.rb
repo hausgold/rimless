@@ -53,5 +53,21 @@ module Rimless
       ENV.fetch('KAFKA_SCHEMA_REGISTRY_URL',
                 'http://schema-registry.message-bus.local')
     end
+
+    # The Sidekiq job queue to use for consuming jobs
+    config_accessor(:consumer_job_queue) do
+      ENV.fetch('KAFKA_SIDEKIQ_JOB_QUEUE', 'default').to_sym
+    end
+
+    # A custom writer for the consumer job queue name.
+    #
+    # @param val [String, Symbol] the new job queue name
+    def consumer_job_queue=(val)
+      config.consumer_job_queue = val.to_sym
+      # Refresh the consumer job queue
+      Rimless::ConsumerJob.sidekiq_options(
+        queue: Rimless.configuration.consumer_job_queue
+      )
+    end
   end
 end

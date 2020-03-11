@@ -13,6 +13,31 @@ module Rimless
       def avro_parse(data, **opts)
         Rimless.avro_decode(data, **opts)
       end
+
+      # A simple helper to fake a deserialized Apache Kafka message for
+      # consuming.
+      #
+      # @param payload [Hash{Symbol => Mixed}] the message payload
+      # @param topic [String, Hash{Symbol => Mixed}] the actual message
+      #   topic (full as string, or parts via hash)
+      # @return [OpenStruct] the fake deserialized Kafka message
+      #
+      # rubocop:disable Metrics/MethodLength because of the various properties
+      def kafka_message(topic: nil, headers: {}, **payload)
+        OpenStruct.new(
+          topic: Rimless.topic(topic),
+          headers: headers,
+          payload: payload,
+          is_control_record: false,
+          key: nil,
+          offset: 206,
+          partition: 0,
+          create_time: Time.current,
+          receive_time: Time.current,
+          deserialized: true
+        )
+      end
+      # rubocop:enable Metrics/MethodLength
     end
   end
 end
