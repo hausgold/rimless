@@ -1,3 +1,8 @@
+### 1.0.1
+
+* Added the missing +Karafka::Testing::RSpec::Helpers+ include to the
+  RSpec configuration
+
 ### 1.0.0
 
 * Dropped support for Ruby 2.3/2.4 and added support for Rails 6.0 (#6)

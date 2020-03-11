@@ -19,6 +19,7 @@ raise 'No RSPEC_CONFIGURER is defined, webmock is missing?' \
 RSPEC_CONFIGURER.configure do |config|
   config.include Rimless::RSpec::Helpers
   config.include Rimless::RSpec::Matchers
+  config.include Karafka::Testing::RSpec::Helpers
 
   # Set the custom +consumer+ type for consumer spec files
   config.define_derived_metadata(file_path: %r{/spec/consumers/}) do |meta|
