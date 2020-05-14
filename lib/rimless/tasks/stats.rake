@@ -9,6 +9,8 @@ if defined?(Rails) && Rails.env.development?
     [
       [:unshift, 'Consumer', 'app/consumers']
     ].each do |method, type, dir|
+      next unless File.directory? dir
+
       ::STATS_DIRECTORIES.send(method, [type, dir])
       ::CodeStatistics::TEST_TYPES << type if type.include? 'specs'
     end
