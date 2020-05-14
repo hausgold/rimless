@@ -1,3 +1,7 @@
+### next
+
+* Corrected broken stats when no consumer is yet defined (#8)
+
 ### 1.0.2
 
 * Only load the statistics rake task when Rails is available and the
