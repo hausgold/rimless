@@ -1,4 +1,4 @@
-### next
+### 1.0.3
 
 * Corrected broken stats when no consumer is yet defined (#8)
 

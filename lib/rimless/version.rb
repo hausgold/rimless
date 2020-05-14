@@ -2,5 +2,5 @@
 
 module Rimless
   # The version of the +rimless+ gem
-  VERSION = '1.0.2'
+  VERSION = '1.0.3'
 end
