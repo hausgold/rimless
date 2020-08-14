@@ -1,3 +1,8 @@
+### next
+
+* Mocked WaterDrop producers in the rimless rspec helper so that tests
+  won't actually talk to Kafka (#9)
+
 ### 1.0.3
 
 * Corrected broken stats when no consumer is yet defined (#8)

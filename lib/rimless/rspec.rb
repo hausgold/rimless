@@ -62,6 +62,10 @@ RSPEC_CONFIGURER.configure do |config|
     # Clear any cached data
     FakeConfluentSchemaRegistryServer.clear
 
+    # Do not interact with Apache Kafka itself on tests
+    allow(WaterDrop::AsyncProducer).to receive(:call)
+    allow(WaterDrop::SyncProducer).to receive(:call)
+
     # Reconfigure the Rimless AvroTurf instance
     Rimless.configure_avro_turf
 
