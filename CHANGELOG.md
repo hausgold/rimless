@@ -1,4 +1,4 @@
-### next
+### 1.0.4
 
 * Mocked WaterDrop producers in the rimless rspec helper so that tests
   won't actually talk to Kafka (#9)
