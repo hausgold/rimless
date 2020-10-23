@@ -131,7 +131,7 @@ module Rimless
                 topic(topic_name) do
                   consumer dest_consumer
                   worker Rimless::ConsumerJob
-                  interchanger Rimless::Karafka::Base64Interchanger
+                  interchanger Rimless::Karafka::Base64Interchanger.new
                 end
               end
             end

@@ -68,7 +68,7 @@ RSpec.describe Rimless::Consumer do
 
       it 'configures the first topic interchanger correctly' do
         expect(topics.first.interchanger).to \
-          be(Rimless::Karafka::Base64Interchanger)
+          be_a(Rimless::Karafka::Base64Interchanger)
       end
 
       it 'configures the second topic name correctly' do
@@ -85,7 +85,7 @@ RSpec.describe Rimless::Consumer do
 
       it 'configures the second topic interchanger correctly' do
         expect(topics.last.interchanger).to \
-          be(Rimless::Karafka::Base64Interchanger)
+          be_a(Rimless::Karafka::Base64Interchanger)
       end
     end
 

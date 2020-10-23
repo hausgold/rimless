@@ -85,7 +85,11 @@ update: install
 	@$(MKDIR) -p $(VENDOR_DIR)
 	@$(call run-shell,$(BUNDLE) exec $(APPRAISAL) update)
 
-test: #install
+test: \
+	test-specs \
+	test-style
+
+test-specs:
 	# Run the whole test suite
 	@$(call run-shell,$(BUNDLE) exec $(RAKE))
 
