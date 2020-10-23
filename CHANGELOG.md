@@ -1,4 +1,4 @@
-### next
+### 1.1.0
 
 * Added support for Karafka `~> 1.4.0` and set is as minimum dependency version
   (#10)
