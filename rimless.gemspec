@@ -25,9 +25,9 @@ Gem::Specification.new do |spec|
 
   spec.add_runtime_dependency 'activesupport', '>= 4.2.0'
   spec.add_runtime_dependency 'avro_turf', '~> 0.11.0'
-  spec.add_runtime_dependency 'karafka', '~> 1.3'
-  spec.add_runtime_dependency 'karafka-sidekiq-backend', '~> 1.3'
-  spec.add_runtime_dependency 'karafka-testing', '~> 1.3'
+  spec.add_runtime_dependency 'karafka', '~> 1.4'
+  spec.add_runtime_dependency 'karafka-sidekiq-backend', '~> 1.4'
+  spec.add_runtime_dependency 'karafka-testing', '~> 1.4'
   spec.add_runtime_dependency 'sinatra'
   spec.add_runtime_dependency 'sparsify', '~> 1.1'
   spec.add_runtime_dependency 'waterdrop', '~> 1.2'

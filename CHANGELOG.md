@@ -1,3 +1,8 @@
+### next
+
+* Added support for Karafka `~> 1.4.0` and set is as minimum dependency version
+  (#10)
+
 ### 1.0.4
 
 * Mocked WaterDrop producers in the rimless rspec helper so that tests
