@@ -1,3 +1,7 @@
+### 1.1.1
+
+* Corrected the GNU Make release target
+
 ### 1.1.0
 
 * Added support for Karafka `~> 1.4.0` and set is as minimum dependency version
