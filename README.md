@@ -1,6 +1,6 @@
 ![rimless](doc/assets/project.svg)
 
-[![Build Status](https://travis-ci.com/hausgold/rimless.svg?token=4XcyqxxmkyBSSV3wWRt7&branch=master)](https://travis-ci.com/hausgold/rimless)
+[![Continuous Integration](https://github.com/hausgold/rimless/actions/workflows/test.yml/badge.svg?branch=master)](https://github.com/hausgold/rimless/actions/workflows/test.yml)
 [![Gem Version](https://badge.fury.io/rb/rimless.svg)](https://badge.fury.io/rb/rimless)
 [![Maintainability](https://api.codeclimate.com/v1/badges/0d51996b52def6cf0262/maintainability)](https://codeclimate.com/repos/5cb06f700f7b09026e00a896/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/0d51996b52def6cf0262/test_coverage)](https://codeclimate.com/repos/5cb06f700f7b09026e00a896/test_coverage)
