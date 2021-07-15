@@ -54,12 +54,15 @@ end
 
 # Configure all code statistics directories
 vendors = [
+  [:unshift, 'Top-levels', 'lib', %r{lib(/rimless)?/[^/]+\.rb$}],
+  [:unshift, 'Top-levels specs', 'spec',
+   %r{spec/rimless(_spec\.rb|/[^/]+\.rb$)}],
+
   [:unshift, 'RSpec matchers', 'lib/rimless/rspec'],
   [:unshift, 'RSpec matchers specs', 'spec/rimless/rspec'],
 
-  [:unshift, 'Top-levels', 'lib', %r{lib(/rimless)?/[^/]+\.rb$}],
-  [:unshift, 'Top-levels specs', 'spec',
-   %r{spec/rimless(_spec\.rb|/[^/]+\.rb$)}]
+  [:unshift, 'Rake Tasks', 'lib/rimless/tasks'],
+  [:unshift, 'Karafka Extensions', 'lib/rimless/karafka']
 ].reverse
 
 vendors.each do |method, type, dir, pattern|

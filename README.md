@@ -2,9 +2,9 @@
 
 [![Continuous Integration](https://github.com/hausgold/rimless/actions/workflows/test.yml/badge.svg?branch=master)](https://github.com/hausgold/rimless/actions/workflows/test.yml)
 [![Gem Version](https://badge.fury.io/rb/rimless.svg)](https://badge.fury.io/rb/rimless)
-[![Maintainability](https://api.codeclimate.com/v1/badges/0d51996b52def6cf0262/maintainability)](https://codeclimate.com/repos/5cb06f700f7b09026e00a896/maintainability)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/0d51996b52def6cf0262/test_coverage)](https://codeclimate.com/repos/5cb06f700f7b09026e00a896/test_coverage)
-[![API docs](https://img.shields.io/badge/docs-API-blue.svg)](https://www.rubydoc.info/gems/rimless)
+[![Test Coverage](https://automate-api.hausgold.de/v1/coverage_reports/rimless/coverage.svg)](https://knowledge.hausgold.de/coverage)
+[![Test Ratio](https://automate-api.hausgold.de/v1/coverage_reports/rimless/ratio.svg)](https://knowledge.hausgold.de/coverage)
+[![API docs](https://automate-api.hausgold.de/v1/coverage_reports/rimless/documentation.svg)](https://www.rubydoc.info/gems/rimless)
 
 This project is dedicated to ship a ready to use [Apache
 Kafka](https://kafka.apache.org/) / [Confluent Schema
