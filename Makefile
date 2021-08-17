@@ -30,7 +30,6 @@ APPRAISAL ?= appraisal
 BUNDLE ?= bundle
 GEM ?= gem
 RAKE ?= rake
-RAKE ?= rake
 RUBOCOP ?= rubocop
 YARD ?= yard
 
