@@ -23,6 +23,15 @@ module Rimless
           set_expected_number(:exactly, 1)
         end
 
+        # Capture all Apache Kafka messages of the given block.
+        #
+        # @yield the given block to capture the messages
+        # @return [Array<Hash{Symbol => Mixed}>] the captured messages
+        def capture(&block)
+          matches?(block)
+          @messages
+        end
+
         # Collect the expectation arguments for the Kafka message passing. (eg.
         # topic)
         #
@@ -173,7 +182,8 @@ module Rimless
           return true unless @schema
 
           begin
-            Rimless.avro.decode(message[:data], schema_name: @schema.to_s)
+            Rimless.avro.decode(message[:encoded_data],
+                                schema_name: @schema.to_s)
             return true
           rescue Avro::IO::SchemaMatchException
             false
@@ -199,24 +209,30 @@ module Rimless
         def data_match?(message)
           return true unless @data.any?
 
-          actual_data = Rimless.avro.decode(message[:data])
-          expected_data = @data.deep_stringify_keys
-
-          actual_data.merge(expected_data) == actual_data
+          message[:data].merge(@data.deep_stringify_keys) == message[:data]
         end
 
         # Setup the +WaterDrop+ spies and record each sent message.
+        #
+        # rubocop:disable Metrics/AbcSize because of the message decoding
+        # rubocop:disable Metrics/MethodLength dito
         def listen_to_messages
+          decode = proc do |encoded|
+            { encoded_data: encoded, data: Rimless.avro.decode(encoded) }
+          end
+
           allow(WaterDrop::SyncProducer).to receive(:call) do |data, **args|
-            @messages << { data: data, args: args, type: :sync }
+            @messages << { args: args, type: :sync }.merge(decode[data])
             nil
           end
 
           allow(WaterDrop::AsyncProducer).to receive(:call) do |data, **args|
-            @messages << { data: data, args: args, type: :async }
+            @messages << { args: args, type: :async }.merge(decode[data])
             nil
           end
         end
+        # rubocop:enable Metrics/AbcSize
+        # rubocop:enable Metrics/MethodLength
 
         # Serve the RSpec API and return the positive failure message.
         #
@@ -264,7 +280,7 @@ module Rimless
           result = ['message']
 
           result << " with #{message[:args]}" if message[:args].any?
-          result << " with data: #{Rimless.avro.decode(message[:data])}"
+          result << " with data: #{message[:data]}"
 
           result.join
         end

@@ -575,6 +575,13 @@ describe 'message producer job' do
         .with(key: user.id, topic: 'test.identity-api.users').twice
         .with_data(firstname: 'John', lastname: 'Doe').twice
   end
+
+  it 'allows to capture messages to check them in detail' do
+    (capture_kafka_messages { action }).tap do |messages|
+      expect(messages.first[:data]).to \
+        match(a_hash_including('entity' => a_hash_including('items' => items)))
+    end
+  end
 end
 ```
 
