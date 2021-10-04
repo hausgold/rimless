@@ -38,6 +38,14 @@ module Rimless
         )
       end
       # rubocop:enable Metrics/MethodLength
+
+      # Capture all Apache Kafka messages of the given block.
+      #
+      # @yield the given block to capture the messages
+      # @return [Array<Hash{Symbol => Mixed}>] the captured messages
+      def capture_kafka_messages(&block)
+        Rimless::RSpec::Matchers::HaveSentKafkaMessage.new(nil).capture(&block)
+      end
     end
   end
 end

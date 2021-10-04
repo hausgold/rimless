@@ -1,3 +1,7 @@
+### next
+
+* Added a `capture_kafka_messages` helper for RSpec (#12)
+
 ### 1.1.1
 
 * Corrected the GNU Make release target
