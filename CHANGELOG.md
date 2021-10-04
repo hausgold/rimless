@@ -1,4 +1,4 @@
-### next
+### 1.2.0
 
 * Added a `capture_kafka_messages` helper for RSpec (#12)
 
