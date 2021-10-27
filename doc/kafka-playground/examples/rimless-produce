@@ -1,0 +1,48 @@
+#!/usr/bin/env ruby
+
+require_relative '../config/environment'
+
+# Setup classes which are Apache Avro schema compatible, can be anything which
+# be converted to a hash via +#to_h+ (eg. OpenStruct, RecursiveOpenStruct,
+# Class, Struct, etc)
+PaymentEvent = Struct.new(:event, :payment,
+                          keyword_init: true)
+
+Payment = Struct.new(:gid, :currency, :net_amount_sum, :items, :state,
+                     :created_at, :updated_at,
+                     keyword_init: true)
+
+PaymentItem = Struct.new(:gid, :net_amount, :tax_rate, :created_at, :updated_at,
+                         keyword_init: true)
+
+# Setup the real data instances which we serialize with Apache Avro and push to
+# Apache Kafka
+item_1_id = SecureRandom.uuid
+item_1 = PaymentItem.new(gid: "gid://playground-app/PaymentItem/#{item_1_id}",
+                         net_amount: 499,
+                         tax_rate: 19,
+                         created_at: Time.current,
+                         updated_at: nil)
+
+item_2_id = SecureRandom.uuid
+item_2 = PaymentItem.new(gid: "gid://playground-app/PaymentItem/#{item_2_id}",
+                         net_amount: 1,
+                         tax_rate: 19,
+                         created_at: Time.current,
+                         updated_at: nil)
+
+payment_id = SecureRandom.uuid
+payment = Payment.new(gid: "gid://playground-app/Payment/#{payment_id}",
+                      currency: :eur,
+                      net_amount_sum: 500,
+                      state: :authorized,
+                      items: [item_1, item_2],
+                      created_at: Time.current,
+                      updated_at: Time.current)
+
+event = PaymentEvent.new(event: :payment_authorized, payment: payment)
+event_hash = Rimless.avro_sanitize(event)
+
+pp event_hash
+
+Rimless.message(data: event_hash, topic: :payments, schema: :payment_v1_event)
