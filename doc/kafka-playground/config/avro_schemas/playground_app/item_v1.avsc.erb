@@ -1,0 +1,36 @@
+{
+  "name": "item_v1",
+  "doc": "Playground App - item attached to a payment",
+  "namespace": "<%= namespace %>",
+  "type": "record",
+  "fields": [
+    {
+      "name": "gid",
+      "type": "string",
+      "doc": "The global ID of the item that is being sold"
+    },
+    {
+      "name": "net_amount",
+      "type": "int",
+      "doc": "The price of the item in cents (without tax)"
+    },
+    {
+      "name": "tax_rate",
+      "type": "float",
+      "doc": "The tax rate for the item"
+    },
+    {
+      "name": "created_at",
+      "type": "string",
+      "doc": "When the user was created (ISO 8601)"
+    },
+    {
+      "name": "updated_at",
+      "type": [
+        "null",
+        "string"
+      ],
+      "doc": "When the item was last updated (ISO 8601)"
+    }
+  ]
+}

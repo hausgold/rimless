@@ -1,0 +1,59 @@
+{
+  "name": "payment_v1",
+  "doc": "Playground App - the payment",
+  "namespace": "<%= namespace %>",
+  "type": "record",
+  "fields": [
+    {
+      "name": "gid",
+      "type": "string",
+      "doc": "Global ID of the payment (UUID)"
+    },
+    {
+      "name": "currency",
+      "type": "string",
+      "doc": "The currency used for the payment"
+    },
+    {
+      "name": "net_amount_sum",
+      "type": "int",
+      "doc": "The price sum with tax included in cents"
+    },
+    {
+      "name": "items",
+      "type": {
+        "items": "<%= namespace %>.item_v1",
+        "type": "array"
+      },
+      "doc": "All connected payment items"
+    },
+    {
+      "name": "state",
+      "type": {
+        "name": "state",
+        "type": "enum",
+        "symbols": [
+          "pending",
+          "authorized",
+          "settled",
+          "cancelled",
+          "failed"
+        ]
+      },
+      "doc": "The current state of the payment"
+    },
+    {
+      "name": "created_at",
+      "type": "string",
+      "doc": "When the payment was created (ISO 8601)"
+    },
+    {
+      "name": "updated_at",
+      "type": [
+        "null",
+        "string"
+      ],
+      "doc": "When the payment was last updated (ISO 8601)"
+    }
+  ]
+}

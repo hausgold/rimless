@@ -1,0 +1,8 @@
+# frozen_string_literal: true
+
+source 'https://rubygems.org'
+
+# A bundle of opinionated Apache Kafka / Confluent Schema Registry helpers.
+gem 'rimless', '~> 1.2'
+# Thor is a toolkit for building powerful command-line interfaces.
+gem 'thor', '~> 1.1'
