@@ -100,7 +100,7 @@ GEM
     rack-protection (2.1.0)
       rack
     rake (13.0.6)
-    redis (4.4.0)
+    redis (4.5.1)
     reline (0.2.7)
       io-console (~> 0.5)
     rexml (3.2.5)
@@ -117,7 +117,7 @@ GEM
     ruby-kafka (1.4.0)
       digest-crc
     ruby2_keywords (0.0.5)
-    sidekiq (6.2.2)
+    sidekiq (6.4.0)
       connection_pool (>= 2.2.2)
       rack (~> 2.0)
       redis (>= 4.2.0)
