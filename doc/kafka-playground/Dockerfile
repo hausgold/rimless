@@ -8,8 +8,8 @@ RUN gem update --system
 RUN echo 'deb http://ftp.debian.org/debian buster-backports main' \
   >> /etc/apt/sources.list
 
-# Install nodejs 14
-RUN curl -sL https://deb.nodesource.com/setup_14.x | bash -
+# Install nodejs 16
+RUN curl -sL https://deb.nodesource.com/setup_16.x | bash -
 
 # Install system packages and the ruby bundless
 RUN apt-get update -yqqq && \
