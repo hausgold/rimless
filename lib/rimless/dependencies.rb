@@ -17,6 +17,8 @@ module Rimless
       end
 
       # Set sensible defaults for the +WaterDrop+ gem.
+      #
+      # rubocop:disable Metrics/AbcSize because of the configuration mapping
       def configure_waterdrop
         # Skip WaterDrop configuration when no brokers/client id is available,
         # because it will raise. Its fine to have none available for situations
@@ -43,6 +45,7 @@ module Rimless
           config.kafka.required_acks = -1
         end
       end
+      # rubocop:enable Metrics/AbcSize
 
       # Set sensible defaults for the +AvroTurf+ gem and (re)compile the Apache
       # Avro schema templates (ERB), so the gem can handle them properly.

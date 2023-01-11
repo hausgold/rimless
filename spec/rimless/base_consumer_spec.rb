@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'spec_helper'
+
 RSpec.describe Rimless::BaseConsumer do
   let(:group) { Karafka::Routing::ConsumerGroup.new('test') }
   let(:topic) { Karafka::Routing::Topic.new('test', group) }

@@ -47,7 +47,7 @@ module Rimless
         return unless rails_env.exist?
 
         ENV['RAILS_ENV'] ||= 'development'
-        ENV['KARAFKA_ENV'] = ENV['RAILS_ENV']
+        ENV['KARAFKA_ENV'] = ENV.fetch('RAILS_ENV', nil)
         require rails_env
         Rails.application.eager_load!
       end
@@ -67,6 +67,7 @@ module Rimless
       # Configure the pure basics on the Karafka application.
       #
       # rubocop:disable Metrics/MethodLength because of the various settings
+      # rubocop:disable Metrics/AbcSize dito
       def initialize_karafka!
         setup do |config|
           mapper = Rimless::Karafka::PassthroughMapper.new
@@ -82,13 +83,14 @@ module Rimless
         end
       end
       # rubocop:enable Metrics/MethodLength
+      # rubocop:enable Metrics/AbcSize
 
       # When we run in development mode, we want to write the logs
       # to file and to stdout.
       def initialize_logger!
         return unless Rimless.env.development? && server?
 
-        STDOUT.sync = true
+        $stdout.sync = true
         Rimless.logger.extend(ActiveSupport::Logger.broadcast(
                                 ActiveSupport::Logger.new($stdout)
                               ))

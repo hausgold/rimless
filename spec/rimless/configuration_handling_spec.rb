@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'spec_helper'
+
 RSpec.describe Rimless::ConfigurationHandling do
   let(:described_class) { Rimless }
 
@@ -40,15 +42,18 @@ RSpec.describe Rimless::ConfigurationHandling do
   describe '.local_app_name' do
     context 'without Rails available' do
       it 'returns nil' do
-        expect(described_class.local_app_name).to be(nil)
+        expect(described_class.local_app_name).to be_nil
       end
     end
 
     context 'without Rails application available' do
-      before { stub_const('Rails', OpenStruct.new(application: nil)) }
+      # rubocop:disable RSpec/VerifiedDoubles because we do not have a
+      #   Rails constant around (rails not loaded)
+      before { stub_const('Rails', double('Rails', application: nil)) }
+      # rubocop:enable RSpec/VerifiedDoubles
 
       it 'returns nil' do
-        expect(described_class.local_app_name).to be(nil)
+        expect(described_class.local_app_name).to be_nil
       end
     end
 

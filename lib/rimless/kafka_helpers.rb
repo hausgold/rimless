@@ -21,6 +21,7 @@ module Rimless
       #   Rimless.topic(name: 'test', app: :fancy_app)
       #
       # rubocop:disable Metrics/AbcSize because of the usage flexibility
+      # rubocop:disable Metrics/CyclomaticComplexity dito
       def topic(*args)
         opts = args.last
         name = args.first if [String, Symbol].member?(args.first.class)
@@ -38,6 +39,7 @@ module Rimless
         "#{Rimless.topic_prefix(app)}#{name}".tr('_', '-')
       end
       # rubocop:enable Metrics/AbcSize
+      # rubocop:enable Metrics/CyclomaticComplexity
 
       # Send a single message to Apache Kafka. The data is encoded according to
       # the given Apache Avro schema. The destination Kafka topic may be a

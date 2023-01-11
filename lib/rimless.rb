@@ -15,7 +15,6 @@ require 'karafka'
 require 'karafka-sidekiq-backend'
 require 'sparsify'
 require 'erb'
-require 'pp'
 
 # The top level namespace for the rimless gem.
 module Rimless

@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'spec_helper'
+
 RSpec.describe Rimless::AvroUtils do
   let(:instance) { described_class.new }
   let(:src) do
@@ -136,7 +138,7 @@ RSpec.describe Rimless::AvroUtils do
     end
 
     it 'raises on invalid JSON files' do
-      expect { instance.validate_file(invalid) }.to  \
+      expect { instance.validate_file(invalid) }.to \
         raise_error(JSON::ParserError)
     end
 
