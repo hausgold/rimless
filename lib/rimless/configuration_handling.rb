@@ -4,6 +4,8 @@ module Rimless
   # The top-level configuration handling.
   #
   # rubocop:disable Style/ClassVars because we split module code
+  # rubocop:disable Metrics/BlockLength because this is how
+  #   an +ActiveSupport::Concern+ looks like
   module ConfigurationHandling
     extend ActiveSupport::Concern
 
@@ -61,8 +63,15 @@ module Rimless
         # Check if a application is defined
         return if Rails.application.nil?
 
+        # We need a little compatibility here, as in Rails 6.1+ there is no
+        # more +parent_name+, instead they renamed it to +module_parent_name+
+        app_class = Rails.application.class
+        parent_name = app_class.module_parent_name \
+          if app_class.respond_to?(:module_parent_name)
+        parent_name ||= app_class.parent_name
+
         # Pass back the URI compatible application name
-        Rails.application.class.parent_name.underscore.dasherize
+        parent_name.underscore.dasherize
       end
 
       # Retrieve the current configured logger instance.
@@ -72,4 +81,5 @@ module Rimless
     end
   end
   # rubocop:enable Style/ClassVars
+  # rubocop:enable Metrics/BlockLength
 end

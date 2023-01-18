@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'spec_helper'
+
 RSpec.describe Rimless::KafkaHelpers do
   let(:described_class) { Rimless }
   let(:method) { nil }

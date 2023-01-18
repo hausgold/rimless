@@ -1,10 +1,13 @@
 # frozen_string_literal: true
 
 namespace :rimless do
+  # rubocop:disable Rails/RakeEnvironment because this is just an command
+  #   proxy, no need for an application bootstrap
   desc 'Start the Apache Kafka consumer'
   task :consumer do
     system 'bundle exec karafka server'
   end
+  # rubocop:enable Rails/RakeEnvironment
 
   desc 'Print all the consumer routes'
   task routes: :environment do

@@ -16,6 +16,7 @@ module Rimless
         # @param schema [String, Symbol, nil] the expected message schema
         # @return [HaveSentKafkaMessage] the expectation instance
         def initialize(schema)
+          super
           @schema = schema
           @args = {}
           @data = {}
@@ -184,7 +185,7 @@ module Rimless
           begin
             Rimless.avro.decode(message[:encoded_data],
                                 schema_name: @schema.to_s)
-            return true
+            true
           rescue Avro::IO::SchemaMatchException
             false
           end
@@ -213,8 +214,7 @@ module Rimless
         end
 
         # Setup the +WaterDrop+ spies and record each sent message.
-        #
-        # rubocop:disable Metrics/AbcSize because of the message decoding
+        # because of the message decoding
         # rubocop:disable Metrics/MethodLength dito
         def listen_to_messages
           decode = proc do |encoded|
@@ -231,7 +231,6 @@ module Rimless
             nil
           end
         end
-        # rubocop:enable Metrics/AbcSize
         # rubocop:enable Metrics/MethodLength
 
         # Serve the RSpec API and return the positive failure message.

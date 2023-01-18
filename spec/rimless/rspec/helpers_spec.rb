@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'spec_helper'
+
 RSpec.describe Rimless::RSpec::Helpers do
   let(:instance) { Class.new { include Rimless::RSpec::Helpers } }
 
@@ -15,9 +17,12 @@ RSpec.describe Rimless::RSpec::Helpers do
     context 'with string topic' do
       let(:action) { kafka_message(topic: 'test_topic') }
 
+      # rubocop:disable Style/OpenStructUse because we want to test
+      #   the interface explicitly
       it 'returns a OpenStruct' do
         expect(action).to be_a(OpenStruct)
       end
+      # rubocop:enable Style/OpenStructUse
 
       it 'sets the full topic' do
         expect(action.topic).to be_eql('test.test-app.test-topic')

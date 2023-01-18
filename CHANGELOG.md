@@ -1,3 +1,11 @@
+### next
+
+* Bundler >= 2.3 is from now on required as minimal version (#19)
+* Dropped support for Ruby < 2.5 (#19)
+* Dropped support for Rails < 5.2 (#19)
+* Updated all development/runtime gems to their latest
+  Ruby 2.5 compatible version (#19)
+
 ### 1.2.0
 
 * Added a `capture_kafka_messages` helper for RSpec (#12)

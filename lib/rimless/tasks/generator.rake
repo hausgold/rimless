@@ -18,6 +18,8 @@ namespace :rimless do
     FileUtils.copy(src, dest)
   end
 
+  # rubocop:disable Rails/RakeEnvironment because this is just an
+  #   helper command, no need for an application bootstrap
   desc 'Install the Rimless consumer components'
   task :install do
     install_template('karafka.rb')
@@ -33,4 +35,5 @@ namespace :rimless do
       # your project root. And list all routes with +rake rimless:routes+.
     OUTPUT
   end
+  # rubocop:enable Rails/RakeEnvironment
 end

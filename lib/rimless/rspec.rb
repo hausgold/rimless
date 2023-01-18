@@ -33,7 +33,7 @@ RSPEC_CONFIGURER.configure do |config|
     # schema repository it cannot conflict while refreshing it.
     unless ENV['TEST_ENV_NUMBER'].nil?
       Rimless.configure do |conf|
-        num = ENV['TEST_ENV_NUMBER']
+        num = ENV.fetch('TEST_ENV_NUMBER', nil)
         num = '1' if num.empty?
 
         conf.compiled_avro_schema_path = \

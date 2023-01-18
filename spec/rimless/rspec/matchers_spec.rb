@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'spec_helper'
+
 RSpec.describe Rimless::RSpec::Matchers do
   let(:none) { nil }
   let(:one) { send_kafka_message }
