@@ -1,3 +1,7 @@
+### next
+
+* Added support for Gem release automation
+
 ### 1.3.0
 
 * Bundler >= 2.3 is from now on required as minimal version (#19)
