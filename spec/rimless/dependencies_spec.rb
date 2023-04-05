@@ -51,6 +51,16 @@ RSpec.describe Rimless::Dependencies do
         receive(:schema_registry_url).at_least(:once).and_call_original
     end
 
+    it 'sets the schema registry user' do
+      expect(Rimless.configuration).to \
+        receive(:schema_registry_user).at_least(:once).and_call_original
+    end
+
+    it 'sets the schema registry password' do
+      expect(Rimless.configuration).to \
+        receive(:schema_registry_password).at_least(:once).and_call_original
+    end
+
     # rubocop:disable RSpec/AnyInstance because it cannot be substituted
     it 'recompiles the Apache Avro schema templates' do
       expect_any_instance_of(Rimless::AvroUtils).to \

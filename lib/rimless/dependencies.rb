@@ -66,7 +66,9 @@ module Rimless
           logger: Rimless.logger,
           namespace: Rimless.avro_utils.namespace,
           schemas_path: Rimless.avro_utils.output_path,
-          registry_url: Rimless.configuration.schema_registry_url
+          registry_url: Rimless.configuration.schema_registry_url,
+          user: Rimless.configuration.schema_registry_user,
+          password: Rimless.configuration.schema_registry_password
         )
       end
     end

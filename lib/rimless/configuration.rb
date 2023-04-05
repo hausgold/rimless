@@ -54,6 +54,16 @@ module Rimless
                 'http://schema-registry.message-bus.local')
     end
 
+    # The Confluent Schema Registry API user to use
+    config_accessor(:schema_registry_user) do
+      ENV.fetch('KAFKA_SCHEMA_REGISTRY_USER','playground_user')
+    end
+    
+    # The Confluent Schema Registry API password to use
+    config_accessor(:schema_registry_password) do
+      ENV.fetch('KAFKA_SCHEMA_REGISTRY_PASSWORD','playground_password')
+    end
+
     # The Sidekiq job queue to use for consuming jobs
     config_accessor(:consumer_job_queue) do
       ENV.fetch('KAFKA_SIDEKIQ_JOB_QUEUE', 'default').to_sym
