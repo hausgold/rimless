@@ -1,5 +1,9 @@
 ### next
 
+* TODO: Replace this bullet point with an actual description of a change.
+
+### 1.4.1
+
 * Moved the development dependencies from the gemspec to the Gemfile (#29)
 * Pinned Karafka gem <1.4.15 in order to suppress the
   `I_ACCEPT_CRITICAL_ERRORS_IN_KARAFKA_1_4=true` agony (#30)
