@@ -37,7 +37,7 @@ Gem::Specification.new do |spec|
 
   spec.add_runtime_dependency 'activesupport', '>= 5.2'
   spec.add_runtime_dependency 'avro_turf', '~> 0.11.0'
-  spec.add_runtime_dependency 'karafka', '~> 1.4'
+  spec.add_runtime_dependency 'karafka', '~> 1.4', '< 1.4.15'
   spec.add_runtime_dependency 'karafka-sidekiq-backend', '~> 1.4'
   spec.add_runtime_dependency 'karafka-testing', '~> 1.4'
   spec.add_runtime_dependency 'sinatra', '~> 2.2'
