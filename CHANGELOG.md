@@ -1,6 +1,7 @@
 ### next
 
-* TODO: Replace this bullet point with an actual description of a change.
+* Reverted to use `yield_self` instead of `then` in order to support Ruby 2.5
+  as advertised (broken since #19, 1.3.0) (#31)
 
 ### 1.4.1
 

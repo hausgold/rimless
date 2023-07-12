@@ -65,3 +65,9 @@ RSpec/FilePath:
 # Because we just implemented the ActiveRecord API.
 Rails/SkipsModelValidations:
   Enabled: false
+
+# Because Rubocop does not respect the `TargetRubyVersion: 2.5` for this cop,
+# so it converts to `then` which is not yet available on Ruby 2.5 which causes
+# `NoMethodError` errors. NOTE: Remove when Ruby 2.5 support is dropped.
+Style/ObjectThen:
+  Enabled: false
