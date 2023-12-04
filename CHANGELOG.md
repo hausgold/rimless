@@ -1,5 +1,9 @@
 ### next
 
+* TODO: Replace this bullet point with an actual description of a change.
+
+### 1.5.0
+
 * Do not extend the `Rimless.logger` to write to stdout by default when running
   in the `development` environment - this generates duplicated messages when
   the configured logger already writes to stdout. A new configuration was added
