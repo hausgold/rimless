@@ -88,6 +88,10 @@ module Rimless
       # When we run in development mode, we want to write the logs
       # to file and to stdout.
       def initialize_logger!
+        # Skip when configured not to extend the logger
+        return unless Rimless.configuration.extend_dev_logger
+
+        # Skip when not in development environment or in the server process
         return unless Rimless.env.development? && server?
 
         $stdout.sync = true

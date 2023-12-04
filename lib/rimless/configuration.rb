@@ -27,6 +27,10 @@ module Rimless
       Logger.new($stdout)
     end
 
+    # Whenever the logger should be extended to write to stdout when
+    # running in development environment (Rimless.env)
+    config_accessor(:extend_dev_logger) { false }
+
     # At least one broker of the Apache Kafka cluster
     config_accessor(:kafka_brokers) do
       ENV.fetch('KAFKA_BROKERS', 'kafka://message-bus.local:9092').split(',')
