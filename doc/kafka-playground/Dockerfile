@@ -5,7 +5,7 @@ MAINTAINER Hermann Mayer <hermann.mayer@hausgold.de>
 RUN gem update --system
 
 # Add backports repository
-RUN echo 'deb http://ftp.debian.org/debian buster-backports main' \
+RUN echo 'deb http://archive.debian.org/debian buster-backports main' \
   >> /etc/apt/sources.list
 
 # Install nodejs 16
