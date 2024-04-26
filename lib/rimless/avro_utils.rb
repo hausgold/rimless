@@ -34,10 +34,15 @@ module Rimless
     def render_file(src)
       # Convert the template path to the destination path
       dest = schema_path(src)
-      # Create the deep path when not yet existing
-      FileUtils.mkdir_p(File.dirname(dest))
-      # Write the rendered file contents to the destination
-      File.write(dest, ERB.new(File.read(src)).result(binding))
+
+      # Allow parallel cleanups and execution
+      with_retries(max_tries: 3, rescue: Errno::ENOENT) do
+        # Create the deep path when not yet existing
+        FileUtils.mkdir_p(File.dirname(dest))
+        # Write the rendered file contents to the destination
+        File.write(dest, ERB.new(File.read(src)).result(binding))
+      end
+
       # Check the written file for correct JSON
       validate_file(dest)
     end
