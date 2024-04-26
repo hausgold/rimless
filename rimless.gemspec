@@ -40,6 +40,7 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency 'karafka', '~> 1.4', '< 1.4.15'
   spec.add_runtime_dependency 'karafka-sidekiq-backend', '~> 1.4'
   spec.add_runtime_dependency 'karafka-testing', '~> 1.4'
+  spec.add_runtime_dependency 'retries', '>= 0.0.5'
   spec.add_runtime_dependency 'sinatra', '~> 2.2'
   spec.add_runtime_dependency 'sparsify', '~> 1.1'
   spec.add_runtime_dependency 'waterdrop', '~> 1.4'

@@ -14,6 +14,7 @@ require 'avro_turf/messaging'
 require 'karafka'
 require 'karafka-sidekiq-backend'
 require 'sparsify'
+require 'retries'
 require 'erb'
 
 # The top level namespace for the rimless gem.

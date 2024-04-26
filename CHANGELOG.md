@@ -1,6 +1,7 @@
 ### next
 
-* TODO: Replace this bullet point with an actual description of a change.
+* Added a retry to write compiled schema files as this may fail on parallel
+  execution (#33)
 
 ### 1.5.0
 
