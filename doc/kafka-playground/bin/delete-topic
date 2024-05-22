@@ -8,6 +8,7 @@ class DeleteTopic < Thor
   desc 'NAME', 'delete an existing Apache Kafka topic'
   option :verbose, aliases: '-v', type: :boolean,
          desc: 'Enable verbose outputs'
+
   def delete(name)
     debug! options
 
