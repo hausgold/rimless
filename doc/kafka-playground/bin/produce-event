@@ -12,6 +12,7 @@ class ProduceTopic < Thor
          desc: 'The partition key to use to select the partition'
   option :verbose, aliases: '-v', type: :boolean,
          desc: 'Enable verbose outputs'
+
   def produce(topic, *files)
     debug! options
 

@@ -76,9 +76,14 @@ the creation of the `/etc/mdns.allow` file.
 After the installation and bootup processes are finished you should have a
 working Apache Kafka setup which includes the following:
 
-* A single node [Apache Kafka](https://kafka.apache.org/) broker via [Zookeeper](https://zookeeper.apache.org/)
-* [Confluent Schema Registry](https://docs.confluent.io/platform/current/schema-registry/index.html), used for [Apache Avro](https://avro.apache.org/docs/current/) schemas
-* [Lenses.io Schema Registry UI](https://github.com/lensesio/schema-registry-ui), you can access it via mDNS at http://schema-registry-ui.playground.local
+* A single node [Apache Kafka](https://kafka.apache.org/) (without Zookeeper,
+  KRaft) broker
+* [Confluent Schema
+  Registry](https://docs.confluent.io/platform/current/schema-registry/index.html),
+  used for [Apache Avro](https://avro.apache.org/docs/current/) schemas
+* [Lenses.io Schema Registry
+  UI](https://github.com/lensesio/schema-registry-ui), you can access it via
+  mDNS at http://schema-registry-ui.playground.local
 * A Ruby 2.5 enabled playground container with configured Rimless support
 
 ## Examples

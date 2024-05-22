@@ -12,6 +12,7 @@ class CreateTopic < Thor
          desc: 'The number of replications'
   option :verbose, aliases: '-v', type: :boolean,
          desc: 'Enable verbose outputs'
+
   def create(name, *configs)
     debug! options
 

@@ -1,35 +1,12 @@
 version: "3"
 services:
-  zookeeper:
-    image: zookeeper:3.7
-    network_mode: bridge
-    ports: ["2181"]
-    ulimits:
-      # Due to systemd/pam RLIMIT_NOFILE settings (max int inside the
-      # container), the Java process seams to allocate huge limits which result
-      # in a +unable to allocate file descriptor table - out of memory+ error.
-      # Lowering this value fixes the issue for now.
-      #
-      # See: http://bit.ly/2U62A80
-      # See: http://bit.ly/2T2Izit
-      nofile:
-        soft: 100000
-        hard: 100000
-
   kafka:
-    image: hausgold/kafka:2.1
+    image: hausgold/kafka:3.7
     network_mode: bridge
     environment:
       MDNS_HOSTNAME: kafka.playground.local
       # See: http://bit.ly/2UDzgqI for Kafka downscaling
       KAFKA_HEAP_OPTS: -Xmx256M -Xms32M
-    links:
-      - zookeeper
-    extra_hosts:
-      # Due to missing nss-mdns support on Alpine Linux
-      # and the requirement to tell our self who we are
-      # for Apache Kafka, we register ourself as hostent.
-      - kafka.playground.local:127.0.0.1
     ulimits:
       # Due to systemd/pam RLIMIT_NOFILE settings (max int inside the
       # container), the Java process seams to allocate huge limits which result
@@ -43,17 +20,16 @@ services:
         hard: 100000
 
   schema-registry:
-    image: hausgold/schema-registry:5.1.2
+    image: hausgold/schema-registry:7.6
     network_mode: bridge
     environment:
       MDNS_HOSTNAME: schema-registry.playground.local
+      SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: kafka.playground.local:9092
       # Set the default Apache Avro schema compatibility
       #
       # See: http://bit.ly/2TcpoY1
       # See: http://bit.ly/2Hfo4wj
       SCHEMA_REGISTRY_AVRO_COMPATIBILITY_LEVEL: full
-    links:
-      - zookeeper
     ulimits:
       # Due to systemd/pam RLIMIT_NOFILE settings (max int inside the
       # container), the Java process seams to allocate huge limits which result

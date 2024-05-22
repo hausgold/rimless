@@ -2,7 +2,7 @@ FROM hausgold/ruby:2.5
 MAINTAINER Hermann Mayer <hermann.mayer@hausgold.de>
 
 # Update system gem
-RUN gem update --system
+RUN gem update --system '3.3.26'
 
 # Add backports repository
 RUN echo 'deb http://archive.debian.org/debian buster-backports main' \
@@ -18,7 +18,7 @@ RUN apt-get update -yqqq && \
     ca-certificates jq curl cmake \
     bash-completion inotify-tools && \
   echo 'en_US.UTF-8 UTF-8' >> /etc/locale.gen && /usr/sbin/locale-gen && \
-  gem install bundler --no-document --no-prerelease
+  gem install bundler -v '~> 2.3.0' --no-document --no-prerelease
 
 # Install kcat (formerly known as kafkacat)
 RUN curl -sL https://github.com/edenhill/kcat/archive/refs/tags/1.7.0.tar.gz \

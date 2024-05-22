@@ -1,6 +1,7 @@
 ### next
 
-* TODO: Replace this bullet point with an actual description of a change.
+* Updated the [Kafka Playground](./doc/kafka-playground) to the latest
+  Apache Kafka (3.7) and Schema Registry (7.6) versions (#35)
 
 ### 1.5.1
 
