@@ -41,10 +41,9 @@ module Rimless
         FileUtils.mkdir_p(File.dirname(dest))
         # Write the rendered file contents to the destination
         File.write(dest, ERB.new(File.read(src)).result(binding))
+        # Check the written file for correct JSON
+        validate_file(dest)
       end
-
-      # Check the written file for correct JSON
-      validate_file(dest)
     end
 
     # Check the given file for valid JSON.
