@@ -1,5 +1,9 @@
 ### next
 
+* TODO: Replace this bullet point with an actual description of a change.
+
+### 1.6.0
+
 * Dropped support for Ruby <2.7 (#38)
 * Moved the schema file validation into the retry block for parallel execution
   (#37)
