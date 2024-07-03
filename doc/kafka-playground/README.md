@@ -84,7 +84,7 @@ working Apache Kafka setup which includes the following:
 * [Lenses.io Schema Registry
   UI](https://github.com/lensesio/schema-registry-ui), you can access it via
   mDNS at http://schema-registry-ui.playground.local
-* A Ruby 2.5 enabled playground container with configured Rimless support
+* A Ruby 2.7 enabled playground container with configured Rimless support
 
 ## Examples
 

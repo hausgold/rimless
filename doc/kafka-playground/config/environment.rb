@@ -32,7 +32,7 @@ KafkaClient = Kafka.new(Rimless.configuration.kafka_brokers, logger: AppLogger)
 # (Avahi, libnss[-mdns]). The default resolver of +Resolv+ does not include the
 # mDNS stack so we have to reconfigure it here for local usage only.
 #
-# See: https://docs.ruby-lang.org/en/2.5.0/Resolv.html
+# See: https://docs.ruby-lang.org/en/2.7.0/Resolv.html
 require 'resolv'
 Resolv::DefaultResolver.replace_resolvers(
   [
