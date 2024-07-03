@@ -27,13 +27,13 @@ RSpec.describe Rimless::BaseConsumer do
 
   describe '#arguments' do
     it 'returns the correct arguments' do
-      expect(instance.arguments).to be_eql(bar: 'foo', foo: 'bar')
+      expect(instance.arguments).to eql(bar: 'foo', foo: 'bar')
     end
   end
 
   describe '#event' do
     it 'returns the correct event name' do
-      expect(instance.event).to be_eql(:foo)
+      expect(instance.event).to be(:foo)
     end
   end
 end

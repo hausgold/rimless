@@ -36,7 +36,7 @@ RSPEC_CONFIGURER.configure do |config|
         num = ENV.fetch('TEST_ENV_NUMBER', nil)
         num = '1' if num.empty?
 
-        conf.compiled_avro_schema_path = \
+        conf.compiled_avro_schema_path =
           conf.compiled_avro_schema_path.join("test-worker-#{num}")
       end
     end

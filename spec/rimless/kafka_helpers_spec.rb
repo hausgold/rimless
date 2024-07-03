@@ -10,26 +10,26 @@ RSpec.describe Rimless::KafkaHelpers do
 
   describe '.topic' do
     it 'produces the correct topic name (app fallback)' do
-      expect(described_class.topic(:name)).to be_eql('test.test-app.name')
+      expect(described_class.topic(:name)).to eql('test.test-app.name')
     end
 
     it 'produces the correct topic name (app set)' do
       expect(described_class.topic(:name, app: :app)).to \
-        be_eql('test.app.name')
+        eql('test.app.name')
     end
 
     it 'produces the correct topic name (string name)' do
-      expect(described_class.topic('name')).to be_eql('test.test-app.name')
+      expect(described_class.topic('name')).to eql('test.test-app.name')
     end
 
     it 'produces the correct topic name (mix and match)' do
       expect(described_class.topic(name: 'app', app: :test)).to \
-        be_eql('test.test.app')
+        eql('test.test.app')
     end
 
     it 'produces the correct topic name with kebab-cased symbols' do
       expect(described_class.topic(name: :new_customers, app: :test_api)).to \
-        be_eql('test.test-api.new-customers')
+        eql('test.test-api.new-customers')
     end
   end
 

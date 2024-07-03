@@ -16,7 +16,7 @@ RSpec.describe CustomConsumer do
     end
 
     it 'returns the payload properties' do
-      expect(action).to be_eql(['test', nil])
+      expect(action).to eql(['test', nil])
     end
   end
 end

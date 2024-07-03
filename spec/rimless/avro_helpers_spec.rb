@@ -11,7 +11,7 @@ RSpec.describe Rimless::AvroHelpers do
     end
 
     it 'decodes a binary blob' do
-      expect(described_class.avro_decode(blob)).to be_eql(id: 'uuid')
+      expect(described_class.avro_decode(blob)).to eql(id: 'uuid')
     end
   end
 
@@ -74,11 +74,11 @@ RSpec.describe Rimless::AvroHelpers do
     end
 
     it 'converts the deep hash to a flat sanitized one' do
-      expect(described_class.avro_schemaless_h(deep)).to be_eql(flat)
+      expect(described_class.avro_schemaless_h(deep)).to eql(flat)
     end
 
     it 'keeps flat hashes untouched' do
-      expect(described_class.avro_schemaless_h(flat)).to be_eql(flat)
+      expect(described_class.avro_schemaless_h(flat)).to eql(flat)
     end
   end
 
@@ -118,7 +118,7 @@ RSpec.describe Rimless::AvroHelpers do
     end
 
     it 'keeps already simple hashes untouched' do
-      expect(described_class.avro_to_h(simple)).to be_eql(simple)
+      expect(described_class.avro_to_h(simple)).to eql(simple)
     end
   end
 end
