@@ -19,9 +19,9 @@ module Rimless
         # occurence should be rare.
         Rimless
           .decode(params.raw_payload)
-          .yield_self { |data| Sparsify(data, sparse_array: true) }
-          .yield_self { |data| data.transform_keys { |key| key.delete('\\') } }
-          .yield_self { |data| Unsparsify(data, sparse_array: true) }
+          .then { |data| Sparsify(data, sparse_array: true) }
+          .then { |data| data.transform_keys { |key| key.delete('\\') } }
+          .then { |data| Unsparsify(data, sparse_array: true) }
           .deep_symbolize_keys
       end
     end

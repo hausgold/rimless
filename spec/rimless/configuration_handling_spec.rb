@@ -30,7 +30,7 @@ RSpec.describe Rimless::ConfigurationHandling do
   describe '.env' do
     it 'reads the configuration env' do
       described_class.configuration.env = 'local'
-      expect(described_class.env).to be_eql('local')
+      expect(described_class.env).to eql('local')
     end
 
     it 'allows inquirer access' do
@@ -60,10 +60,8 @@ RSpec.describe Rimless::ConfigurationHandling do
     context 'with Rails application available' do
       before { add_fake_rails_app('IdentityApi') }
 
-      after { remove_fake_rails_app('IdentityApi') }
-
       it 'returns the application name' do
-        expect(described_class.local_app_name).to be_eql('identity-api')
+        expect(described_class.local_app_name).to eql('identity-api')
       end
     end
   end

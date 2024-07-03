@@ -9,7 +9,7 @@ RSpec.describe Rimless::RSpec::Helpers do
     let(:encoded) { Rimless.avro.encode(avro_data, schema_name: 'test') }
 
     it 'decodes a binary Apache Avro message' do
-      expect(avro_parse(encoded)).to be_eql(avro_data_symbol_keys)
+      expect(avro_parse(encoded)).to eql(avro_data_symbol_keys)
     end
   end
 
@@ -25,7 +25,7 @@ RSpec.describe Rimless::RSpec::Helpers do
       # rubocop:enable Style/OpenStructUse
 
       it 'sets the full topic' do
-        expect(action.topic).to be_eql('test.test-app.test-topic')
+        expect(action.topic).to eql('test.test-app.test-topic')
       end
     end
 
@@ -33,7 +33,7 @@ RSpec.describe Rimless::RSpec::Helpers do
       let(:action) { kafka_message(topic: { app: 'foo', name: :bar }) }
 
       it 'sets the full topic' do
-        expect(action.topic).to be_eql('test.foo.bar')
+        expect(action.topic).to eql('test.foo.bar')
       end
     end
 
@@ -41,7 +41,7 @@ RSpec.describe Rimless::RSpec::Helpers do
       let(:action) { kafka_message(topic: :foo, foo: { bar: true }) }
 
       it 'sets the full topic' do
-        expect(action.payload).to be_eql(foo: { bar: true })
+        expect(action.payload).to eql(foo: { bar: true })
       end
     end
 
@@ -49,7 +49,7 @@ RSpec.describe Rimless::RSpec::Helpers do
       let(:action) { kafka_message(topic: :foo) }
 
       it 'sets the full topic' do
-        expect(action.payload).to be_eql({})
+        expect(action.payload).to eql({})
       end
     end
 
@@ -57,7 +57,7 @@ RSpec.describe Rimless::RSpec::Helpers do
       let(:action) { kafka_message(topic: :foo, headers: { foo: true }) }
 
       it 'sets the full topic' do
-        expect(action.headers).to be_eql(foo: true)
+        expect(action.headers).to eql(foo: true)
       end
     end
 
@@ -65,7 +65,7 @@ RSpec.describe Rimless::RSpec::Helpers do
       let(:action) { kafka_message(topic: :foo) }
 
       it 'sets the full topic' do
-        expect(action.headers).to be_eql({})
+        expect(action.headers).to eql({})
       end
     end
   end

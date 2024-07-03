@@ -1,7 +1,8 @@
 ### next
 
+* Dropped support for Ruby <2.7 (#38)
 * Moved the schema file validation into the retry block for parallel execution
-  (#36)
+  (#37)
 * Updated the [Kafka Playground](./doc/kafka-playground) to the latest
   Apache Kafka (3.7) and Schema Registry (7.6) versions (#35)
 

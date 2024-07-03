@@ -34,7 +34,7 @@ RSpec.describe Rimless::Karafka::AvroDeserializer do
       end
 
       it 'returns the correctly decoded hash' do
-        expect(action).to be_eql(id: 'uuid')
+        expect(action).to eql(id: 'uuid')
       end
     end
   end

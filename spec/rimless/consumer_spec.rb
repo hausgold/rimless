@@ -49,7 +49,7 @@ RSpec.describe Rimless::Consumer do
 
       it 'configures the correct consumer group name' do
         expect(Rimless.consumer.consumer_groups.first.name).to \
-          be_eql('test-app')
+          eql('test-app')
       end
 
       it 'configures two topics' do
@@ -57,7 +57,7 @@ RSpec.describe Rimless::Consumer do
       end
 
       it 'configures the first topic name correctly' do
-        expect(topics.first.name).to be_eql('test.test-app.topic1')
+        expect(topics.first.name).to eql('test.test-app.topic1')
       end
 
       it 'configures the first topic consumer correctly' do
@@ -74,7 +74,7 @@ RSpec.describe Rimless::Consumer do
       end
 
       it 'configures the second topic name correctly' do
-        expect(topics.last.name).to be_eql('test.test-app.topic2')
+        expect(topics.last.name).to eql('test.test-app.topic2')
       end
 
       it 'configures the second topic consumer correctly' do
@@ -98,7 +98,7 @@ RSpec.describe Rimless::Consumer do
         let(:parts) { 'admins' }
 
         it 'returns an array with correct elements' do
-          expect(action).to be_eql(%w[test.test-app.admins])
+          expect(action).to eql(%w[test.test-app.admins])
         end
       end
 
@@ -106,7 +106,7 @@ RSpec.describe Rimless::Consumer do
         let(:parts) { :admins }
 
         it 'returns an array with correct elements' do
-          expect(action).to be_eql(%w[test.test-app.admins])
+          expect(action).to eql(%w[test.test-app.admins])
         end
       end
 
@@ -114,7 +114,7 @@ RSpec.describe Rimless::Consumer do
         let(:parts) { { app: :test_api, name: :admins } }
 
         it 'returns an array with correct elements' do
-          expect(action).to be_eql(%w[test.test-api.admins])
+          expect(action).to eql(%w[test.test-api.admins])
         end
       end
 
@@ -123,7 +123,7 @@ RSpec.describe Rimless::Consumer do
 
         it 'returns an array with correct elements' do
           expect(action).to \
-            be_eql(%w[test.test-api.customers test.test-api.admins])
+            eql(%w[test.test-api.customers test.test-api.admins])
         end
       end
     end

@@ -23,21 +23,21 @@ RSpec.describe Rimless::AvroUtils do
       after { ENV.delete('KAFKA_SCHEMA_SUBJECT_PREFIX') }
 
       it 'sets the namespace prefix correctly' do
-        expect(described_class.new.env).to be_eql('abc')
+        expect(described_class.new.env).to eql('abc')
       end
 
       it 'sets the namespace correctly' do
-        expect(described_class.new.namespace).to be_eql('abc.app')
+        expect(described_class.new.namespace).to eql('abc.app')
       end
     end
 
     context 'with fallback prefix' do
       it 'sets the namespace prefix correctly' do
-        expect(described_class.new.env).to be_eql('test')
+        expect(described_class.new.env).to eql('test')
       end
 
       it 'sets the namespace correctly' do
-        expect(described_class.new.namespace).to be_eql('test.test_app')
+        expect(described_class.new.namespace).to eql('test.test_app')
       end
     end
   end
@@ -65,7 +65,7 @@ RSpec.describe Rimless::AvroUtils do
 
   describe '#schema_path' do
     it 'returns the correct path' do
-      expect(instance.schema_path(src).to_s).to be_eql(dest)
+      expect(instance.schema_path(src).to_s).to eql(dest)
     end
   end
 

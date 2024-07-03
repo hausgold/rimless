@@ -15,7 +15,7 @@ namespace :rimless do
 
     Rimless.consumer.consumer_groups.each do |consumer_group|
       consumer_group.topics.each do |topic|
-        name = topic.name.split('.')[1..-1].join('.')
+        name = topic.name.split('.')[1..].join('.')
 
         puts "#    Topic: #{name}"
         puts "# Consumer: #{topic.consumer}"
