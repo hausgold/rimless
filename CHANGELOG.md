@@ -1,5 +1,9 @@
 ### next
 
+* TODO: Replace this bullet point with an actual description of a change.
+
+### 1.7.0
+
 * Added CI tests for Rails 6.1 and 7.1 (#39)
 
 ### 1.6.0
