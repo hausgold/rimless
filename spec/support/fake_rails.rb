@@ -8,7 +8,7 @@
 def add_fake_rails_app(class_name)
   stub_const('Rails', Class.new { cattr_accessor :application })
   stub_const('Rails::Application', Class.new)
-  stub_const('IdentityApi', Class.new)
+  stub_const(class_name, Class.new)
 
   app_namespace = class_name.constantize
   app_namespace.const_set('Application', Class.new(Rails::Application))
