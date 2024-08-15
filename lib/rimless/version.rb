@@ -3,7 +3,7 @@
 # The gem version details.
 module Rimless
   # The version of the +rimless+ gem
-  VERSION = '1.7.4'
+  VERSION = '1.7.5'
 
   class << self
     # Returns the version of gem as a string.
