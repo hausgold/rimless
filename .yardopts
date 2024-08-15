@@ -3,4 +3,5 @@
 --markup=rdoc
 -
 README.md
-lib/**/*.rb
+doc/examples/**/*.rb
+doc/kafka-playground/examples/**/*.rb
