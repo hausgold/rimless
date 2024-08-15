@@ -4,4 +4,5 @@
 -
 README.md
 doc/examples/**/*.rb
+doc/*.md
 doc/kafka-playground/examples/**/*.rb
