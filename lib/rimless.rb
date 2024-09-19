@@ -19,6 +19,9 @@ require 'erb'
 
 # The top level namespace for the rimless gem.
 module Rimless
+  # Configure the relative gem code base location
+  root_path = Pathname.new("#{__dir__}/rimless")
+
   # Top level elements
   autoload :Configuration, 'rimless/configuration'
   autoload :ConfigurationHandling, 'rimless/configuration_handling'
@@ -47,4 +50,7 @@ module Rimless
   include Rimless::KafkaHelpers
   include Rimless::Dependencies
   include Rimless::Consumer
+
+  # Load all initializers of the gem
+  Dir[root_path.join('initializers/**/*.rb')].sort.each { |path| require path }
 end
