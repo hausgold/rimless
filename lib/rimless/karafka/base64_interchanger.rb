@@ -11,7 +11,8 @@ module Rimless
       # Encode a binary Apache Kafka message(s) so they can be passed to the
       # Sidekiq +Rimless::ConsumerJob+.
       #
-      # @param params_batch [Mixed] the raw message(s) to encode
+      # @param params_batch [Karafka::Params::ParamsBatch] the karafka params
+      #   batch object
       # @return [String] the marshaled+base64 encoded data
       def encode(params_batch)
         Base64.encode64(Marshal.dump(super))
@@ -21,9 +22,9 @@ module Rimless
       # the Sidekiq +Rimless::ConsumerJob+.
       #
       # @param params_string [String] the marshaled+base64 encoded data
-      # @return [Mixed] the unmarshaled+base64 decoded data
-      def decode(params_string)
-        Marshal.load(Base64.decode64(super)).map(&:stringify_keys)
+      # @return [Array<Hash>] the unmarshaled+base64 decoded data
+      def decode(params_batch)
+        super(Marshal.load(Base64.decode64(params_batch))).map(&:stringify_keys)
       end
     end
     # rubocop:enable Security/MarshalLoad
