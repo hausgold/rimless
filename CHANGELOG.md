@@ -1,5 +1,9 @@
 ### next
 
+* TODO: Replace this bullet point with an actual description of a change.
+
+### 1.7.6
+
 * Added a monkey-patch for the constellation Karafka 1.4 and Thor 1.3,
   on Ruby >=2.7 (#42)
 
