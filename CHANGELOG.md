@@ -1,5 +1,9 @@
 ### next
 
+* TODO: Replace this bullet point with an actual description of a change.
+
+### 1.7.7
+
 * Corrected the Sidekiq interchanger decoding, which is caused by an upstream
   update of the karafka-sidekiq-backend gem (#43)
 
