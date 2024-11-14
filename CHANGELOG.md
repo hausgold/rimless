@@ -1,6 +1,9 @@
 ### next
 
-* TODO: Replace this bullet point with an actual description of a change.
+* Added support for custom topic names via the `full_name:` keyword argument on
+  the consumer routing table (#44)
+* Added support to pass a block to the routing table
+  (`Rimless.consumer.topics`) to add custom topic configurations (#44)
 
 ### 1.7.7 (19 September 2024)
 

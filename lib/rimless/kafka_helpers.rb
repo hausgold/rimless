@@ -19,14 +19,21 @@ module Rimless
       #   Rimless.topic(:users, app: 'test-api')
       # @example Mix and match
       #   Rimless.topic(name: 'test', app: :fancy_app)
+      # @example Full name - use as is
+      #   Rimless.topic(full_name: 'my.custom.topic.name')
       #
-      # rubocop:disable Metrics/AbcSize because of the usage flexibility
+      # rubocop:disable Metrics/MethodLength because of the usage flexibility
+      # rubocop:disable Metrics/AbcSize dito
       # rubocop:disable Metrics/CyclomaticComplexity dito
+      # rubocop:disable Metrics/PerceivedComplexity dito
       def topic(*args)
         opts = args.last
         name = args.first if [String, Symbol].member?(args.first.class)
 
         if opts.is_a?(Hash)
+          # When we got a full name, we use it as is
+          return opts[:full_name] if opts.key? :full_name
+
           name = opts[:name] if opts.key?(:name)
           app = opts[:app] if opts.key?(:app)
         end
@@ -38,8 +45,10 @@ module Rimless
 
         "#{Rimless.topic_prefix(app)}#{name}".tr('_', '-')
       end
+      # rubocop:enable Metrics/MethodLength
       # rubocop:enable Metrics/AbcSize
       # rubocop:enable Metrics/CyclomaticComplexity
+      # rubocop:enable Metrics/PerceivedComplexity
 
       # Send a single message to Apache Kafka. The data is encoded according to
       # the given Apache Avro schema. The destination Kafka topic may be a

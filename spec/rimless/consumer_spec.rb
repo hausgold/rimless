@@ -38,56 +38,78 @@ RSpec.describe Rimless::Consumer do
     describe '.topics' do
       let(:topics) { Rimless.consumer.consumer_groups.first.topics }
 
-      before do
-        described_class.topics(topic1: Rimless::BaseConsumer,
-                               topic2: Rimless::BaseConsumer)
+      before { described_class.consumer_groups.clear }
+
+      context 'with topics, without block' do
+        before do
+          described_class.topics(topic1: Rimless::BaseConsumer,
+                                 topic2: Rimless::BaseConsumer)
+        end
+
+        it 'configures a single consumer group' do
+          expect(Rimless.consumer.consumer_groups.count).to be(1)
+        end
+
+        it 'configures the correct consumer group name' do
+          expect(Rimless.consumer.consumer_groups.first.name).to \
+            eql('test-app')
+        end
+
+        it 'configures two topics' do
+          expect(topics.count).to be(2)
+        end
+
+        it 'configures the first topic name correctly' do
+          expect(topics.first.name).to eql('test.test-app.topic1')
+        end
+
+        it 'configures the first topic consumer correctly' do
+          expect(topics.first.consumer).to be(Rimless::BaseConsumer)
+        end
+
+        it 'configures the first topic worker correctly' do
+          expect(topics.first.worker).to be(Rimless::ConsumerJob)
+        end
+
+        it 'configures the first topic interchanger correctly' do
+          expect(topics.first.interchanger).to \
+            be_a(Rimless::Karafka::Base64Interchanger)
+        end
+
+        it 'configures the second topic name correctly' do
+          expect(topics.last.name).to eql('test.test-app.topic2')
+        end
+
+        it 'configures the second topic consumer correctly' do
+          expect(topics.last.consumer).to be(Rimless::BaseConsumer)
+        end
+
+        it 'configures the second topic worker correctly' do
+          expect(topics.last.worker).to be(Rimless::ConsumerJob)
+        end
+
+        it 'configures the second topic interchanger correctly' do
+          expect(topics.last.interchanger).to \
+            be_a(Rimless::Karafka::Base64Interchanger)
+        end
       end
 
-      it 'configures a single consumer group' do
-        expect(Rimless.consumer.consumer_groups.count).to be(1)
-      end
+      context 'without topics, but a block' do
+        before do
+          described_class.topics do
+            topic('my.custom.topic') do
+              consumer Rimless::BaseConsumer
+            end
+          end
+        end
 
-      it 'configures the correct consumer group name' do
-        expect(Rimless.consumer.consumer_groups.first.name).to \
-          eql('test-app')
-      end
+        it 'configures the topic name correctly' do
+          expect(topics.last.name).to eql('my.custom.topic')
+        end
 
-      it 'configures two topics' do
-        expect(topics.count).to be(2)
-      end
-
-      it 'configures the first topic name correctly' do
-        expect(topics.first.name).to eql('test.test-app.topic1')
-      end
-
-      it 'configures the first topic consumer correctly' do
-        expect(topics.first.consumer).to be(Rimless::BaseConsumer)
-      end
-
-      it 'configures the first topic worker correctly' do
-        expect(topics.first.worker).to be(Rimless::ConsumerJob)
-      end
-
-      it 'configures the first topic interchanger correctly' do
-        expect(topics.first.interchanger).to \
-          be_a(Rimless::Karafka::Base64Interchanger)
-      end
-
-      it 'configures the second topic name correctly' do
-        expect(topics.last.name).to eql('test.test-app.topic2')
-      end
-
-      it 'configures the second topic consumer correctly' do
-        expect(topics.last.consumer).to be(Rimless::BaseConsumer)
-      end
-
-      it 'configures the second topic worker correctly' do
-        expect(topics.last.worker).to be(Rimless::ConsumerJob)
-      end
-
-      it 'configures the second topic interchanger correctly' do
-        expect(topics.last.interchanger).to \
-          be_a(Rimless::Karafka::Base64Interchanger)
+        it 'configures the topic consumer correctly' do
+          expect(topics.last.consumer).to be(Rimless::BaseConsumer)
+        end
       end
     end
 

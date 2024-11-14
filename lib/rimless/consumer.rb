@@ -126,12 +126,23 @@ module Rimless
       #   topics({ app: :test_app, name: :admins } => YourConsumer)
       #   topics({ app: :test_app, names: %i[users admins] } => YourConsumer)
       #
+      # Examples:
+      #
+      #   topics do
+      #     topic('name') do
+      #       consumer CustomConsumer
+      #     end
+      #   end
+      #
       # @param topics [Hash{Hash => Class}] the topic to consumer mapping
+      # @yield the given block on the routing table
       #
       # rubocop:disable Metrics/MethodLength because of the Karafka DSL
-      def topics(topics)
+      def topics(topics = [], &block)
         consumer_groups.draw do
-          consumer_group Rimless.configuration.client_id do
+          consumer_group(Rimless.configuration.client_id) do
+            instance_exec(&block) if block_given?
+
             topics.each do |topic_parts, dest_consumer|
               Rimless.consumer.topic_names(topic_parts).each do |topic_name|
                 topic(topic_name) do
