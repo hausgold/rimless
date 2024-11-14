@@ -31,6 +31,11 @@ RSpec.describe Rimless::KafkaHelpers do
       expect(described_class.topic(name: :new_customers, app: :test_api)).to \
         eql('test.test-api.new-customers')
     end
+
+    it 'returns the full name when given' do
+      expect(described_class.topic(full_name: 'my.custom.topic')).to \
+        eql('my.custom.topic')
+    end
   end
 
   describe '.sync_message' do
