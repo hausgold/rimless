@@ -1,5 +1,9 @@
 ### next
 
+* TODO: Replace this bullet point with an actual description of a change.
+
+### 1.8.0 (14 November 2024)
+
 * Added support for custom topic names via the `full_name:` keyword argument on
   the consumer routing table (#44)
 * Added support to pass a block to the routing table
