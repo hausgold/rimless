@@ -1,7 +1,7 @@
 version: "3"
 services:
   kafka:
-    image: hausgold/kafka:3.7
+    image: hausgold/kafka:3.9
     network_mode: bridge
     environment:
       MDNS_HOSTNAME: kafka.playground.local
@@ -20,7 +20,7 @@ services:
         hard: 100000
 
   schema-registry:
-    image: hausgold/schema-registry:7.6
+    image: hausgold/schema-registry:7.8
     network_mode: bridge
     environment:
       MDNS_HOSTNAME: schema-registry.playground.local
