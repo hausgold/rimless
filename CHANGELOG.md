@@ -1,5 +1,9 @@
 ### next
 
+* TODO: Replace this bullet point with an actual description of a change.
+
+### 1.9.0 (3 January 2025)
+
 * Raised minimum supported Ruby/Rails version to 2.7/6.1 (#45)
 
 ### 1.8.0 (14 November 2024)
