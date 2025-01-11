@@ -45,4 +45,5 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'sparsify', '~> 1.1'
   spec.add_dependency 'waterdrop', '~> 1.4'
   spec.add_dependency 'webmock', '~> 3.18'
+  spec.add_dependency 'zeitwerk', '~> 2.6'
 end

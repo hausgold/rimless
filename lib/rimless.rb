@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'zeitwerk'
 require 'active_support'
 require 'active_support/concern'
 require 'active_support/configurable'
@@ -22,27 +23,25 @@ module Rimless
   # Configure the relative gem code base location
   root_path = Pathname.new("#{__dir__}/rimless")
 
-  # Top level elements
-  autoload :Configuration, 'rimless/configuration'
-  autoload :ConfigurationHandling, 'rimless/configuration_handling'
-  autoload :AvroHelpers, 'rimless/avro_helpers'
-  autoload :AvroUtils, 'rimless/avro_utils'
-  autoload :KafkaHelpers, 'rimless/kafka_helpers'
-  autoload :Dependencies, 'rimless/dependencies'
-  autoload :BaseConsumer, 'rimless/base_consumer'
-  autoload :Consumer, 'rimless/consumer'
-  autoload :ConsumerJob, 'rimless/consumer_job'
+  # Setup a Zeitwerk autoloader instance and configure it
+  loader = Zeitwerk::Loader.for_gem
 
-  # All Karafka-framework related components
-  module Karafka
-    autoload :Base64Interchanger, 'rimless/karafka/base64_interchanger'
-    autoload :PassthroughMapper, 'rimless/karafka/passthrough_mapper'
-    autoload :AvroDeserializer, 'rimless/karafka/avro_deserializer'
-  end
+  # Do not auto load some parts of the gem
+  loader.ignore(root_path.join('compatibility*'))
+  loader.ignore(root_path.join('initializers*'))
+  loader.ignore(root_path.join('tasks*'))
+  loader.ignore(root_path.join('railtie.rb'))
+  loader.ignore(root_path.join('rspec*'))
+
+  # Finish the auto loader configuration
+  loader.setup
 
   # Load standalone code
   require 'rimless/version'
   require 'rimless/railtie' if defined? Rails
+
+  # Load all initializers of the gem
+  Dir[root_path.join('initializers/**/*.rb')].sort.each { |path| require path }
 
   # Include top-level features
   include Rimless::ConfigurationHandling
@@ -51,6 +50,6 @@ module Rimless
   include Rimless::Dependencies
   include Rimless::Consumer
 
-  # Load all initializers of the gem
-  Dir[root_path.join('initializers/**/*.rb')].sort.each { |path| require path }
+  # Make sure to eager load all SDK constants
+  loader.eager_load
 end
