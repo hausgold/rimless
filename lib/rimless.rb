@@ -50,6 +50,6 @@ module Rimless
   include Rimless::Dependencies
   include Rimless::Consumer
 
-  # Make sure to eager load all SDK constants
+  # Make sure to eager load all constants
   loader.eager_load
 end
