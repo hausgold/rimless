@@ -32,6 +32,8 @@ module Rimless
   loader.ignore(root_path.join('tasks*'))
   loader.ignore(root_path.join('railtie.rb'))
   loader.ignore(root_path.join('rspec*'))
+  loader.do_not_eager_load(root_path.join('configuration.rb'))
+  loader.do_not_eager_load(root_path.join('consumer_job.rb'))
 
   # Finish the auto loader configuration
   loader.setup
