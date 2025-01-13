@@ -1,6 +1,6 @@
 ### next
 
-* TODO: Replace this bullet point with an actual description of a change.
+* Do not eager load the configuration (#47)
 
 ### 1.10.0 (11 January 2025)
 
