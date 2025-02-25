@@ -51,7 +51,7 @@ module Rimless
     # @param dest [Pathname, File, IO] the file to check
     # @raise [JSON::ParserError] when invalid
     #
-    # rubocop:disable Security/JSONLoad because we wrote the file contents
+    # rubocop:disable Security/JSONLoad -- because we wrote the file contents
     def validate_file(dest)
       JSON.load(dest)
     rescue JSON::ParserError => e

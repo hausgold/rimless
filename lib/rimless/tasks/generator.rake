@@ -18,8 +18,8 @@ namespace :rimless do
     FileUtils.copy(src, dest)
   end
 
-  # rubocop:disable Rails/RakeEnvironment because this is just an
-  #   helper command, no need for an application bootstrap
+  # rubocop:disable Rails/RakeEnvironment -- because this is just an helper
+  #   command, no need for an application bootstrap
   desc 'Install the Rimless consumer components'
   task :install do
     install_template('karafka.rb')

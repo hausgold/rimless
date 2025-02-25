@@ -3,7 +3,8 @@
 module Rimless
   # The top-level dependencies helpers.
   #
-  # rubocop:disable Metrics/BlockLength because its an Active Support concern
+  # rubocop:disable Metrics/BlockLength -- because its an Active Support
+  #   concern
   module Dependencies
     extend ActiveSupport::Concern
 
@@ -18,7 +19,7 @@ module Rimless
 
       # Set sensible defaults for the +WaterDrop+ gem.
       #
-      # rubocop:disable Metrics/AbcSize because of the configuration mapping
+      # rubocop:disable Metrics/AbcSize -- because of the configuration mapping
       def configure_waterdrop
         # Skip WaterDrop configuration when no brokers/client id is available,
         # because it will raise. Its fine to have none available for situations

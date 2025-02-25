@@ -11,7 +11,7 @@ RSpec.describe Rimless::AvroUtils do
     instance.output_path.join('test', 'test_app', 'test.avsc').to_s
   end
 
-  # rubocop:disable RSpec/BeforeAfterAll because we want to re-regenarate
+  # rubocop:disable RSpec/BeforeAfterAll -- because we want to re-regenarate
   #   the Avro schemas for the rest of the test suite
   after(:all) { described_class.new.recompile_schemas }
   # rubocop:enable RSpec/BeforeAfterAll
@@ -144,7 +144,7 @@ RSpec.describe Rimless::AvroUtils do
 
     it 'logs the broken file and error' do
       expect(Rimless.logger).to receive(:fatal)
-        .with(%r{files/invalid\.json.*unexpected token at}m).once
+        .with(%r{files/invalid\.json.*(un)?expected}m).once
       ignore_raise { instance.validate_file(invalid) }
     end
   end

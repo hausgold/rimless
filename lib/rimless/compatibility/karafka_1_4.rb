@@ -18,7 +18,7 @@ module Karafka
         #
         # @param cli_class [Karafka::Cli] the class to bind to
         #
-        # rubocop:disable Metrics/MethodLength because of the
+        # rubocop:disable Metrics/MethodLength -- because of the
         #   monkey-patching logic
         def bind_to(cli_class)
           @aliases ||= []

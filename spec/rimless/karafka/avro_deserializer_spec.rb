@@ -2,8 +2,8 @@
 
 require 'spec_helper'
 
-# rubocop:disable RSpec/MultipleMemoizedHelpers because of various
-#   testing contexts
+# rubocop:disable RSpec/MultipleMemoizedHelpers -- because of various testing
+#   contexts
 RSpec.describe Rimless::Karafka::AvroDeserializer do
   let(:instance) { described_class.new }
   let(:params) { Karafka::Params::Params.new(raw_payload, metadata) }

@@ -5,7 +5,8 @@ module Rimless
   module KafkaHelpers
     extend ActiveSupport::Concern
 
-    # rubocop:disable Metrics/BlockLength because its an Active Support concern
+    # rubocop:disable Metrics/BlockLength -- because its an Active Support
+    #   concern
     class_methods do
       # Generate a common topic name for Apache Kafka while taking care of
       # configured prefixes.
@@ -22,10 +23,11 @@ module Rimless
       # @example Full name - use as is
       #   Rimless.topic(full_name: 'my.custom.topic.name')
       #
-      # rubocop:disable Metrics/MethodLength because of the usage flexibility
-      # rubocop:disable Metrics/AbcSize dito
-      # rubocop:disable Metrics/CyclomaticComplexity dito
-      # rubocop:disable Metrics/PerceivedComplexity dito
+      # rubocop:disable Metrics/MethodLength -- because of the usage
+      #   flexibility
+      # rubocop:disable Metrics/AbcSize -- dito
+      # rubocop:disable Metrics/CyclomaticComplexity -- dito
+      # rubocop:disable Metrics/PerceivedComplexity -- dito
       def topic(*args)
         opts = args.last
         name = args.first if [String, Symbol].member?(args.first.class)
