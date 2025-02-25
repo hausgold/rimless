@@ -17,7 +17,7 @@ RSpec.describe Rimless::Consumer do
   end
 
   describe Rimless::ConsumerApp do
-    # rubocop:disable RSpec/DescribedClass because of the class-nesting
+    # rubocop:disable RSpec/DescribedClass -- because of the class-nesting
     let(:described_class) { Rimless::ConsumerApp }
     # rubocop:enable RSpec/DescribedClass
 

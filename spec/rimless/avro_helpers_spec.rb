@@ -84,8 +84,8 @@ RSpec.describe Rimless::AvroHelpers do
 
   describe '.avro_to_h' do
     let(:complex_class) do
-      # rubocop:disable Style/OpenStructUse because we explicitly want
-      #   to test complex data types like OpenStructs here
+      # rubocop:disable Style/OpenStructUse -- because we explicitly want to
+      #   test complex data types like OpenStructs here
       Class.new(OpenStruct) do
         def as_json(_options = nil)
           to_h

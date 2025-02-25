@@ -3,8 +3,8 @@
 if defined?(Rails) && Rails.env.development?
   require 'rspec/core/rake_task'
 
-  # rubocop:disable Rails/RakeEnvironment because this is just an
-  #   helper command, no need for an application bootstrap
+  # rubocop:disable Rails/RakeEnvironment -- because this is just an helper
+  #   command, no need for an application bootstrap
   task :stats do
     require 'rails/code_statistics'
 

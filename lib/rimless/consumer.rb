@@ -4,7 +4,7 @@ module Rimless
   # The global rimless Apache Kafka consumer application based on
   # the Karafka framework.
   #
-  # rubocop:disable Style/ClassVars because we just work as a singleton
+  # rubocop:disable Style/ClassVars -- because we just work as a singleton
   class ConsumerApp < ::Karafka::App
     # We track our own initialization with this class variable
     @@rimless_initialized = false
@@ -66,8 +66,8 @@ module Rimless
 
       # Configure the pure basics on the Karafka application.
       #
-      # rubocop:disable Metrics/MethodLength because of the various settings
-      # rubocop:disable Metrics/AbcSize dito
+      # rubocop:disable Metrics/MethodLength -- because of the various settings
+      # rubocop:disable Metrics/AbcSize -- dito
       def initialize_karafka!
         setup do |config|
           mapper = Rimless::Karafka::PassthroughMapper.new
@@ -137,7 +137,7 @@ module Rimless
       # @param topics [Hash{Hash => Class}] the topic to consumer mapping
       # @yield the given block on the routing table
       #
-      # rubocop:disable Metrics/MethodLength because of the Karafka DSL
+      # rubocop:disable Metrics/MethodLength -- because of the Karafka DSL
       def topics(topics = [], &block)
         consumer_groups.draw do
           consumer_group(Rimless.configuration.client_id) do

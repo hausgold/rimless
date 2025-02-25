@@ -47,8 +47,8 @@ RSpec.describe Rimless::ConfigurationHandling do
     end
 
     context 'without Rails application available' do
-      # rubocop:disable RSpec/VerifiedDoubles because we do not have a
-      #   Rails constant around (rails not loaded)
+      # rubocop:disable RSpec/VerifiedDoubles -- because we do not have a Rails
+      #   constant around (rails not loaded)
       before { stub_const('Rails', double('Rails', application: nil)) }
       # rubocop:enable RSpec/VerifiedDoubles
 

@@ -14,8 +14,8 @@ require 'karafka/testing/rspec/helpers'
 raise 'No RSPEC_CONFIGURER is defined, webmock is missing?' \
   unless defined?(RSPEC_CONFIGURER)
 
-# rubocop:disable Metrics/BlockLength because we have to configure
-#   RSpec properly
+# rubocop:disable Metrics/BlockLength -- because we have to configure RSpec
+#   properly
 RSPEC_CONFIGURER.configure do |config|
   config.include Rimless::RSpec::Helpers
   config.include Rimless::RSpec::Matchers
