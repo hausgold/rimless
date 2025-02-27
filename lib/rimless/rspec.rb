@@ -2,11 +2,20 @@
 
 require 'webmock'
 require 'webmock/rspec'
-require 'avro_turf/test/fake_confluent_schema_registry_server'
 require 'rimless'
 require 'rimless/rspec/helpers'
 require 'rimless/rspec/matchers'
 require 'karafka/testing/rspec/helpers'
+
+# This fake schema registry server uses Sinatra but the gem does not include
+# this dependency as runtime, just as development. Therefore we added it.
+require 'avro_turf/test/fake_confluent_schema_registry_server'
+
+# Add a monkey patch to add propper Sinatra 4.x support
+class FakeConfluentSchemaRegistryServer
+  # Allow any host name on tests
+  set :host_authorization, { permitted_hosts: [] }
+end
 
 # RSpec 1.x and 2.x compatibility
 #
