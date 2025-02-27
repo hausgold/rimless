@@ -1,6 +1,10 @@
 ### next
 
-* Added support for Sidekiq 7 in conjunction with Rails (#52)
+* TODO: Replace this bullet point with an actual description of a change.
+
+### 1.13.0 (27 February 2025)
+
+* Added support for Sidekiq 7 in conjunction with Rails ([#52](https://github.com/hausgold/rimless/pull/52))
 
 ### 1.12.0 (27 February 2025)
 
