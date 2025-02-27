@@ -1,6 +1,6 @@
 ### next
 
-* TODO: Replace this bullet point with an actual description of a change.
+* Added support for Sidekiq 7 in conjunction with Rails (#52)
 
 ### 1.12.0 (27 February 2025)
 

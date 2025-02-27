@@ -48,6 +48,16 @@ module Rimless
 
         ENV['RAILS_ENV'] ||= 'development'
         ENV['KARAFKA_ENV'] = ENV.fetch('RAILS_ENV', nil)
+
+        # This is relevant for Karafka server processes, as the +karafka.rb+
+        # root file just requires +rimless+ and then we require
+        # +karafka-sidekiq-backend+ which in fact requires +sidekiq+ before
+        # +rails+ was required. We cannot change the order here, but we can
+        # explicitly load the Sidekiq/Rails integration as we know at this
+        # point that we should load Rails and we're going to use Sidekiq, too.
+        # See: https://bit.ly/3D8ZHj3
+        require 'sidekiq/rails'
+
         require rails_env
         Rails.application.eager_load!
       end
