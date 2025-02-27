@@ -42,7 +42,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'karafka-testing', '~> 1.4'
   spec.add_dependency 'mutex_m', '~> 0.3.0'
   spec.add_dependency 'retries', '>= 0.0.5'
-  spec.add_dependency 'sinatra', '~> 2.2'
+  spec.add_dependency 'sinatra', '>= 2.2'
   spec.add_dependency 'sparsify', '~> 1.1'
   spec.add_dependency 'waterdrop', '~> 1.4'
   spec.add_dependency 'webmock', '~> 3.18'

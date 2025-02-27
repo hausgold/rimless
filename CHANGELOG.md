@@ -1,6 +1,7 @@
 ### next
 
 * Corrected some RuboCop glitches (#50)
+* Relaxed the sinatra gem dependency to >= 2.0 (#51)
 
 ### 1.11.0 (30 January 2025)
 

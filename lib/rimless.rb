@@ -18,6 +18,7 @@ require 'karafka-sidekiq-backend'
 require 'sparsify'
 require 'retries'
 require 'erb'
+require 'ostruct'
 
 # The top level namespace for the rimless gem.
 module Rimless
