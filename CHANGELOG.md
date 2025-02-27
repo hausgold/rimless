@@ -1,7 +1,11 @@
 ### next
 
-* Corrected some RuboCop glitches (#50)
-* Relaxed the sinatra gem dependency to >= 2.0 (#51)
+* TODO: Replace this bullet point with an actual description of a change.
+
+### 1.12.0 (27 February 2025)
+
+* Corrected some RuboCop glitches ([#50](https://github.com/hausgold/rimless/pull/50))
+* Relaxed the sinatra gem dependency to >= 2.0 ([#51](https://github.com/hausgold/rimless/pull/51))
 
 ### 1.11.0 (30 January 2025)
 
