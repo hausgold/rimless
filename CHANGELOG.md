@@ -1,6 +1,6 @@
 ### next
 
-* TODO: Replace this bullet point with an actual description of a change.
+* Upgraded the rubocop dependencies (#53)
 
 ### 1.13.0 (27 February 2025)
 
