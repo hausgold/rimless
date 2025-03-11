@@ -1,6 +1,10 @@
 ### next
 
-* Corrected a typo of #54, its `rimless/railtie` not `rimless/rails` (#55)
+* TODO: Replace this bullet point with an actual description of a change.
+
+### 1.13.2 (11 March 2025)
+
+* Corrected a typo of #54, its `rimless/railtie` not `rimless/rails` ([#55](https://github.com/hausgold/rimless/pull/55))
 
 ### 1.13.1 (11 March 2025)
 
