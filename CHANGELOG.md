@@ -1,6 +1,8 @@
 ### next
 
 * Upgraded the rubocop dependencies (#53)
+* Make sure to load 'rimless/railtie' when we initialize Rails on the consumer
+  application (#54)
 
 ### 1.13.0 (27 February 2025)
 
