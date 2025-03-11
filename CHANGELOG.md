@@ -1,8 +1,12 @@
 ### next
 
-* Upgraded the rubocop dependencies (#53)
+* TODO: Replace this bullet point with an actual description of a change.
+
+### 1.13.1 (11 March 2025)
+
+* Upgraded the rubocop dependencies ([#53](https://github.com/hausgold/rimless/pull/53))
 * Make sure to load 'rimless/railtie' when we initialize Rails on the consumer
-  application (#54)
+  application ([#54](https://github.com/hausgold/rimless/pull/54))
 
 ### 1.13.0 (27 February 2025)
 
