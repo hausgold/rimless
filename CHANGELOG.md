@@ -1,6 +1,6 @@
 ### next
 
-* TODO: Replace this bullet point with an actual description of a change.
+* Corrected a typo of #54, its `rimless/railtie` not `rimless/rails` (#55)
 
 ### 1.13.1 (11 March 2025)
 
