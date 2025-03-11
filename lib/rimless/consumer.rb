@@ -59,7 +59,7 @@ module Rimless
         require 'sidekiq/rails'
 
         require rails_env
-        require 'rimless/rails'
+        require 'rimless/railtie'
         Rails.application.eager_load!
       end
 
