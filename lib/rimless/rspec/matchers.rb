@@ -136,11 +136,15 @@ module Rimless
         #
         # @param proc [Proc] the block to evaluate
         # @return [Boolean] whenever the check was unsuccessful or not
+        #
+        # rubocop:disable Naming/PredicateName -- because we just serve
+        #   the RSpec API here
         def does_not_match?(proc)
           set_expected_number(:at_least, 1)
 
           !matches?(proc)
         end
+        # rubocop:enable Naming/PredicateName
 
         private
 
