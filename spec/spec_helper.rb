@@ -33,9 +33,20 @@ RSpec.configure do |config|
   end
 
   # Clear the test configuration before we begin
+  #
+  # rubocop:disable RSpec/RemoveConst -- because of the Rails constant cleanup
   config.before do
+    # Since Sidekiq >=8.0.3, the +railties+ gem is required (see
+    # https://bit.ly/4m9DCmj), which defines the +Rails+ constant, but we do
+    # not ship a Rails dummy application here, so this causes issues on the
+    # Rimless gem configuration as we check if the +Rails+ constant is defined,
+    # and if so we try to access details like +Rails.root+ which is then not
+    # initialized. Therefore, we just clear the environment before each test.
+    Object.send(:remove_const, :Rails) if defined? Rails
+
     reset_test_configuration!
   end
+  # rubocop:enable RSpec/RemoveConst
 end
 
 require 'rimless/rspec'

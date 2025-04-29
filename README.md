@@ -69,7 +69,7 @@ Rimless.configure do |conf|
   conf.env = 'test'
   # Defaults to your Rails application name when available
   conf.app_name = 'your-app'
-  # Dito
+  # Ditto
   conf.client_id = 'your-app'
 
   # Writes to stdout by default

@@ -78,7 +78,7 @@ module Rimless
       # Configure the pure basics on the Karafka application.
       #
       # rubocop:disable Metrics/MethodLength -- because of the various settings
-      # rubocop:disable Metrics/AbcSize -- dito
+      # rubocop:disable Metrics/AbcSize -- ditto
       def initialize_karafka!
         setup do |config|
           mapper = Rimless::Karafka::PassthroughMapper.new

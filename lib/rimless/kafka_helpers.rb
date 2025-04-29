@@ -25,9 +25,9 @@ module Rimless
       #
       # rubocop:disable Metrics/MethodLength -- because of the usage
       #   flexibility
-      # rubocop:disable Metrics/AbcSize -- dito
-      # rubocop:disable Metrics/CyclomaticComplexity -- dito
-      # rubocop:disable Metrics/PerceivedComplexity -- dito
+      # rubocop:disable Metrics/AbcSize -- ditto
+      # rubocop:disable Metrics/CyclomaticComplexity -- ditto
+      # rubocop:disable Metrics/PerceivedComplexity -- ditto
       def topic(*args)
         opts = args.last
         name = args.first if [String, Symbol].member?(args.first.class)
