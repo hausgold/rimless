@@ -220,7 +220,7 @@ module Rimless
 
         # Setup the +WaterDrop+ spies and record each sent message.
         # because of the message decoding
-        # rubocop:disable Metrics/MethodLength -- dito
+        # rubocop:disable Metrics/MethodLength -- ditto
         def listen_to_messages
           decode = proc do |encoded|
             { encoded_data: encoded, data: Rimless.avro.decode(encoded) }

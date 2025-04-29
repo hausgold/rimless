@@ -1,6 +1,7 @@
 ### next
 
 * Corrected some RuboCop glitches (#56)
+* Added a workaround for broken specs when Sidekiq >=8.0.3 is installed (#57)
 
 ### 1.13.2 (11 March 2025)
 
