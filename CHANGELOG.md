@@ -1,7 +1,11 @@
 ### next
 
-* Corrected some RuboCop glitches (#56)
-* Added a workaround for broken specs when Sidekiq >=8.0.3 is installed (#57)
+* TODO: Replace this bullet point with an actual description of a change.
+
+### 1.13.3 (21 May 2025)
+
+* Corrected some RuboCop glitches ([#56](https://github.com/hausgold/rimless/pull/56))
+* Added a workaround for broken specs when Sidekiq >=8.0.3 is installed ([#57](https://github.com/hausgold/rimless/pull/57))
 
 ### 1.13.2 (11 March 2025)
 
