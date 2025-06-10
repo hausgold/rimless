@@ -1,4 +1,3 @@
-version: "3"
 services:
   kafka:
     image: hausgold/kafka:3.9
