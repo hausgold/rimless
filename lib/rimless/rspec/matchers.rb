@@ -137,14 +137,14 @@ module Rimless
         # @param proc [Proc] the block to evaluate
         # @return [Boolean] whenever the check was unsuccessful or not
         #
-        # rubocop:disable Naming/PredicateName -- because we just serve
+        # rubocop:disable Naming/PredicatePrefix -- because we just serve
         #   the RSpec API here
         def does_not_match?(proc)
           set_expected_number(:at_least, 1)
 
           !matches?(proc)
         end
-        # rubocop:enable Naming/PredicateName
+        # rubocop:enable Naming/PredicatePrefix
 
         private
 
@@ -165,6 +165,9 @@ module Rimless
         # Perform the result set checking of recorded message which were sent.
         #
         # @return [Boolean] the answer
+        #
+        # rubocop:disable Naming/PredicateMethod -- because this method performs
+        #   an action, not a predicate check (bool is for error signaling)
         def check
           @matching, @unmatching = @messages.partition do |message|
             schema_match?(message) && arguments_match?(message) &&
@@ -179,6 +182,7 @@ module Rimless
           when :at_least then @expected_number <= @matching_count
           end
         end
+        # rubocop:enable Naming/PredicateMethod
 
         # Check for the expected schema on the given message.
         #
@@ -295,12 +299,12 @@ module Rimless
       #
       # @param schema [String, Symbol, nil] the Apache Avro schema to check
       #
-      # rubocop:disable Naming/PredicateName -- because its a RSpec matcher
+      # rubocop:disable Naming/PredicatePrefix -- because its a RSpec matcher
       def have_sent_kafka_message(schema = nil)
         HaveSentKafkaMessage.new(schema)
       end
       alias sent_kafka_message have_sent_kafka_message
-      # rubocop:enable Naming/PredicateName
+      # rubocop:enable Naming/PredicatePrefix
     end
   end
 end
