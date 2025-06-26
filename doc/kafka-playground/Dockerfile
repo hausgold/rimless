@@ -8,8 +8,8 @@ RUN gem update --system '3.4.22'
 RUN echo 'deb http://archive.debian.org/debian buster-backports main' \
   >> /etc/apt/sources.list
 
-# Install nodejs 22
-RUN curl -sL https://deb.nodesource.com/setup_22.x | bash -
+# Install nodejs 24
+RUN curl -sL https://deb.nodesource.com/setup_24.x | bash -
 
 # Install system packages and the ruby bundless
 RUN apt-get update -yqqq && \
