@@ -10,8 +10,8 @@ module Rimless
       # @param data [String] the Apache Avro blob
       # @param opts [Hash{Symbol => Mixed}] additional options
       # @return [Hash{String => Mixed}] the parsed payload
-      def avro_parse(data, **opts)
-        Rimless.avro_decode(data, **opts)
+      def avro_parse(data, **)
+        Rimless.avro_decode(data, **)
       end
 
       # A simple helper to fake a deserialized Apache Kafka message for
@@ -47,8 +47,8 @@ module Rimless
       #
       # @yield the given block to capture the messages
       # @return [Array<Hash{Symbol => Mixed}>] the captured messages
-      def capture_kafka_messages(&block)
-        Rimless::RSpec::Matchers::HaveSentKafkaMessage.new(nil).capture(&block)
+      def capture_kafka_messages(&)
+        Rimless::RSpec::Matchers::HaveSentKafkaMessage.new(nil).capture(&)
       end
     end
   end
