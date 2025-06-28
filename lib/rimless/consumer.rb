@@ -125,8 +125,8 @@ module Rimless
       # needed. (eg. to set some ruby-kafka driver default settings, etc)
       #
       # @return [Rimless::ConsumerApp] our self for chaining
-      def configure(&block)
-        setup(&block)
+      def configure(&)
+        setup(&)
         self
       end
 

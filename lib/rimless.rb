@@ -45,7 +45,7 @@ module Rimless
   require 'rimless/railtie' if defined? Rails
 
   # Load all initializers of the gem
-  Dir[root_path.join('initializers/**/*.rb')].sort.each { |path| require path }
+  Dir[root_path.join('initializers/**/*.rb')].each { |path| require path }
 
   # Include top-level features
   include Rimless::ConfigurationHandling
