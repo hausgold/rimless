@@ -1,7 +1,11 @@
 ### next
 
-* Corrected some RuboCop glitches (#58)
-* Drop Ruby 2 and end of life Rails (<7.1) (#59)
+* TODO: Replace this bullet point with an actual description of a change.
+
+### 2.0.0 (28 June 2025)
+
+* Corrected some RuboCop glitches ([#58](https://github.com/hausgold/rimless/pull/58))
+* Drop Ruby 2 and end of life Rails (<7.1) ([#59](https://github.com/hausgold/rimless/pull/59))
 
 ### 1.13.3 (21 May 2025)
 
