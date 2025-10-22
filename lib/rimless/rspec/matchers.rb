@@ -165,9 +165,6 @@ module Rimless
         # Perform the result set checking of recorded message which were sent.
         #
         # @return [Boolean] the answer
-        #
-        # rubocop:disable Naming/PredicateMethod -- because this method performs
-        #   an action, not a predicate check (bool is for error signaling)
         def check
           @matching, @unmatching = @messages.partition do |message|
             schema_match?(message) && arguments_match?(message) &&
@@ -182,7 +179,6 @@ module Rimless
           when :at_least then @expected_number <= @matching_count
           end
         end
-        # rubocop:enable Naming/PredicateMethod
 
         # Check for the expected schema on the given message.
         #
