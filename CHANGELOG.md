@@ -1,8 +1,12 @@
 ### next
 
-* Added support for Rails 8.1 (#60)
+* TODO: Replace this bullet point with an actual description of a change.
+
+### 2.1.0 (23 October 2025)
+
+* Added support for Rails 8.1 ([#60](https://github.com/hausgold/rimless/pull/60))
 * Switched from `ActiveSupport::Configurable` to a custom implementation based
-  on `ActiveSupport::OrderedOptions` (#61)
+  on `ActiveSupport::OrderedOptions` ([#61](https://github.com/hausgold/rimless/pull/61))
 
 ### 2.0.0 (28 June 2025)
 
