@@ -17,12 +17,9 @@ RSpec.describe Rimless::RSpec::Helpers do
     context 'with string topic' do
       let(:action) { kafka_message(topic: 'test_topic') }
 
-      # rubocop:disable Style/OpenStructUse -- because we want to test the
-      #   interface explicitly
       it 'returns a OpenStruct' do
         expect(action).to be_a(OpenStruct)
       end
-      # rubocop:enable Style/OpenStructUse
 
       it 'sets the full topic' do
         expect(action.topic).to eql('test.test-app.test-topic')

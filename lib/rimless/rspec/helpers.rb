@@ -21,11 +21,6 @@ module Rimless
       # @param topic [String, Hash{Symbol => Mixed}] the actual message
       #   topic (full as string, or parts via hash)
       # @return [OpenStruct] the fake deserialized Kafka message
-      #
-      # rubocop:disable Metrics/MethodLength -- because of the various
-      #   properties
-      # rubocop:disable Style/OpenStructUse -- because existing specs may rely
-      #   on this data type
       def kafka_message(topic: nil, headers: {}, **payload)
         OpenStruct.new(
           topic: Rimless.topic(topic),
@@ -40,8 +35,6 @@ module Rimless
           deserialized: true
         )
       end
-      # rubocop:enable Metrics/MethodLength
-      # rubocop:enable Style/OpenStructUse
 
       # Capture all Apache Kafka messages of the given block.
       #
