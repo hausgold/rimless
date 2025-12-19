@@ -132,7 +132,7 @@ Registry. The subject naming convention is mostly the same as the Apache Kafka
 Topic convention, except the allowed characters. [Apache
 Avro](https://avro.apache.org/docs/1.8.2/spec.html#namespace) just allows
 `[A-Za-z0-9_]` and no numbers on the first char. The application environment
-prefix allows the usage of the very same Schema Registry instance for multipe
+prefix allows the usage of the very same Schema Registry instance for multiple
 environments and the application name just reflects the schema origin.
 Convention rules:
 
@@ -167,7 +167,7 @@ Each schema template MUST end with the `.avsc.erb` extension to be picked up,
 even in recursive directory structures.  You can make use of the ERB templating
 or not, but rimless just looks for these templates. When it comes to
 structuring the Avro Schemas it is important that the file path reflects the
-embeded schema namespace correctly. So when `$(pwd)/config/avro_schemas` is our
+embedded schema namespace correctly. So when `$(pwd)/config/avro_schemas` is our
 schema namespace root, then the `production.identity_api.user_v1` schema
 converts to the
 `$(pwd)/config/avro_schemas/compiled/production/identity_api/user_v1.avsc`
@@ -456,7 +456,7 @@ were the user (eg. a frontend client) just can add whatever comes to his mind
 for later processing. Its not searchable, its never touched by the backend, but
 its present.
 
-Thats a case we're experienced and kind of solved on the rimless gem. You can
+That's a case we're experienced and kind of solved on the rimless gem. You can
 make use of the `Rimless.avro_schemaless_h` method to [sparsify the data
 recursively](https://github.com/simplymeasured/sparsify). Say you have the
 following metadata hash:
@@ -476,7 +476,7 @@ metadata = {
 
 It's messy, by design. From the Apache Avro perspective you just can define a
 map. The map keys are assumed to be strings - and the most hitting value data
-type is a string, too. Thats where hash sparsification comes in. The resulting
+type is a string, too. That's where hash sparsification comes in. The resulting
 metadata hash looks like this and can be encoded by Apache Avro:
 
 ```ruby
@@ -500,10 +500,10 @@ Avro schema to be a string. Choice is yours.
 ### Writing tests for your messages
 
 Producing messages is a bliss with the rimless gem, but producing code needs to
-be tested as well. Thats why the gem ships some RSpec helpers and matchers for
+be tested as well. That's why the gem ships some RSpec helpers and matchers for
 this purpose. A common situation is also handled by the RSpec extension: on the
 test environment (eg. a continuous integration service) its not likely to have
-a Apache Kafka/Confluent Schema Registry cluster available. Thats why actual
+a Apache Kafka/Confluent Schema Registry cluster available. That's why actual
 calls to Kafka/Schema Registry are mocked away.
 
 First of all, just add `require 'rimless/rspec'` to your `spec_helper.rb` or

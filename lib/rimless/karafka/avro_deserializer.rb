@@ -14,9 +14,9 @@ module Rimless
         return if params.raw_payload.nil?
 
         # We use sparsed hashes inside of Apache Avro messages for schema-less
-        # blobs of data, such as loosely structured metadata blobs.  Thats a
+        # blobs of data, such as loosely structured metadata blobs.  That's a
         # somewhat bad idea on strictly typed and defined messages, but their
-        # occurence should be rare.
+        # occurrence should be rare.
         Rimless
           .decode(params.raw_payload)
           .then { |data| Sparsify(data, sparse_array: true) }

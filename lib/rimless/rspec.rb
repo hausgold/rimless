@@ -11,7 +11,7 @@ require 'karafka/testing/rspec/helpers'
 # this dependency as runtime, just as development. Therefore we added it.
 require 'avro_turf/test/fake_confluent_schema_registry_server'
 
-# Add a monkey patch to add propper Sinatra 4.x support
+# Add a monkey patch to add proper Sinatra 4.x support
 class FakeConfluentSchemaRegistryServer
   # Allow any host name on tests
   set :host_authorization, { permitted_hosts: [] }

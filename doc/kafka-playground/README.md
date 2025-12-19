@@ -73,7 +73,7 @@ the creation of the `/etc/mdns.allow` file.
 
 ## What's in the box
 
-After the installation and bootup processes are finished you should have a
+After the installation and boot-up processes are finished you should have a
 working Apache Kafka setup which includes the following:
 
 * A single node [Apache Kafka](https://kafka.apache.org/) (without Zookeeper,
@@ -108,7 +108,7 @@ Metadata for all topics (from broker 1001: kafka.playground.local:9092/1001):
   topic "test" with 1 partitions:
 ```
 
-Now start a second teminal playground container with `$ make shell` and run:
+Now start a second terminal playground container with `$ make shell` and run:
 
 ```shell
 # Terminal B
