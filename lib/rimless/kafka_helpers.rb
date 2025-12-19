@@ -5,8 +5,6 @@ module Rimless
   module KafkaHelpers
     extend ActiveSupport::Concern
 
-    # rubocop:disable Metrics/BlockLength -- because its an Active Support
-    #   concern
     class_methods do
       # Generate a common topic name for Apache Kafka while taking care of
       # configured prefixes.
@@ -22,12 +20,6 @@ module Rimless
       #   Rimless.topic(name: 'test', app: :fancy_app)
       # @example Full name - use as is
       #   Rimless.topic(full_name: 'my.custom.topic.name')
-      #
-      # rubocop:disable Metrics/MethodLength -- because of the usage
-      #   flexibility
-      # rubocop:disable Metrics/AbcSize -- ditto
-      # rubocop:disable Metrics/CyclomaticComplexity -- ditto
-      # rubocop:disable Metrics/PerceivedComplexity -- ditto
       def topic(*args)
         opts = args.last
         name = args.first if [String, Symbol].member?(args.first.class)
@@ -47,10 +39,6 @@ module Rimless
 
         "#{Rimless.topic_prefix(app)}#{name}".tr('_', '-')
       end
-      # rubocop:enable Metrics/MethodLength
-      # rubocop:enable Metrics/AbcSize
-      # rubocop:enable Metrics/CyclomaticComplexity
-      # rubocop:enable Metrics/PerceivedComplexity
 
       # Send a single message to Apache Kafka. The data is encoded according to
       # the given Apache Avro schema. The destination Kafka topic may be a
@@ -112,6 +100,5 @@ module Rimless
         WaterDrop::AsyncProducer.call(data, **args)
       end
     end
-    # rubocop:enable Metrics/BlockLength
   end
 end

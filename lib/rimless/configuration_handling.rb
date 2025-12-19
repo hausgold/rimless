@@ -4,8 +4,6 @@ module Rimless
   # The top-level configuration handling.
   #
   # rubocop:disable Style/ClassVars -- because we split module code
-  # rubocop:disable Metrics/BlockLength -- because this is how an
-  #   +ActiveSupport::Concern+ looks like
   module ConfigurationHandling
     extend ActiveSupport::Concern
 
@@ -81,5 +79,4 @@ module Rimless
     end
   end
   # rubocop:enable Style/ClassVars
-  # rubocop:enable Metrics/BlockLength
 end

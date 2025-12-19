@@ -17,9 +17,6 @@ module Karafka
         # This method is a wrapper to way Thor defines its commands.
         #
         # @param cli_class [Karafka::Cli] the class to bind to
-        #
-        # rubocop:disable Metrics/MethodLength -- because of the
-        #   monkey-patching logic
         def bind_to(cli_class)
           @aliases ||= []
           @options ||= []
@@ -49,7 +46,6 @@ module Karafka
             cli_class.map cmd_alias => name.to_s
           end
         end
-        # rubocop:enable Metrics/MethodLength
       end
     end
   end

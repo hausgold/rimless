@@ -6,9 +6,6 @@ module Rimless
     # A set of Rimless/RSpec matchers.
     module Matchers
       # The Apache Kafka message expectation.
-      #
-      # rubocop:disable Metrics/ClassLength -- because its almost RSpec API
-      #   code
       class HaveSentKafkaMessage < ::RSpec::Matchers::BuiltIn::BaseMatcher
         include ::RSpec::Mocks::ExampleMethods
 
@@ -220,7 +217,6 @@ module Rimless
 
         # Setup the +WaterDrop+ spies and record each sent message.
         # because of the message decoding
-        # rubocop:disable Metrics/MethodLength -- ditto
         def listen_to_messages
           decode = proc do |encoded|
             { encoded_data: encoded, data: Rimless.avro.decode(encoded) }
@@ -236,7 +232,6 @@ module Rimless
             nil
           end
         end
-        # rubocop:enable Metrics/MethodLength
 
         # Serve the RSpec API and return the positive failure message.
         #
@@ -289,7 +284,6 @@ module Rimless
           result.join
         end
       end
-      # rubocop:enable Metrics/ClassLength
 
       # Check for messages which were sent to Apache Kafka by the given block.
       #

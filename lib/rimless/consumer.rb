@@ -76,9 +76,6 @@ module Rimless
       end
 
       # Configure the pure basics on the Karafka application.
-      #
-      # rubocop:disable Metrics/MethodLength -- because of the various settings
-      # rubocop:disable Metrics/AbcSize -- ditto
       def initialize_karafka!
         setup do |config|
           mapper = Rimless::Karafka::PassthroughMapper.new
@@ -93,8 +90,6 @@ module Rimless
           config.shutdown_timeout = 10
         end
       end
-      # rubocop:enable Metrics/MethodLength
-      # rubocop:enable Metrics/AbcSize
 
       # When we run in development mode, we want to write the logs
       # to file and to stdout.
@@ -147,8 +142,6 @@ module Rimless
       #
       # @param topics [Hash{Hash => Class}] the topic to consumer mapping
       # @yield the given block on the routing table
-      #
-      # rubocop:disable Metrics/MethodLength -- because of the Karafka DSL
       def topics(topics = [], &block)
         consumer_groups.draw do
           consumer_group(Rimless.configuration.client_id) do
@@ -168,7 +161,6 @@ module Rimless
 
         self
       end
-      # rubocop:enable Metrics/MethodLength
 
       # Build the conventional Apache Kafka topic names from the given parts.
       # This allows various forms like single strings/symbols and a hash in the
