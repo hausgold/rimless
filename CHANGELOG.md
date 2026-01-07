@@ -1,7 +1,11 @@
 ### next
 
-* Upgraded to Ubuntu 24.04 on Github Actions (#66)
-* Migrated to hausgold/actions@v2 (#65)
+* TODO: Replace this bullet point with an actual description of a change.
+
+### 2.4.0 (7 January 2026)
+
+* Upgraded to Ubuntu 24.04 on Github Actions ([#66](https://github.com/hausgold/rimless/pull/66))
+* Migrated to hausgold/actions@v2 ([#65](https://github.com/hausgold/rimless/pull/65))
 
 ### 2.3.0 (26 December 2025)
 
