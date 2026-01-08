@@ -1,6 +1,6 @@
 ### next
 
-* TODO: Replace this bullet point with an actual description of a change.
+* Added support Rails 8.0+ code statistics (#67)
 
 ### 2.4.0 (7 January 2026)
 

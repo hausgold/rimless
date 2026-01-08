@@ -14,6 +14,11 @@ module Rimless
 
       # Set the app name as default client id, when not already set
       conf.client_id ||= app_name
+
+      # When the code statistics feature is available,
+      # register application consumers
+      Rails::CodeStatistics.register_directory('Consumers', 'app/consumers') \
+        if defined?(Rails::CodeStatistics)
     end
 
     # Run after all configuration is set via Rails initializers
