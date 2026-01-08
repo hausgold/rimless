@@ -1,6 +1,10 @@
 ### next
 
-* Added support Rails 8.0+ code statistics (#67)
+* TODO: Replace this bullet point with an actual description of a change.
+
+### 2.5.0 (8 January 2026)
+
+* Added support Rails 8.0+ code statistics ([#67](https://github.com/hausgold/rimless/pull/67))
 
 ### 2.4.0 (7 January 2026)
 
