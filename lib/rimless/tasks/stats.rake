@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
-if defined?(Rails) && Rails.env.development?
+# TODO: Remove this file, when Rails >= 8.0 is the minimum requirement
+if defined?(Rails) && Rails.env.development? && Rails::VERSION::STRING < '8.0.0'
   require 'rspec/core/rake_task'
 
   # rubocop:disable Rails/RakeEnvironment -- because this is just an helper
