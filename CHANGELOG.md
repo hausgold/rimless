@@ -1,6 +1,6 @@
 ### next
 
-* TODO: Replace this bullet point with an actual description of a change.
+* Added the `ostruct` gem (#68)
 
 ### 2.5.0 (8 January 2026)
 

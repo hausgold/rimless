@@ -41,6 +41,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'karafka-sidekiq-backend', '~> 1.4'
   spec.add_dependency 'karafka-testing', '~> 1.4'
   spec.add_dependency 'mutex_m', '>= 0.3'
+  spec.add_dependency 'ostruct', '>= 0.6'
   spec.add_dependency 'retries', '>= 0.0.5'
   spec.add_dependency 'sinatra', '>= 2.2'
   spec.add_dependency 'sparsify', '~> 1.1'
