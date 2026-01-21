@@ -1,6 +1,6 @@
 ### next
 
-* TODO: Replace this bullet point with an actual description of a change.
+* Updated the doc/kafka-playground to latest Rimless/Ruby 3.4 (#69)
 
 ### 2.6.0 (19 January 2026)
 
