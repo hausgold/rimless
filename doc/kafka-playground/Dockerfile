@@ -1,12 +1,8 @@
-FROM hausgold/ruby:2.7
+FROM hausgold/ruby:3.4
 LABEL org.opencontainers.image.authors="containers@hausgold.de"
 
 # Update system gem
-RUN gem update --system '3.4.22'
-
-# Add backports repository
-RUN echo 'deb http://archive.debian.org/debian buster-backports main' \
-  >> /etc/apt/sources.list
+RUN gem update --system '3.6.9'
 
 # Install nodejs 24
 RUN curl -sL https://deb.nodesource.com/setup_24.x | bash -
@@ -18,12 +14,14 @@ RUN apt-get update -yqqq && \
     ca-certificates jq curl cmake \
     bash-completion inotify-tools && \
   echo 'en_US.UTF-8 UTF-8' >> /etc/locale.gen && /usr/sbin/locale-gen && \
-  gem install bundler -v '~> 2.4.22' --no-document --no-prerelease
+  gem install bundler -v '~> 2.6.9' --no-document --no-prerelease
 
 # Install kcat (formerly known as kafkacat)
-RUN curl -sL https://github.com/edenhill/kcat/archive/refs/tags/1.7.0.tar.gz \
-  | tar xfvz - -C /tmp && cd /tmp/kcat-* && ./bootstrap.sh && \
-  mv kcat /usr/local/bin && cd / && rm -rf /tmp/kcat-*
+RUN curl -sL -o - \
+  'https://packages.hausgold.de/debian-13-kcat_1.8.0-1_amd64.deb' \
+  > /tmp/kcat.deb && \
+  apt install -y /tmp/kcat.deb && \
+  rm -rf /tmp/kcat.deb
 
 # Add new app user
 RUN mkdir /app && \
