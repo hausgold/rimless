@@ -1,7 +1,11 @@
 ### next
 
-* Dropped Rails 7.1 support (#70)
-* Updated the doc/kafka-playground to latest Rimless/Ruby 3.4 (#69)
+* TODO: Replace this bullet point with an actual description of a change.
+
+### 2.7.0 (28 January 2026)
+
+* Dropped Rails 7.1 support ([#70](https://github.com/hausgold/rimless/pull/70))
+* Updated the doc/kafka-playground to latest Rimless/Ruby 3.4 ([#69](https://github.com/hausgold/rimless/pull/69))
 
 ### 2.6.0 (19 January 2026)
 
