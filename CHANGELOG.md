@@ -1,7 +1,11 @@
 ### next
 
+* TODO: Replace this bullet point with an actual description of a change.
+
+### 2.9.0 (18 February 2026)
+
 * Dropped 3rd-level gem dependencies which are not directly used
-  by this gem (#72)
+  by this gem ([#72](https://github.com/hausgold/rimless/pull/72))
 
 ### 2.8.0 (12 February 2026)
 
