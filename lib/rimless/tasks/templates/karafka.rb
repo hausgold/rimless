@@ -5,12 +5,13 @@ require 'rimless'
 # Setup the topic-consumer routing table and boot the consumer application
 Rimless.consumer.topics(
   { app: :your_app, name: :your_topic } => CustomConsumer
-).boot!
+)
 
 # Configure Karafka/ruby-kafka settings
 # Rimless.consumer.configure do |config|
-#   # See https://github.com/karafka/karafka/wiki/Configuration
-#   # config.kafka.start_from_beginning = false
+#   # See: https://bit.ly/3MAF6Jk (+config.*+ root level Karafka settings)
+#   # See: https://bit.ly/3OtIfeu (+config.kafka+ settings)
+#   # config.kafka[:'initial_offset'] = 'latest'
 # end
 
 # We want a less verbose logging on development

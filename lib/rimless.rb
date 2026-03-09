@@ -2,24 +2,23 @@
 
 require 'zeitwerk'
 require 'logger'
+require 'erb'
+require 'ostruct'
 require 'active_support'
 require 'active_support/concern'
-require 'active_support/ordered_options'
+require 'active_support/configurable'
 require 'active_support/time'
 require 'active_support/time_with_zone'
-require 'active_support/core_ext/class/attribute'
 require 'active_support/core_ext/object'
 require 'active_support/core_ext/module'
 require 'active_support/core_ext/hash'
 require 'active_support/core_ext/string'
-require 'waterdrop'
-require 'avro_turf/messaging'
-require 'karafka'
-require 'karafka-sidekiq-backend'
-require 'sparsify'
+require 'active_job'
 require 'retries'
-require 'erb'
-require 'ostruct'
+require 'sparsify'
+require 'avro_turf/messaging'
+require 'waterdrop'
+require 'karafka'
 
 # The top level namespace for the rimless gem.
 module Rimless
@@ -36,7 +35,7 @@ module Rimless
   loader.ignore(root_path.join('railtie.rb'))
   loader.ignore(root_path.join('rspec*'))
   loader.do_not_eager_load(root_path.join('configuration.rb'))
-  loader.do_not_eager_load(root_path.join('consumer_job.rb'))
+  loader.do_not_eager_load(root_path.join('consumer/job.rb'))
 
   # Finish the auto loader configuration
   loader.setup
@@ -49,11 +48,12 @@ module Rimless
   Dir[root_path.join('initializers/**/*.rb')].each { |path| require path }
 
   # Include top-level features
-  include Rimless::ConfigurationHandling
-  include Rimless::AvroHelpers
-  include Rimless::KafkaHelpers
-  include Rimless::Dependencies
-  include Rimless::Consumer
+  include Extensions::ConfigurationHandling
+  include Extensions::Dependencies
+  include Extensions::AvroHelpers
+  include Extensions::KafkaHelpers
+  include Extensions::Producer
+  include Extensions::Consumer
 
   # Make sure to eager load all constants
   loader.eager_load

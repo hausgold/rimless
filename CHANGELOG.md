@@ -1,6 +1,58 @@
 ### next
 
-* TODO: Replace this bullet point with an actual description of a change.
+Breaking changes: (#73)
+
+* Upgraded `karafka` from `~> 1.4` to `~> 2.5` — now powered by librdkafka
+  instead of ruby-kafka. Consumer groups are now shared (one for all topics
+  instead of one per topic). Batch fetching is always on; tune
+  `max_wait_time`/`max_messages` for latency vs throughput.
+  See `UPGRADING.md` for details.
+
+* Upgraded `waterdrop` from `~> 1.4` to `~> 2.8` — all time-related config
+  values are now in milliseconds. The Rimless producer helpers (`Rimless.message`
+  etc.) remain unchanged.
+
+* Upgraded `avro_turf` from `~> 0.11.0` to `~> 1.20`
+
+* Switched from Sidekiq to ActiveJob for consumer job processing. The
+  `karafka-sidekiq-backend` gem is no longer used.
+
+* Renamed constants (old → new):
+  - `Rimless::BaseConsumer` → `Rimless::Consumer::Base`
+  - `Rimless::ConsumerApp` → `Rimless::Consumer::App`
+  - `Rimless::ConsumerJob` → `Rimless::Consumer::Job`
+  - `Rimless::Karafka::AvroDeserializer` → `Rimless::Consumer::AvroDeserializer`
+
+* Removed constants:
+  - `Rimless::Karafka::Base64Interchanger` (no longer needed)
+  - `Rimless::Karafka::PassthroughMapper` (mappers removed in Karafka 2)
+
+* `KAFKA_BROKERS` format changed — protocol prefix (`kafka://`) is no longer
+  required. Use plain `host:port` CSV (e.g. `your.domain:9092,host:port`).
+  The old `kafka://` format is still accepted for backwards compatibility.
+
+* Consumer boot flow changed:
+  - Remove `.boot!` from the end of `Rimless.consumer.topics(...)` in
+    `karafka.rb`
+  - Remove `WaterDrop.setup` and `WaterDrop::Instrumentation::LoggerListener`
+    subscriptions from `karafka.rb`
+
+New configuration options:
+
+* `config.job_bridge_class` — custom job bridge for Kafka → ActiveJob
+* `config.consumer_job_class` — custom consumer job class
+* `config.consumer_logger_listener` — customize Karafka logging listener
+* `config.avro_deserializer_class` — custom Apache Avro deserializer
+* `config.avro_configure` — fully customize the `AvroTurf::Messaging` instance
+* `config.producer_configure` — fully customize the `WaterDrop::Producer` instance
+* `config.consumer_configure` — fully customize the `Karafka::App` instance
+
+Testing changes:
+
+* Replace `#karafka_consumer_for` with `#kafka_consumer_for` in specs
+* Replace `#publish_for_karafka` with `karafka.produce` in specs
+
+See [`UPGRADING.md`](./UPGRADING.md) for a complete migration guide.
 
 ### 2.9.0 (18 February 2026)
 

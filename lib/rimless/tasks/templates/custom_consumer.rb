@@ -7,6 +7,6 @@ class CustomConsumer < ApplicationConsumer
   # Handle +custom_event+ event messages.
   def custom_event(property1:, property2: nil)
     # Do whatever you need to do
-    [property1, property2]
+    Rails.logger.debug([property1, property2])
   end
 end

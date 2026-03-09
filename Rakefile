@@ -15,10 +15,19 @@ Countless.configure do |config|
       pattern: %r{/lib(/rimless)?/[^/]+\.rb$} },
     { name: 'Top-levels specs', test: true, dir: 'spec',
       pattern: %r{/spec(/rimless)?/[^/]+_spec\.rb$} },
-    { name: 'RSpec matchers', pattern: 'lib/rimless/rspec/**/*.rb' },
-    { name: 'RSpec matchers specs', test: true,
+    { name: 'Initializers', pattern: 'lib/rimless/initializers/**/*.rb' },
+    { name: 'Compatibilities', pattern: 'lib/rimless/compatibility/**/*.rb' },
+    { name: 'Compatibilities specs', test: true,
+      pattern: 'spec/rimless/compatibility/**/*_spec.rb' },
+    { name: 'Consumer', pattern: 'lib/rimless/consumer/**/*.rb' },
+    { name: 'Consumer specs', test: true,
+      pattern: 'spec/rimless/consumer/**/*_spec.rb' },
+    { name: 'Extensions', pattern: 'lib/rimless/extensions/**/*.rb' },
+    { name: 'Extensions specs', test: true,
+      pattern: 'spec/rimless/extensions/**/*_spec.rb' },
+    { name: 'RSpec extensions', pattern: 'lib/rimless/rspec/**/*.rb' },
+    { name: 'RSpec extensions specs', test: true,
       pattern: 'spec/rimless/rspec/**/*_spec.rb' },
-    { name: 'Rake Tasks', pattern: 'lib/rimless/tasks/**/*' },
-    { name: 'Karafka Extensions', pattern: 'lib/rimless/karafka/**/*.rb' }
+    { name: 'Rake Tasks', pattern: 'lib/rimless/tasks/**/*' }
   ]
 end

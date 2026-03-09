@@ -6,13 +6,15 @@
 [![Test Ratio](https://automate-api.hausgold.de/v1/coverage_reports/rimless/ratio.svg)](https://knowledge.hausgold.de/coverage)
 [![API docs](https://automate-api.hausgold.de/v1/coverage_reports/rimless/documentation.svg)](https://www.rubydoc.info/gems/rimless)
 
-This project is dedicated to ship a ready to use [Apache
+This project is dedicated to shipping a ready-to-use [Apache
 Kafka](https://kafka.apache.org/) / [Confluent Schema
 Registry](https://docs.confluent.io/current/schema-registry/index.html) /
-[Apache Avro](https://avro.apache.org/) message producing toolset by making use
-of the [WaterDrop](https://rubygems.org/gems/waterdrop) and
+[Apache Avro](https://avro.apache.org/) message streaming toolset by making use
+of the [WaterDrop](https://rubygems.org/gems/waterdrop),
+[Karafka](https://rubygems.org/gems/karafka) and
 [AvroTurf](https://rubygems.org/gems/avro_turf) gems. It comes as an
-opinionated framework which sets up solid conventions for producing messages.
+opinionated framework that sets up solid conventions for producing and
+consuming messages.
 
 - [Installation](#installation)
 - [Usage](#usage)
@@ -60,7 +62,7 @@ $ gem install rimless
 
 ### Configuration
 
-You can configure the rimless gem via an Rails initializer, by environment
+You can configure the rimless gem via a Rails initializer, by environment
 variables or on demand. Here we show a common Rails initializer example:
 
 ```ruby
@@ -82,7 +84,8 @@ Rimless.configure do |conf|
 
   # The list of Apache Kafka brokers for cluster discovery,
   # set to HAUSGOLD defaults when not set
-  conf.kafka_brokers = 'kafka://your.domain:9092,kafka..'
+  conf.kafka_brokers = 'kafka://your.domain:9092,kafka..' # old format
+  conf.kafka_brokers = 'your.domain:9092,host:port..' # new format
 
   # The Confluent Schema Registry API URL,
   # set to HAUSGOLD defaults when not set
@@ -93,22 +96,30 @@ Rimless.configure do |conf|
 end
 ```
 
-The rimless gem comes with sensitive defaults as you can see. For most users an
-extra configuration is not needed.
+The rimless gem comes with sensible defaults as you can see. For most users an
+extra configuration is not needed. For more details and all available
+configurations, check the
+[`lib/rimless/configuration.rb`](lib/rimless/configuration.rb) file.
 
 #### Available environment variables
 
-The rimless gem can be configured hardly with its configuration code block like
+The rimless gem can also be configured with its configuration code block as
 shown before. Respecting the [twelve-factor app](https://12factor.net/)
 concerns, the gem allows you to set almost all configurations (just the
 relevant ones for runtime) via environment variables. Here comes a list of
 available configuration options:
 
-* **KAFKA_ENV**: The application environment. Falls back to `Rails.env` when available.
-* **KAFKA_CLIENT_ID**: The Apache Kafka client identifier, falls back the the local application name.
-* **KAFKA_BROKERS**: A comma separated list of Apache Kafka brokers for cluster discovery (Plaintext, no-auth/no-SSL only for now) (eg. `kafka://your.domain:9092,kafka..`)
-* **KAFKA_SCHEMA_REGISTRY_URL**: The Confluent Schema Registry API URL to use for schema registrations.
-* **KAFKA_SIDEKIQ_JOB_QUEUE**: The Sidekiq job queue to use for consuming jobs. Falls back to `default`.
+* **KAFKA_ENV**: The application environment. Falls back to `Rails.env` when
+  available.
+* **KAFKA_CLIENT_ID**: The Apache Kafka client identifier, falls back to the
+  local application name.
+* **KAFKA_BROKERS**: A comma-separated list of Apache Kafka brokers for cluster
+  discovery (Plaintext, no-auth/no-SSL by default) (eg.
+  `your.domain:9092,host:port..`)
+* **KAFKA_SCHEMA_REGISTRY_URL**: The Confluent Schema Registry API URL to use
+  for schema registrations.
+* **KAFKA_SIDEKIQ_JOB_QUEUE**: The Sidekiq job queue to use for consuming jobs.
+  Falls back to `default`.
 
 ### Conventions
 
@@ -158,13 +169,13 @@ templates](https://ruby-doc.org/stdlib-2.6.2/libdoc/erb/rdoc/ERB.html) and
 painless JSON validation of them.
 
 First things first, by convention the rimless gem looks for Apache Avro schema
-ERB templates on the `$(pwd)/config/avro_schemas` directory. Nothing special
+ERB templates in the `$(pwd)/config/avro_schemas` directory. Nothing special
 from the Rails perspective. You can also reconfigure the file locations, just
 [see the configuration
 block](https://github.com/hausgold/rimless/blob/master/lib/rimless/configuration.rb#L36).
 
 Each schema template MUST end with the `.avsc.erb` extension to be picked up,
-even in recursive directory structures.  You can make use of the ERB templating
+even in recursive directory structures. You can make use of the ERB templating
 or not, but rimless just looks for these templates. When it comes to
 structuring the Avro Schemas it is important that the file path reflects the
 embedded schema namespace correctly. So when `$(pwd)/config/avro_schemas` is our
@@ -178,7 +189,7 @@ The corresponding Avro Schema template is located at
 be fancy. The automatic schema compiler picks up the dynamically/runtime set
 namespace from the schema definition and converts it to its respective
 directory structure. So when you boot your application container/instance
-inside your *canary*  environment, the schemas/messages should reflect this so
+inside your *canary* environment, the schemas/messages should reflect this so
 they do not mix with other environments.
 
 Example time. **$(pwd)/config/avro_schemas/identity_api/user_v1.avsc.erb**:
@@ -237,7 +248,7 @@ The compiled Avro Schemas are written to the
 `$(pwd)/config/avro_schemas/compiled/` directory by default. You can
 [reconfigure the
 location](https://github.com/hausgold/rimless/blob/master/lib/rimless/configuration.rb#L44)
-if needed. For VCS systems like Git it is useful to create an relative ignore
+if needed. For VCS systems like Git it is useful to create a relative ignore
 list at `$(pwd)/config/avro_schemas/.gitignore` with the following contents:
 
 ```gitignore
@@ -248,8 +259,8 @@ compiled/
 
 Under the hood the rimless gem makes use of the [WaterDrop
 gem](https://rubygems.org/gems/waterdrop) to send messages to the Apache Kafka
-cluster. But with the addition to send Apache Avro encoded messages with a
-single call. Here comes some examples how to use it:
+cluster, but with the added ability to send Apache Avro encoded messages with a
+single call. Here are some examples of how to use it:
 
 ```ruby
 metadata = { hobbies: %w(dancing singing sports) }
@@ -279,7 +290,7 @@ Rimless.raw_message(data: encoded, topic: :users)
 
 # In case you want to send messages to a non-local application topic you can
 # specify the application, too. This allows you to send a message to the
-# +<ENV>.address-api.addresses+ from you local identity-api.
+# +<ENV>.address-api.addresses+ from your local identity-api.
 Rimless.raw_message(data: encoded, topic: { name: :users, app: 'address-api' })
 # Also works with the Apache Avro encoding variant
 Rimless.message(data: user, schema: :user_v1,
@@ -295,8 +306,8 @@ Rimless.async_raw_message(data: encoded, topic: :users)
 The rimless gem makes it super easy to build consumer logic right into your
 (Rails, standalone) application by utilizing the [Karafka
 framework](https://github.com/karafka/karafka) under the hood. When you have
-the rimless gem already installed you are ready to rumble to setup your
-application to consume Apache Kafka messages. Just run the `$ rake
+the rimless gem already installed, you are ready to set up your application to
+consume Apache Kafka messages. Just run the `$ rake
 rimless:install` and all the consuming setup is done for you.
 
 Afterwards you find the `karafka.rb` file at the root of your project together
@@ -328,8 +339,8 @@ handling and retrying)
 
 The `karafka.rb` file at the root of your project is dedicated to configure the
 consumer process, including the routing table. The routing is as easy as it
-gets by following this pattern: `topic => consumer`. Here comes a the full
-examples:
+gets by following this pattern: `topic => consumer`. Here is the full
+example:
 
 ```ruby
 # Setup the topic-consumer routing table and boot the consumer application
@@ -338,7 +349,7 @@ Rimless.consumer.topics(
 ).boot!
 ```
 
-The key side of the hash is anything which is understood by the `Rimless.topic`
+The key side of the hash is anything that is understood by the `Rimless.topic`
 method. With one addition: you can change `:name` to `:names` and pass an array
 of strings or symbols to listen to multiple application topics with a single
 configuration line.
@@ -360,9 +371,9 @@ Rimless.consumer.topics(
 #### Consuming event messages
 
 By convention it makes sense to produce messages with various event types on a
-single Apache Kafka topic. This is fine, they just must follow a single
-constrain: each message must contain an `event`-named field at the Apache Avro
-schema with a dedicated name. This allow to structure data at Kafka like this:
+single Apache Kafka topic. This is fine; they just must follow a single
+constraint: each message must contain an `event`-named field in the Apache Avro
+schema with a dedicated name. This allows structuring data in Kafka like this:
 
 ```
 Topic: production.users-api.users
@@ -370,7 +381,7 @@ Events: user_created, user_updated, user_deleted
 ```
 
 While respecting this convention your consumer classes will be super clean. See
-the following example: (we keep the users api example)
+the following example: (we keep the Users API example)
 
 ```ruby
 class UserApiConsumer < ApplicationConsumer
@@ -385,7 +396,7 @@ schema fields of it, except the event field. The messages will be automatically
 decoded with the help of the schema registry. All hashes/arrays ship deeply
 symbolized keys for easy access.
 
-**Heads up!** All messages with events which are not reflected by a method will
+**Heads up!** All messages with events that are not reflected by a method will
 just be ignored.
 
 See the automatically generated spec (`spec/consumers/custom_consumer_spec.rb`)
@@ -430,14 +441,14 @@ gem and the rimless gem adds some neat helpers on top of it. Here are a few
 examples to show how rimless can be used to encode/decode Apache Avro data:
 
 ```ruby
-# Encode a data structure (no matter of symbolized, or stringified keys, or
+# Encode a data structure (regardless of symbolized or stringified keys, or
 # non-simple types) to Apache Avro format
 encoded = Rimless.encode(user, schema: 'user_v1')
 
 # Works the same for symbolized schema names
 encoded = Rimless.encode(user, schema: :user_v1)
 
-# Also supports the resolution of deep relative schemes
+# Also supports the resolution of deep relative schemas
 # (+.user.address+ becomes +<ENV>.<APP>.user.address+)
 encoded = Rimless.encode(user.address, schema: '.user.address')
 
@@ -448,15 +459,15 @@ decoded = Rimless.decode('your-avro-binary-data-here')
 
 #### Handling of schemaless deep blobs
 
-Apache Avro is by design a strict, type casted format which does not allow
+Apache Avro is by design a strict, type-cast format that does not allow
 undefined mix and matching of deep structures. This is fine because it forces
 the producer to think twice about the schema definition. But sometimes there is
 unstructured data inside of entities. Think of a metadata hash on a user entity
-were the user (eg. a frontend client) just can add whatever comes to his mind
-for later processing. Its not searchable, its never touched by the backend, but
-its present.
+where the user (e.g. a frontend client) can just add whatever comes to mind
+for later processing. It's not searchable, it's never touched by the backend,
+but it's present.
 
-That's a case we're experienced and kind of solved on the rimless gem. You can
+That's a case we've experienced and kind of solved in the rimless gem. You can
 make use of the `Rimless.avro_schemaless_h` method to [sparsify the data
 recursively](https://github.com/simplymeasured/sparsify). Say you have the
 following metadata hash:
@@ -475,7 +486,7 @@ metadata = {
 ```
 
 It's messy, by design. From the Apache Avro perspective you just can define a
-map. The map keys are assumed to be strings - and the most hitting value data
+map. The map keys are assumed to be strings — and the most fitting value data
 type is a string, too. That's where hash sparsification comes in. The resulting
 metadata hash looks like this and can be encoded by Apache Avro:
 
@@ -492,18 +503,18 @@ Rimless.avro_schemaless_h(metadata)
 ```
 
 With the help of the [sparsify gem](https://rubygems.org/gems/sparsify) you can
-also revert this to its original form. But with the loss of data type
-correctness. Another approach can be used for these kind of scenarios: encoding
+also revert this to its original form, but with the loss of data type
+correctness. Another approach can be used for these kinds of scenarios: encoding
 the schemaless data with JSON and just set the metadata field on the Apache
 Avro schema to be a string. Choice is yours.
 
 ### Writing tests for your messages
 
-Producing messages is a bliss with the rimless gem, but producing code needs to
+Producing messages is a breeze with the rimless gem, but producing code needs to
 be tested as well. That's why the gem ships some RSpec helpers and matchers for
 this purpose. A common situation is also handled by the RSpec extension: on the
-test environment (eg. a continuous integration service) its not likely to have
-a Apache Kafka/Confluent Schema Registry cluster available. That's why actual
+test environment (e.g. a continuous integration service) it's not likely to have
+an Apache Kafka/Confluent Schema Registry cluster available. That's why actual
 calls to Kafka/Schema Registry are mocked away.
 
 First of all, just add `require 'rimless/rspec'` to your `spec_helper.rb` or
@@ -525,8 +536,8 @@ end
 
 Nothing special, not really fancy. A more complex situation occurs when you
 separate your Kafka message producing logic inside an asynchronous job (eg.
-Sidekiq or ActiveJob). Therefore is the `have_sent_kafka_message` matcher
-available. Example time:
+Sidekiq or ActiveJob). The `have_sent_kafka_message` matcher is available for
+this purpose. Example time:
 
 ```ruby
 describe 'message producer job' do
@@ -559,7 +570,7 @@ describe 'message producer job' do
     expect { action }.to \
       have_sent_kafka_message.with(key: String, topic: anything)
     #                 mind the order --^
-    #                 its a argument list validation, all keys must be named
+    #                 it's an argument list validation, all keys must be named
   end
 
   it 'sends the correct user data' do
@@ -571,14 +582,14 @@ describe 'message producer job' do
     expect { nil }.not_to have_sent_kafka_message
   end
 
-  it 'allows complex expactations' do
+  it 'allows complex expectations' do
     expect { action; action }.to \
       have_sent_kafka_message('test.identity_api.user_v1')
         .with(key: user.id, topic: 'test.identity-api.users').twice
         .with_data(firstname: 'John', lastname: 'Doe').twice
   end
 
-  it 'allows to capture messages to check them in detail' do
+  it 'allows capturing messages to check them in detail' do
     (capture_kafka_messages { action }).tap do |messages|
       expect(messages.first[:data]).to \
         match(a_hash_including('entity' => a_hash_including('items' => items)))

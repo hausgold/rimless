@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-RSpec.describe Rimless::AvroHelpers do
+RSpec.describe Rimless::Extensions::AvroHelpers do
   let(:described_class) { Rimless }
 
   describe '.avro_decode' do

@@ -218,19 +218,22 @@ module Rimless
         # Setup the +WaterDrop+ spies and record each sent message.
         # because of the message decoding
         def listen_to_messages
-          decode = proc do |encoded|
-            { encoded_data: encoded, data: Rimless.avro.decode(encoded) }
+          handle_message = proc do |type|
+            proc do |payload:, **args|
+              @messages << {
+                type:,
+                args:,
+                encoded_data: payload,
+                data: Rimless.avro.decode(payload)
+              }
+              nil
+            end
           end
 
-          allow(WaterDrop::SyncProducer).to receive(:call) do |data, **args|
-            @messages << { args: args, type: :sync }.merge(decode[data])
-            nil
-          end
-
-          allow(WaterDrop::AsyncProducer).to receive(:call) do |data, **args|
-            @messages << { args: args, type: :async }.merge(decode[data])
-            nil
-          end
+          allow(Rimless.producer).to \
+            receive(:produce_sync, &handle_message[:sync])
+          allow(Rimless.producer).to \
+            receive(:produce_async, &handle_message[:async])
         end
 
         # Serve the RSpec API and return the positive failure message.
