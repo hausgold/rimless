@@ -3,7 +3,7 @@
 require 'spec_helper'
 
 RSpec.describe Rimless::Consumer::App do
-  let(:instance) { described_class.new }
+  let(:instance) { Rimless.consumer }
 
   describe '#initialize' do
     let(:action) { described_class.new }

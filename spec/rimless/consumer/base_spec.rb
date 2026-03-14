@@ -155,17 +155,22 @@ RSpec.describe Rimless::Consumer::Base do
 
     before { instance.messages = [message] }
 
-    it 'returns the correct arguments' do
-      expect(instance).to \
-        receive(:user_created).with(test: true, email: 'test@example.com')
-      action
-    end
-
     it 'makes the current message accessible' do
       expect { action }.to \
         change(instance, :message)
         .from(nil)
         .to(message)
+    end
+
+    it 'calls the event method with correct arguments' do
+      expect(instance).to \
+        receive(:user_created).with(test: true, email: 'test@example.com')
+      action
+    end
+
+    it 'does not raise error when event is nil' do
+      allow(instance).to receive(:event).and_return(nil)
+      expect { action }.not_to raise_error
     end
   end
 

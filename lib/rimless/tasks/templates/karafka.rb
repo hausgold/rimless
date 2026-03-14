@@ -17,5 +17,5 @@ Rimless.consumer.topics(
 # We want a less verbose logging on development
 # Rimless.logger.level = Logger::INFO if Rails.env.development?
 
-# Use a different Sidekiq queue for the consumer jobs
+# Use a different ActiveJob queue for the consumer jobs
 # Rimless.configuration.consumer_job_queue = :messages

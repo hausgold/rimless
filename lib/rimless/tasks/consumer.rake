@@ -22,13 +22,19 @@ namespace :rimless do
           if consumer.new.is_a? Rimless::Consumer::JobBridge
 
         base_methods = consumer.superclass.new.methods
-        event_methods = consumer.new.methods - base_methods
+        event_methods = (consumer.new.methods - base_methods).sort
+
+        event_methods = if event_methods.count > 3
+                          event_methods.join("\n##{' ' * 20}")
+                        else
+                          event_methods.join(', ')
+                        end
 
         puts <<~INFO
           # Topic (canonical): #{name}
           # Topic (full name): #{topic.name}
-          #          Consumer: #{topic.consumer}
-          #            Events: #{event_methods.join(', ')}
+          #          Consumer: #{consumer}
+          #            Events: #{event_methods}
         INFO
         puts
       end

@@ -12,6 +12,9 @@ module Rimless
       # our library defaults.
       #
       # @return [Rimless::Consumer::App] the configured consumer application
+      #
+      # rubocop:disable Metrics/MethodLength -- because of the Karafka
+      #   configuration
       def initialize
         # Run the parent class initialization
         super
@@ -69,10 +72,20 @@ module Rimless
         listener = Rimless.configuration.consumer_logger_listener
         Karafka.monitor.subscribe(listener) if listener
 
+        # Configure some routing defaults
+        routes.draw do
+          defaults do
+            deserializers(
+              payload: Rimless.configuration.avro_deserializer_class.new
+            )
+          end
+        end
+
         # Call the user-configurable block with our configuration
         # for customizations
         setup(&Rimless.configuration.consumer_configure)
       end
+      # rubocop:enable Metrics/MethodLength
 
       # Configure the topics-consumer routing table in a lean way.
       #
@@ -84,7 +97,7 @@ module Rimless
       # Examples:
       #
       #   topics(
-      #     { app: :test_app, name: :admins } => ->(topic) {
+      #     { app: :test_app, name: :admins } => lambda { |topic|
       #       consumer Rimless::Consumer::JobBridge.build(dest_consumer)
       #     }
       #   )

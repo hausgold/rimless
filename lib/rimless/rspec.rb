@@ -22,7 +22,7 @@ RSPEC_CONFIGURER.configure do |config|
   # application, not within our own test suite as we do not provide a
   # `karafka.rb` boot entry
   config.include Karafka::Testing::RSpec::Helpers \
-    unless Karafka::App.initializing?
+    if Karafka.boot_file.exist?
 
   # Set the custom +consumer+ type for consumer spec files
   config.define_derived_metadata(file_path: %r{/spec/consumers/}) do |meta|

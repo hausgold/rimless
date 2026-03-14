@@ -20,6 +20,15 @@ RSpec.describe Rimless::Consumer::JobBridge do
     it 'returns a wrapper class with the given consumer configuration' do
       expect(action.consumer).to eql('MyCustomConsumer')
     end
+
+    context 'with anonymous class' do
+      let(:action) { described_class.build(Class.new) }
+
+      it 'raises an ArgumentError' do
+        expect { action }.to \
+          raise_error(ArgumentError, /Anonymous consumer class passed/)
+      end
+    end
   end
 
   describe '.inspect' do
@@ -50,6 +59,7 @@ RSpec.describe Rimless::Consumer::JobBridge do
     let(:instance) do
       described_class.new.tap do |consumer|
         allow(consumer).to receive(:messages).and_return(messages)
+        allow(consumer).to receive(:mark_as_consumed)
       end
     end
 

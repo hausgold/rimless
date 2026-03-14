@@ -51,6 +51,17 @@ RSpec.describe Rimless::Extensions::Producer do
         .with(payload: 'data', topic: 'test.test-app.test', partition: 1)
       action
     end
+
+    context 'with Symbol-keyed headers hash' do
+      let(:args) { { data: 'data', topic: :test, headers: { test: true } } }
+
+      it 'passes the correct arguments to WaterDrop' do
+        expect(Rimless.producer).to receive(:produce_sync)
+          .with(payload: 'data', topic: 'test.test-app.test',
+                headers: { 'test' => 'true' })
+        action
+      end
+    end
   end
 
   describe '.async_raw_message' do
@@ -61,6 +72,17 @@ RSpec.describe Rimless::Extensions::Producer do
       expect(Rimless.producer).to receive(:produce_async)
         .with(payload: 'data', topic: 'test.test-app.test', partition: 1)
       action
+    end
+
+    context 'with Symbol-keyed headers hash' do
+      let(:args) { { data: 'data', topic: :test, headers: { test: true } } }
+
+      it 'passes the correct arguments to WaterDrop' do
+        expect(Rimless.producer).to receive(:produce_async)
+          .with(payload: 'data', topic: 'test.test-app.test',
+                headers: { 'test' => 'true' })
+        action
+      end
     end
   end
 end

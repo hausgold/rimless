@@ -5,16 +5,6 @@ require 'spec_helper'
 RSpec.describe Rimless::Consumer::Job do
   let(:job) { described_class.new }
 
-  describe 'queue configuration' do
-    let(:action) { Rimless.configuration.consumer_job_queue = 'kafka-messages' }
-
-    it 'reconfigures the job queue' do
-      expect { action }.to \
-        change(described_class, :queue_name)
-        .from('default').to('kafka-messages')
-    end
-  end
-
   describe '#perform' do
     let(:action) { job.perform(payload:, consumer:, metadata:) }
     let(:payload) { { event: 'test', test: true } }

@@ -54,10 +54,20 @@ module Rimless
         # @param data [Hash{Symbol => Mixed}] the raw data, unencoded
         # @param topic [String, Symbol, Hash{Symbol => Mixed}] the destination
         #   Apache Kafka topic
+        # @param headers [Hash{String => String, Array<String>}, nil] the
+        #   message headers to send
         # @param args [Hash{Symbol => Mixed}] additional parameters,
         #   see: https://bit.ly/4tHjcVg
-        def sync_raw_message(data:, topic:, **args)
+        def sync_raw_message(data:, topic:, headers: nil, **args)
           args = args.merge(topic: topic(topic), payload: data)
+
+          # A compatibility helper for headers, as WaterDrop is not more strict
+          if headers.present?
+            args[:headers] = headers
+            args[:headers].deep_stringify_keys!.deep_transform_values!(&:to_s) \
+              if headers.is_a? Hash
+          end
+
           producer.produce_sync(**args)
         end
         alias_method :raw_message, :sync_raw_message
@@ -71,10 +81,20 @@ module Rimless
         # @param data [Hash{Symbol => Mixed}] the raw data, unencoded
         # @param topic [String, Symbol, Hash{Symbol => Mixed}] the destination
         #   Apache Kafka topic
+        # @param headers [Hash{String => String, Array<String>}, nil] the
+        #   message headers to send
         # @param args [Hash{Symbol => Mixed}] additional parameters,
         #   see: https://bit.ly/4tHjcVg
-        def async_raw_message(data:, topic:, **args)
+        def async_raw_message(data:, topic:, headers: nil, **args)
           args = args.merge(topic: topic(topic), payload: data)
+
+          # A compatibility helper for headers, as WaterDrop is not more strict
+          if headers.present?
+            args[:headers] = headers
+            args[:headers].deep_stringify_keys!.deep_transform_values!(&:to_s) \
+              if headers.is_a? Hash
+          end
+
           producer.produce_async(**args)
         end
       end

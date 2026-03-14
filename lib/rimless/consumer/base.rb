@@ -84,7 +84,7 @@ module Rimless
           self.message = message
 
           # We ignore events we do not handle by definition
-          send(event, **arguments) if respond_to? event
+          send(event, **arguments) if !event.nil? && respond_to?(event)
         end
       end
 

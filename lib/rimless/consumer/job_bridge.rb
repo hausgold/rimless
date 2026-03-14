@@ -18,8 +18,14 @@ module Rimless
         # @param consumer [Class] the consumer to pass down to the jobs
         # @return [Class] the new and configured wrapper class
         def build(consumer)
+          # We cannot serialize anonymous classes, as they need to cross
+          # process borders via ActiveJob here, and the resulting job needs to
+          # constantize the serialized class name again
+          raise ArgumentError, "Anonymous consumer class passed: #{consumer}" \
+            unless consumer.name
+
           Class.new(self).tap do |wrapper|
-            wrapper.consumer = consumer.to_s
+            wrapper.consumer = consumer.name
           end
         end
 
@@ -37,14 +43,19 @@ module Rimless
         alias to_s inspect
       end
 
-      # Consume all messages of the current batch, and then mark the current
-      # batch as processed (done by Karafka). You can simply overwrite this
-      # method if you need more precise control of the message processing, eg.
-      # to mark each message as processed in the batch. See:
-      # https://bit.ly/4aPXaai - then configure your own
+      # Consume all messages of the current batch, and mark each message
+      # afterwards as processed (asynchronous). You can simply overwrite this
+      # method if you need more precise control of the message processing,
+      # eg. just using marking the whole batch processed, or custom error
+      # handling.
+      #
+      # See: https://bit.ly/4aPXaai - then configure your own
       # `Rimless.configuration.job_bridge_class`.
       def consume
-        messages.each { |message| enqueue_job(message) }
+        messages.each do |message|
+          enqueue_job(message)
+          mark_as_consumed(message)
+        end
       end
 
       # Enqueue a new job for the given message.

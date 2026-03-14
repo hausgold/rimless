@@ -91,7 +91,7 @@ Rimless.configure do |conf|
   # set to HAUSGOLD defaults when not set
   conf.schema_registry_url = 'http://your.schema-registry.local'
 
-  # The Sidekiq job queue to use for consuming jobs
+  # The ActiveJob queue to use for consuming jobs
   config.consumer_job_queue = 'default'
 end
 ```
@@ -118,8 +118,8 @@ available configuration options:
   `your.domain:9092,host:port..`)
 * **KAFKA_SCHEMA_REGISTRY_URL**: The Confluent Schema Registry API URL to use
   for schema registrations.
-* **KAFKA_SIDEKIQ_JOB_QUEUE**: The Sidekiq job queue to use for consuming jobs.
-  Falls back to `default`.
+* **KAFKA_JOB_QUEUE**: The ActiveJob queue to use for consuming jobs.
+  Falls back to `default`. (falls back to `KAFKA_SIDEKIQ_JOB_QUEUE`)
 
 ### Conventions
 
@@ -323,7 +323,7 @@ architecture looks like this:
               v
   +-----------------------------+
   | Karafka/Rimless Consumer    |    +--------------------------------------+
-  |   Shares a single consumer  |--->| Sidekiq                              |
+  |   Shares a single consumer  |--->| ActiveJob                            |
   |   group, multiple processes |    |   Runs the consumer class (children  |
   +-----------------------------+    |   of Rimless::BaseConsumer) for each |
                                      |   message (Rimless::ConsumerJob),    |
@@ -332,7 +332,7 @@ architecture looks like this:
 ```
 
 This architecture allows the consumer process to run mostly non-blocking and
-the messages can be processed concurrently via Sidekiq. (including the error
+the messages can be processed concurrently via ActiveJob. (including the error
 handling and retrying)
 
 #### Routing messages to consumers
@@ -419,19 +419,10 @@ $ rake rimless:routes
 #### Starting the consumer process(es)
 
 From system integration perspective you just need to start the consumer
-processes and Sidekiq to get the thing going. Rimless allows you to start the
+processes and ActiveJob to get the thing going. Rimless allows you to start the
 consumer with `$ rake rimless:consumer` or you can just use the [Karafka
 binary](https://github.com/karafka/karafka/wiki/Fetching-messages) to start the
 consumer (`$ bundle exec karafka server`). Both work identically.
-
-When running inside a Rails application the consumer application initialization
-is automatically done for Sidekiq. Otherwise you need to initialize the
-consumer application manually with:
-
-```ruby
-# Manual consumer application initialization
-Sidekiq.configure_server { Rimless.consumer.initialize! }
-```
 
 ### Encoding/Decoding messages
 
@@ -536,7 +527,7 @@ end
 
 Nothing special, not really fancy. A more complex situation occurs when you
 separate your Kafka message producing logic inside an asynchronous job (eg.
-Sidekiq or ActiveJob). The `have_sent_kafka_message` matcher is available for
+ActiveJob). The `have_sent_kafka_message` matcher is available for
 this purpose. Example time:
 
 ```ruby

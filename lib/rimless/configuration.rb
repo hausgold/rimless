@@ -75,6 +75,16 @@ module Rimless
          .split(',').map { |uri| uri.split('://', 2).last }.join(',')
     end
 
+    # A custom writer for the kafka brokers configuration.
+    #
+    # @param val [String, Array<String>] the new kafka brokers list
+    def kafka_brokers=(val)
+      self[:kafka_brokers] =
+        Array(val).join(',').split(',')
+                  .map { |uri| uri.split('://', 2).last }
+                  .join(',')
+    end
+
     # The source Apache Avro schema files location (templates)
     config_accessor(:avro_schema_path) do
       path = %w[config avro_schemas]
@@ -124,9 +134,12 @@ module Rimless
       Rimless::Consumer::AvroDeserializer
     end
 
-    # The Sidekiq job queue to use for consuming jobs
+    # The ActiveJob job queue to use for consuming jobs
     config_accessor(:consumer_job_queue) do
-      ENV.fetch('KAFKA_SIDEKIQ_JOB_QUEUE', 'default').to_sym
+      ENV.fetch(
+        'KAFKA_JOB_QUEUE',
+        ENV.fetch('KAFKA_SIDEKIQ_JOB_QUEUE', 'default')
+      ).to_sym
     end
 
     # A custom writer for the consumer job queue name.
