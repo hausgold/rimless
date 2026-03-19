@@ -27,6 +27,16 @@ Breaking changes: (#73)
   - `Rimless::Karafka::Base64Interchanger` (no longer needed)
   - `Rimless::Karafka::PassthroughMapper` (mappers removed in Karafka 2)
 
+* Anonymous consumer classes are no longer supported. Because Karafka is no
+  longer loaded within the ActiveJob worker process, consumer class names must
+  be serializable (via `constantize`). Rewrite anonymous consumers as named
+  classes. See `UPGRADING.md` for details.
+
+* Each Kafka message in a batch is now individually marked as consumed after
+  being enqueued to ActiveJob (`mark_as_consumed`). This may differ from
+  previous `karafka-sidekiq-backend` behavior depending on your Karafka
+  offset management configuration. See `UPGRADING.md` for details.
+
 * `KAFKA_BROKERS` format changed — protocol prefix (`kafka://`) is no longer
   required. Use plain `host:port` CSV (e.g. `your.domain:9092,host:port`).
   The old `kafka://` format is still accepted for backwards compatibility.

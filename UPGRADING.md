@@ -9,10 +9,13 @@ upgrading from Rimless 2.9.x to 3.0.
 - [Configuration Changes](#configuration-changes)
   - [Kafka Brokers Format](#kafka-brokers-format)
   - [New Configuration Options](#new-configuration-options)
-- [Consumer Setup (karafka.rb)](#consumer-setup-karafkarb)
-- [Consumer Classes](#consumer-classes)
-- [Application Consumer Base Class](#application-consumer-base-class)
-- [Railtie / Sidekiq Server Initialization](#railtie--sidekiq-server-initialization)
+- [Consumer Changes](#consumer-changes)
+  - [Setup (karafka.rb)](#setup-karafkarb)
+  - [Consumer Classes](#consumer-classes)
+  - [Application Consumer Base Class](#application-consumer-base-class)
+  - [Offset Management](#offset-management)
+  - [Railtie / Sidekiq Server Initialization](#railtie--sidekiq-server-initialization)
+  - [Anonymous Consumer Classes](#anonymous-consumer-classes)
 - [Producer Changes](#producer-changes)
 - [Testing Changes](#testing-changes)
   - [Consumer Specs](#consumer-specs)
@@ -111,7 +114,9 @@ Rimless.configure do |conf|
 end
 ```
 
-## Consumer Setup (karafka.rb)
+## Consumer Changes
+
+### Setup (karafka.rb)
 
 The `karafka.rb` boot file requires several changes:
 
@@ -199,7 +204,7 @@ Rimless.consumer.topics(
 # end
 ```
 
-## Consumer Classes
+### Consumer Classes
 
 All consumer-related constants have been reorganized under the
 `Rimless::Consumer` namespace:
@@ -218,7 +223,7 @@ All consumer-related constants have been reorganized under the
 `Rimless::Karafka::Base64Interchanger` | Messages are now decoded within the Karafka process before being passed to ActiveJob. No binary interchanging needed anymore.
 `Rimless::Karafka::PassthroughMapper` | Karafka 2 removed the topic/consumer mapper concept entirely. This was previously a no-op (input equals output) for Rimless anyway.
 
-## Application Consumer Base Class
+### Application Consumer Base Class
 
 Update your `ApplicationConsumer` (and any direct references):
 
@@ -238,7 +243,20 @@ The consumer API is mostly unchanged. Key differences:
 - `#params` is available as a compatibility alias for `#message` (the current
   single message being processed).
 
-## Railtie / Sidekiq Server Initialization
+### Offset Management
+
+Rimless 3.0 marks each Kafka message as consumed (`mark_as_consumed`)
+individually after it has been decoded and enqueued as an ActiveJob job. This
+is a change from the previous `karafka-sidekiq-backend` behavior, which
+relied on Karafka's automatic offset management (committing the entire batch
+offset after `#consume` returned).
+
+If you previously configured `manual_offset_management` in Karafka, or relied
+on the batch-level commit behavior, be aware that Rimless now commits per
+message. For custom offset strategies, provide your own `job_bridge_class` via
+`Rimless.configuration.job_bridge_class`.
+
+### Railtie / Sidekiq Server Initialization
 
 Rimless 2.x initialized the Karafka consumer application inside the Sidekiq
 server process. This is no longer done or needed. **Remove any manual Sidekiq
@@ -250,6 +268,78 @@ server initialization:**
 
 Consumer jobs are now processed via ActiveJob. Your existing ActiveJob adapter
 (Sidekiq, Solid Queue, etc.) will pick them up automatically.
+
+### Anonymous Consumer Classes
+
+Rimless 3.0 **no longer supports anonymous consumer classes** passed to
+`Rimless.consumer.topics(...)`, e.g. `Class.new(Rimless::Consumer::Base)`.
+
+In Rimless 2.x, the `karafka-sidekiq-backend` gem transferred binary
+(marshalled) Kafka message payloads to Sidekiq, and Karafka was loaded within
+the Sidekiq worker process to deserialize them. This allowed anonymous classes
+(e.g. created via `Class.new(MyConsumer) { ... }`) because the Karafka routing
+table — including the anonymous class reference — was available in the same
+process.
+
+In Rimless 3.0, messages are decoded within the Karafka process and then
+enqueued as ActiveJob jobs. The consumer class name is serialized as a string
+argument (`consumer.name`) and later resolved via `constantize` in the
+ActiveJob worker process, where Karafka is **not** loaded. Anonymous classes
+have no name and cannot be resolved this way.
+
+**If you use anonymous consumer classes, you must rewrite them as named
+classes.**
+
+Example migration — before (anonymous class):
+
+```ruby
+# 2.x — anonymous class created at configuration time
+def self.create(supported_events: [])
+  Class.new(self) do
+    supported_events.each do |event|
+      class_eval <<-RUBY
+        def payment_#{event}(payment:, **)
+          # Your logic
+        end
+      RUBY
+    end
+  end
+end
+
+Rimless.consumer.topics(
+  { app: :payment_api, name: :payments } => PaymentConsumer.create(
+    supported_events: %i[created updated authorized]
+  )
+)
+```
+
+After (named class with configuration):
+
+```ruby
+# 3.0 — configure the named class directly
+class PaymentConsumer < Rimless::Consumer::Base
+  def method_missing(method_name, **args)
+    # Your logic to detect relevant events
+    # (method_name == message.payload[:event])
+  end
+
+  def respond_to_missing?(method_name, include_private = false)
+    # Your logic to detect relevant events
+    # (method_name == message.payload[:event])
+  end
+
+  def handle_payment_event(event, payment:, **)
+    # Your logic
+  end
+end
+
+Rimless.consumer.topics(
+  { app: :payment_api, name: :payments } => PaymentConsumer
+)
+```
+
+The `JobBridge.build` method will raise an `ArgumentError` if an anonymous
+class is passed.
 
 ## Producer Changes
 
