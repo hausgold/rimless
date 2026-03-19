@@ -61,7 +61,7 @@ module Rimless
         def sync_raw_message(data:, topic:, headers: nil, **args)
           args = args.merge(topic: topic(topic), payload: data)
 
-          # A compatibility helper for headers, as WaterDrop is not more strict
+          # A compatibility helper for headers, as WaterDrop is now more strict
           if headers.present?
             args[:headers] = headers
             args[:headers].deep_stringify_keys!.deep_transform_values!(&:to_s) \
@@ -88,7 +88,7 @@ module Rimless
         def async_raw_message(data:, topic:, headers: nil, **args)
           args = args.merge(topic: topic(topic), payload: data)
 
-          # A compatibility helper for headers, as WaterDrop is not more strict
+          # A compatibility helper for headers, as WaterDrop is now more strict
           if headers.present?
             args[:headers] = headers
             args[:headers].deep_stringify_keys!.deep_transform_values!(&:to_s) \

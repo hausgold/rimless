@@ -49,6 +49,17 @@ module Rimless
       # eg. just using marking the whole batch processed, or custom error
       # handling.
       #
+      # This method provides *at-least-once* delivery semantics. Each message
+      # is enqueued to ActiveJob and then marked as consumed via
+      # +mark_as_consumed+ (asynchronous commit). In the unlikely event that
+      # the Karafka process crashes after +perform_later+ succeeds but before
+      # the offset is committed to the broker (e.g. OOM kill, hardware
+      # failure), the message will be re-delivered and enqueued again on
+      # restart. Downstream consumers should therefore be idempotent. For
+      # stronger guarantees, use +mark_as_consumed!+ (synchronous commit) at
+      # the cost of throughput, by providing a custom +job_bridge_class+ via
+      # +Rimless.configuration+.
+      #
       # See: https://bit.ly/4aPXaai - then configure your own
       # `Rimless.configuration.job_bridge_class`.
       def consume

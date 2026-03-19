@@ -3,7 +3,6 @@
 require 'zeitwerk'
 require 'logger'
 require 'erb'
-require 'ostruct'
 require 'active_support'
 require 'active_support/concern'
 require 'active_support/configurable'

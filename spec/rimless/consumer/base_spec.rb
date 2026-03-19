@@ -36,7 +36,8 @@ RSpec.describe Rimless::Consumer::Base do
     end
 
     it 'configures a fake coordinator' do
-      expect(action.coordinator).to be_a(OpenStruct)
+      expect(action.coordinator).to \
+        be_a(described_class::JobContextCoordinator)
     end
 
     it 'configures a fake coordinator with topic' do

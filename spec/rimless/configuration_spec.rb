@@ -28,6 +28,14 @@ RSpec.describe Rimless::Configuration do
           expect(action).to eql('host1:9092,host2:9092')
         end
       end
+
+      context 'with mixed formats' do
+        let(:env_var) { 'host1:9092,kafka://host2:9092' }
+
+        it 'returns the correct configuration' do
+          expect(action).to eql('host1:9092,host2:9092')
+        end
+      end
     end
 
     context 'with setter' do

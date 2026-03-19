@@ -41,7 +41,6 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'karafka', '~> 2.5'
   spec.add_dependency 'karafka-testing', '~> 2.5'
   spec.add_dependency 'logger', '~> 1.7'
-  spec.add_dependency 'ostruct', '>= 0.6'
   spec.add_dependency 'retries', '>= 0.0.5'
   spec.add_dependency 'sparsify', '~> 1.1'
   spec.add_dependency 'waterdrop', '~> 2.8'

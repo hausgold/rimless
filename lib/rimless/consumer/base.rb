@@ -31,6 +31,13 @@ module Rimless
       alias params message
       alias params_batch messages
 
+      # A structure for Karafka::BaseConsumer#coodinator, within job contexts.
+      #
+      # rubocop:disable Lint/StructNewOverride -- because +:partition+ is
+      #   expected to be overwritten
+      JobContextCoordinator = Struct.new(:topic, :partition)
+      # rubocop:enable Lint/StructNewOverride
+
       # Build a new disposable consumer instance for a single Apache Kafka
       # message, which should be processed within the AciveJob context.
       #
@@ -43,7 +50,7 @@ module Rimless
         new.tap do |consumer|
           metadata = metadata.symbolize_keys
 
-          consumer.coordinator = OpenStruct.new(
+          consumer.coordinator = JobContextCoordinator.new(
             topic: metadata[:topic],
             partition: metadata[:partition]
           )
