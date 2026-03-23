@@ -168,6 +168,15 @@ module Rimless
         setup(&)
         self
       end
+
+      # Check if we run as the Karafka server (consumer) process or not.
+      # Unfortunately Karafka still does not offer a solution for it like
+      # +Sidekiq.server?+. (Last tested with Karafka version +2.5.7+)
+      #
+      # @return [Boolean] whenever we run as the Karafka server or not
+      def server?
+        $PROGRAM_NAME.end_with?('karafka') && ARGV.include?('server')
+      end
     end
   end
 end
