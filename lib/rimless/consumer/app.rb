@@ -6,7 +6,7 @@ module Rimless
     # library-related configurations.
     class App < Karafka::App
       # Allow accessing the class-level configuration methods from our instance
-      delegate :setup, :routes, to: self
+      delegate :setup, :routes, :config, to: self
 
       # Creates a new Rimless/Karafka application instance while configuring
       # our library defaults.
