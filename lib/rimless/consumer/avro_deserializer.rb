@@ -15,8 +15,6 @@ module Rimless
         # This is for Kafka users which use log compaction with a nil payload.
         return if message.raw_payload.nil?
 
-        # TODO: Implement timestamp decoding?
-
         # We use sparsed hashes inside of Apache Avro messages for schema-less
         # blobs of data, such as loosely structured metadata blobs.  That's a
         # somewhat bad idea on strictly typed and defined messages, but their
