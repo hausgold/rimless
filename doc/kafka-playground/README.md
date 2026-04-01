@@ -93,7 +93,7 @@ working Apache Kafka setup which includes the following:
 Start a playground container with `$ make start` and run the following:
 
 ```shell
-$ create-topic -v test
+$ create-topic -v test -p 2 compression.type=gzip
 ```
 
 ```shell
