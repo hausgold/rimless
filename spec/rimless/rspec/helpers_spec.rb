@@ -17,8 +17,8 @@ RSpec.describe Rimless::RSpec::Helpers do
     context 'with string topic' do
       let(:action) { kafka_message(topic: 'test_topic') }
 
-      it 'returns a OpenStruct' do
-        expect(action).to be_a(OpenStruct)
+      it 'returns a RSpec::Mocks::InstanceVerifyingDouble' do
+        expect(action).to be_a(RSpec::Mocks::InstanceVerifyingDouble)
       end
 
       it 'sets the full topic' do

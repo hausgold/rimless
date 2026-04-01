@@ -2,41 +2,9 @@
 
 require 'spec_helper'
 
-RSpec.describe Rimless::KafkaHelpers do
+RSpec.describe Rimless::Extensions::Producer do
   let(:described_class) { Rimless }
-  let(:method) { nil }
-  let(:args) { {} }
   let(:action) { described_class.send(method, **args) }
-
-  describe '.topic' do
-    it 'produces the correct topic name (app fallback)' do
-      expect(described_class.topic(:name)).to eql('test.test-app.name')
-    end
-
-    it 'produces the correct topic name (app set)' do
-      expect(described_class.topic(:name, app: :app)).to \
-        eql('test.app.name')
-    end
-
-    it 'produces the correct topic name (string name)' do
-      expect(described_class.topic('name')).to eql('test.test-app.name')
-    end
-
-    it 'produces the correct topic name (mix and match)' do
-      expect(described_class.topic(name: 'app', app: :test)).to \
-        eql('test.test.app')
-    end
-
-    it 'produces the correct topic name with kebab-cased symbols' do
-      expect(described_class.topic(name: :new_customers, app: :test_api)).to \
-        eql('test.test-api.new-customers')
-    end
-
-    it 'returns the full name when given' do
-      expect(described_class.topic(full_name: 'my.custom.topic')).to \
-        eql('my.custom.topic')
-    end
-  end
 
   describe '.sync_message' do
     let(:method) { :sync_message }
@@ -76,23 +44,45 @@ RSpec.describe Rimless::KafkaHelpers do
 
   describe '.sync_raw_message' do
     let(:method) { :sync_raw_message }
-    let(:args) { { data: 'data', topic: :test, additional: true } }
+    let(:args) { { data: 'data', topic: :test, partition: 1 } }
 
     it 'passes the correct arguments to WaterDrop' do
-      expect(WaterDrop::SyncProducer).to receive(:call)
-        .with('data', topic: 'test.test-app.test', additional: true)
+      expect(Rimless.producer).to receive(:produce_sync)
+        .with(payload: 'data', topic: 'test.test-app.test', partition: 1)
       action
+    end
+
+    context 'with Symbol-keyed headers hash' do
+      let(:args) { { data: 'data', topic: :test, headers: { test: true } } }
+
+      it 'passes the correct arguments to WaterDrop' do
+        expect(Rimless.producer).to receive(:produce_sync)
+          .with(payload: 'data', topic: 'test.test-app.test',
+                headers: { 'test' => 'true' })
+        action
+      end
     end
   end
 
   describe '.async_raw_message' do
     let(:method) { :async_raw_message }
-    let(:args) { { data: 'data', topic: :test, additional: true } }
+    let(:args) { { data: 'data', topic: :test, partition: 1 } }
 
     it 'passes the correct arguments to WaterDrop' do
-      expect(WaterDrop::AsyncProducer).to receive(:call)
-        .with('data', topic: 'test.test-app.test', additional: true)
+      expect(Rimless.producer).to receive(:produce_async)
+        .with(payload: 'data', topic: 'test.test-app.test', partition: 1)
       action
+    end
+
+    context 'with Symbol-keyed headers hash' do
+      let(:args) { { data: 'data', topic: :test, headers: { test: true } } }
+
+      it 'passes the correct arguments to WaterDrop' do
+        expect(Rimless.producer).to receive(:produce_async)
+          .with(payload: 'data', topic: 'test.test-app.test',
+                headers: { 'test' => 'true' })
+        action
+      end
     end
   end
 end

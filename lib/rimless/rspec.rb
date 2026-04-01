@@ -5,17 +5,8 @@ require 'webmock/rspec'
 require 'rimless'
 require 'rimless/rspec/helpers'
 require 'rimless/rspec/matchers'
-require 'karafka/testing/rspec/helpers'
-
-# This fake schema registry server uses Sinatra but the gem does not include
-# this dependency as runtime, just as development. Therefore we added it.
 require 'avro_turf/test/fake_confluent_schema_registry_server'
-
-# Add a monkey patch to add proper Sinatra 4.x support
-class FakeConfluentSchemaRegistryServer
-  # Allow any host name on tests
-  set :host_authorization, { permitted_hosts: [] }
-end
+require 'karafka/testing/rspec/helpers'
 
 # RSpec 1.x and 2.x compatibility
 #
@@ -26,7 +17,12 @@ raise 'No RSPEC_CONFIGURER is defined, webmock is missing?' \
 RSPEC_CONFIGURER.configure do |config|
   config.include Rimless::RSpec::Helpers
   config.include Rimless::RSpec::Matchers
-  config.include Karafka::Testing::RSpec::Helpers
+
+  # Load the Karafka testing helpers when we're running in an actual end-user
+  # application, not within our own test suite as we do not provide a
+  # `karafka.rb` boot entry
+  config.include Karafka::Testing::RSpec::Helpers \
+    if Karafka.boot_file.exist?
 
   # Set the custom +consumer+ type for consumer spec files
   config.define_derived_metadata(file_path: %r{/spec/consumers/}) do |meta|
@@ -53,31 +49,19 @@ RSPEC_CONFIGURER.configure do |config|
   # the help of the faked (inlined) Schema Registry server. This allows us to
   # perform the actual Apache Avro message encoding/decoding without the need
   # to have a Schema Registry up and running.
-  config.before(:each) do |example|
-    # Get the Excon connection from the AvroTurf instance
-    connection = Rimless.avro.instance_variable_get(:@registry)
-                        .instance_variable_get(:@upstream)
-                        .instance_variable_get(:@connection)
-                        .instance_variable_get(:@data)
-    # Enable WebMock on the already instantiated
-    # Confluent Schema Registry Excon connection
-    connection[:mock] = true
-    # Grab all Confluent Schema Registry requests and send
+  config.before(:each) do
+    # Intercept all Confluent Schema Registry requests and send
     # them to the faked (inlined) Schema Registry
-    stub_request(:any, %r{^http://#{connection[:hostname]}})
+    stub_request(:any, /^#{Rimless.configuration.schema_registry_url}/)
       .to_rack(FakeConfluentSchemaRegistryServer)
     # Clear any cached data
     FakeConfluentSchemaRegistryServer.clear
 
     # Do not interact with Apache Kafka itself on tests
-    allow(WaterDrop::AsyncProducer).to receive(:call)
-    allow(WaterDrop::SyncProducer).to receive(:call)
+    allow(Rimless.producer).to receive(:produce_sync)
+    allow(Rimless.producer).to receive(:produce_async)
 
     # Reconfigure the Rimless AvroTurf instance
-    Rimless.configure_avro_turf
-
-    # When the example type is a Kafka consumer, we must initialize
-    # the Karafka framework first.
-    Rimless.consumer.initialize! if example.metadata[:type] == :consumer
+    Rimless.configure_avro
   end
 end

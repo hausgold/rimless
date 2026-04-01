@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-RSpec.describe Rimless::AvroHelpers do
+RSpec.describe Rimless::Extensions::AvroHelpers do
   let(:described_class) { Rimless }
 
   describe '.avro_decode' do
@@ -84,7 +84,8 @@ RSpec.describe Rimless::AvroHelpers do
 
   describe '.avro_to_h' do
     let(:complex_class) do
-      Class.new(OpenStruct) do
+      Struct.new(*%i[id email type status created_at updated_at confirmed_at
+                     locked_at recovery_at]) do
         def as_json(_options = nil)
           to_h
         end
@@ -104,7 +105,7 @@ RSpec.describe Rimless::AvroHelpers do
       }
     end
     let(:complex) do
-      { user: complex_class.new(user) }
+      { user: complex_class.new(**user.symbolize_keys) }
     end
     let(:simple) do
       { 'user' => user }

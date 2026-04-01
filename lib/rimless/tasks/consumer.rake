@@ -13,17 +13,29 @@ namespace :rimless do
   task routes: :environment do
     require 'rimless'
 
-    Rimless.consumer.consumer_groups.each do |consumer_group|
+    Rimless.consumer.routes.each do |consumer_group|
       consumer_group.topics.each do |topic|
         name = topic.name.split('.')[1..].join('.')
 
-        puts "#    Topic: #{name}"
-        puts "# Consumer: #{topic.consumer}"
+        consumer = topic.consumer
+        consumer = consumer.consumer.constantize \
+          if consumer.new.is_a? Rimless::Consumer::JobBridge
 
-        base = topic.consumer.superclass.new(topic).methods
-        events = topic.consumer.new(topic).methods - base
+        base_methods = consumer.superclass.instance_methods(false)
+        event_methods = (consumer.instance_methods(false) - base_methods).sort
 
-        puts "#   Events: #{events.join(', ')}"
+        event_methods = if event_methods.count > 3
+                          event_methods.join("\n##{' ' * 20}")
+                        else
+                          event_methods.join(', ')
+                        end
+
+        puts <<~INFO
+          # Topic (canonical): #{name}
+          # Topic (full name): #{topic.name}
+          #          Consumer: #{consumer}
+          #            Events: #{event_methods}
+        INFO
         puts
       end
     end

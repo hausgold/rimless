@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-RSpec.describe Rimless::ConfigurationHandling do
+RSpec.describe Rimless::Extensions::ConfigurationHandling do
   let(:described_class) { Rimless }
 
   before { reset_test_configuration! }

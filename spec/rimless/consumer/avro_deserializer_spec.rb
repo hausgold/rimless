@@ -2,14 +2,12 @@
 
 require 'spec_helper'
 
-RSpec.describe Rimless::Karafka::AvroDeserializer do
+RSpec.describe Rimless::Consumer::AvroDeserializer do
   let(:instance) { described_class.new }
-  let(:params) { Karafka::Params::Params.new(raw_payload, metadata) }
+  let(:params) { Karafka::Messages::Message.new(raw_payload, metadata.new) }
   let(:raw_payload) { nil }
-  let(:metadata) { Karafka::Params::Metadata }
-  let(:blob) do
-    Rimless.avro.encode({ 'id' => 'uuid' }, schema_name: 'include')
-  end
+  let(:metadata) { Karafka::Messages::Metadata }
+  let(:blob) { Rimless.avro.encode({ 'id' => 'uuid' }, schema_name: 'include') }
 
   describe '#call' do
     let(:action) { instance.call(params) }

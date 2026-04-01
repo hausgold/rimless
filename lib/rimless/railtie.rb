@@ -19,19 +19,19 @@ module Rimless
       # register application consumers
       Rails::CodeStatistics.register_directory('Consumers', 'app/consumers') \
         if defined?(Rails::CodeStatistics)
+
+      # Karafka tries forcefully to load its bootfile, when it detects a
+      # Rails application (via railtie). This may fail on applications
+      # which use Rimless just for message producing. So we configure a
+      # special setting for Karafka to skip its loading.
+      # See: https://bit.ly/4uuqFaI
+      ENV['KARAFKA_BOOT_FILE'] = 'false' unless Karafka.boot_file.exist?
     end
 
     # Run after all configuration is set via Rails initializers
     config.after_initialize do
       # Reconfigure our dependencies
       Rimless.configure_dependencies
-
-      # Load the Karafka application inside the Sidekiq server application
-      if defined? Sidekiq
-        Sidekiq.configure_server do
-          Rimless.consumer.initialize!
-        end
-      end
     end
 
     # Load all our Rake tasks if we're supposed to do

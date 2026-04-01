@@ -71,7 +71,18 @@ module Rimless
 
     # At least one broker of the Apache Kafka cluster
     config_accessor(:kafka_brokers) do
-      ENV.fetch('KAFKA_BROKERS', 'kafka://message-bus.local:9092').split(',')
+      ENV.fetch('KAFKA_BROKERS', 'kafka://message-bus.local:9092')
+         .split(',').map { |uri| uri.split('://', 2).last }.join(',')
+    end
+
+    # A custom writer for the kafka brokers configuration.
+    #
+    # @param val [String, Array<String>] the new kafka brokers list
+    def kafka_brokers=(val)
+      self[:kafka_brokers] =
+        Array(val).join(',').split(',')
+                  .map { |uri| uri.split('://', 2).last }
+                  .join(',')
     end
 
     # The source Apache Avro schema files location (templates)
@@ -96,9 +107,39 @@ module Rimless
                 'http://schema-registry.message-bus.local')
     end
 
-    # The Sidekiq job queue to use for consuming jobs
+    # This configuration allows users to configure a customized logger listener
+    # (which is bound to +Rimless.logger+). When configured to a falsy value
+    # (eg. +false+, or +nil+), no listener is installed by Rimless to Karafka.
+    config_accessor(:consumer_logger_listener) do
+      Karafka::Instrumentation::LoggerListener.new(
+        log_polling: false
+      )
+    end
+
+    # This setting allows users to configure a custom job bridge class, which
+    # takes care of receiving Kafka messages and produce/enqueue ActiveJob
+    # jobs. The configured class must be +Karafka::BaseConsumer+ compatible,
+    # for Karafka.
+    config_accessor(:job_bridge_class) { Rimless::Consumer::JobBridge }
+
+    # This configuration allows to choose a different consumer job class,
+    # enqueued by the +job_bridge_class+. This allows fully customized handling
+    # on user applications.
+    config_accessor(:consumer_job_class) { Rimless::Consumer::Job }
+
+    # This configuration allows to choose the default Apache Avro deserializer
+    # class, which is used by the Karafka consumer while using the
+    # +Rimless.consumer.topics+ helper.
+    config_accessor(:avro_deserializer_class) do
+      Rimless::Consumer::AvroDeserializer
+    end
+
+    # The ActiveJob job queue to use for consuming jobs
     config_accessor(:consumer_job_queue) do
-      ENV.fetch('KAFKA_SIDEKIQ_JOB_QUEUE', 'default').to_sym
+      ENV.fetch(
+        'KAFKA_JOB_QUEUE',
+        ENV.fetch('KAFKA_SIDEKIQ_JOB_QUEUE', 'default')
+      ).to_sym
     end
 
     # A custom writer for the consumer job queue name.
@@ -106,10 +147,43 @@ module Rimless
     # @param val [String, Symbol] the new job queue name
     def consumer_job_queue=(val)
       self[:consumer_job_queue] = val.to_sym
+
       # Refresh the consumer job queue
-      Rimless::ConsumerJob.sidekiq_options(
-        queue: Rimless.configuration.consumer_job_queue
-      )
+      consumer_job_class.queue_as(val)
     end
+
+    # This configuration block allows users to fully customized the
+    # +AvroTurf::Messaging+ instance. The Rimless default parameters hash is
+    # injected as argument to the configured block. The result of the block is
+    # then used to instantiate +AvroTurf::Messaging+, use like this.
+    #
+    #   ->(config) { config.merge(connect_timeout: 5) }
+    #
+    # See: https://bit.ly/4r0mDnw
+    config_accessor(:avro_configure) { ->(config) { config } }
+
+    # This configuration block allows users to fully customize the
+    # +WaterDrop::Producer+ instance (accessible as +Rimless.producer+). The
+    # Rimless settings are already applied when the block is called. The
+    # +WaterDrop::Config+ is then injected as argument to the given block, and
+    # can be used regular like this:
+    #
+    #   ->(config) { config.kafka[:'request.required.acks'] = -1 }
+    #
+    # See: https://bit.ly/4r5Uprv (+config.*+ root level WaterDrop settings)
+    # See: https://bit.ly/3OtIfeu (+config.kafka+ settings)
+    config_accessor(:producer_configure) { ->(config) { config } }
+
+    # This configuration block allows users to fully customize the
+    # +Karafka::App+ instance (accessible as +Rimless.consumer+). The Rimless
+    # settings are already applied when the block is called. The
+    # +Karafka::Setup::Config+ is then injected as argument to the given block,
+    # and can be used regular like this:
+    #
+    #   ->(config) { config.kafka[:'request.required.acks'] = -1 }
+    #
+    # See: https://bit.ly/3MAF6Jk (+config.*+ root level Karafka settings)
+    # See: https://bit.ly/3OtIfeu (+config.kafka+ settings)
+    config_accessor(:consumer_configure) { ->(config) { config } }
   end
 end

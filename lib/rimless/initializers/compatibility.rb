@@ -11,7 +11,6 @@ def rimless_gem_version?(gem_name, expected)
   Gem::Dependency.new('', expected.to_s).match?('', actual)
 end
 
-# Load some polyfills for ActiveSupport lower than 6.0
-require 'rimless/compatibility/karafka_1_4' \
-  if rimless_gem_version?('karafka', '~> 1.4') \
-     && rimless_gem_version?('thor', '>= 1.3')
+# Load some patches for GEM lower than VERSION
+# require 'rimless/compatibility/GEM__VERSION' \
+#   if rimless_gem_version?('GEM', '~> VERSION')
