@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
+# frozen_string_literal: true
 
 require_relative '../config/environment'
 
@@ -6,37 +7,47 @@ class CreateTopic < Thor
   default_command :create
 
   desc 'NAME [CONFIGS...]', 'create a new Apache Kafka topic'
-  option :partitions, aliases: '-p', type: :numeric, default: 1,
+  option :partitions,
+         aliases: '-p',
+         type: :numeric,
+         default: 1,
          desc: 'The number of partitions'
-  option :replicas, aliases: '-r', type: :numeric, default: 1,
+  option :replicas,
+         aliases: '-r',
+         type: :numeric,
+         default: 1,
          desc: 'The number of replications'
-  option :verbose, aliases: '-v', type: :boolean,
+  option :verbose,
+         aliases: '-v',
+         type: :boolean,
          desc: 'Enable verbose outputs'
 
   def create(name, *configs)
     debug! options
 
-    opts = {
-      num_partitions: options[:partitions].to_i,
-      replication_factor: options[:replicas].to_i,
-    }
-    config = configs.map { |conf| conf.split('=').map(&:strip) }.to_h
-
     if topic?(name)
-      STDERR.puts "The topic '#{name}' already exists."
-      puts JSON.pretty_generate(@topic_conf)
+      warn "The topic '#{name}' already exists."
+      puts JSON.pretty_generate(describe_topic(name))
       exit
     end
 
     # Create the topic
-    KafkaClient.create_topic(name, **opts, config: config)
+    KafkaAdminClient.create_topic(
+      name,
+      options[:partitions].to_i,
+      options[:replicas].to_i,
+      configs.to_h { |conf| conf.split('=').map(&:strip) }
+    ).wait
 
     # Fetch the topic config
-    puts JSON.pretty_generate(KafkaClient.describe_topic(name))
-  rescue Kafka::InvalidConfig
-    STDOUT.puts "Could not create the topic '#{name}'."
-    STDOUT.puts "The given configuration is invalid:\n\n"
-    puts JSON.pretty_generate(config)
+    puts JSON.pretty_generate(describe_topic(name))
+    KafkaAdminClient.close
+  rescue Rdkafka::RdkafkaError, Rdkafka::Config::ConfigError => e
+    warn "Could not create the topic '#{name}'."
+    warn "The given configuration is invalid:\n\n"
+    warn JSON.pretty_generate(configs)
+    $stderr.puts
+    warn e.message
     exit 1
   end
 end
