@@ -1,6 +1,10 @@
 ### next
 
-Breaking changes: (#73)
+* TODO: Replace this bullet point with an actual description of a change.
+
+### 3.0.0 (1 April 2026)
+
+Breaking changes: ([#73](https://github.com/hausgold/rimless/pull/73))
 
 * Upgraded `karafka` from `~> 1.4` to `~> 2.5` — now powered by librdkafka
   instead of ruby-kafka. Consumer groups are now shared (one for all topics
