@@ -81,6 +81,11 @@ module Rimless
           end
         end
 
+        # We configure synchronous logging to stdout as supervising/monitoring
+        # processes await logging outputs to detect the Karafka server process
+        # is up and running properly
+        $stdout.sync = true
+
         # Call the user-configurable block with our configuration
         # for customizations
         setup(&Rimless.configuration.consumer_configure)
