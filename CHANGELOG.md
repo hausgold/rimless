@@ -1,7 +1,11 @@
 ### next
 
-* Restored non-buffered (`$stdout.sync = true`) logging to stdout (#75)
-* Added a section for topic auto-creation on the upgrading guide (#75)
+* TODO: Replace this bullet point with an actual description of a change.
+
+### 3.2.0 (7 April 2026)
+
+* Restored non-buffered (`$stdout.sync = true`) logging to stdout ([#75](https://github.com/hausgold/rimless/pull/75))
+* Added a section for topic auto-creation on the upgrading guide ([#75](https://github.com/hausgold/rimless/pull/75))
 
 ### 3.1.0 (1 April 2026)
 
