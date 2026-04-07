@@ -1,6 +1,6 @@
 ### next
 
-* TODO: Replace this bullet point with an actual description of a change.
+* Restored non-buffered (`$stdout.sync = true`) logging to stdout (#75)
 
 ### 3.1.0 (1 April 2026)
 
