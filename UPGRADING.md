@@ -16,6 +16,7 @@ upgrading from Rimless 2.9.x to 3.0.
   - [Offset Management](#offset-management)
   - [Railtie / Sidekiq Server Initialization](#railtie--sidekiq-server-initialization)
   - [Anonymous Consumer Classes](#anonymous-consumer-classes)
+  - [Topic Auto-Creation](#topic-auto-creation)
 - [Producer Changes](#producer-changes)
 - [Testing Changes](#testing-changes)
   - [Consumer Specs](#consumer-specs)
@@ -340,6 +341,32 @@ Rimless.consumer.topics(
 
 The `JobBridge.build` method will raise an `ArgumentError` if an anonymous
 class is passed.
+
+### Topic Auto-Creation
+
+Karafka 2 **no longer automatically creates missing topics**. If your
+application relied on Karafka 1's default behavior of creating topics on the
+fly (within the Karafka server/consumer process), you will encounter errors
+like:
+
+```
+[ERROR] Data polling error occurred: Subscribed topic not available:
+production.users-api.properties: Broker: Unknown topic or partition -
+Broker: Unknown topic or partition (unknown_topic_or_part)
+```
+
+Karafka 2 recommends using **Declarative Topics** to manage your topic
+infrastructure. Define your topics in the routing configuration and then run:
+
+```shell
+$ karafka topics migrate
+```
+
+This will create or update topics to match your declared configuration.
+
+See:
+- [Infrastructure Topic Auto-Creation](https://karafka.io/docs/Infrastructure-Topic-Auto-Creation/)
+- [Infrastructure Declarative Topics](https://karafka.io/docs/Infrastructure-Declarative-Topics/)
 
 ## Producer Changes
 
