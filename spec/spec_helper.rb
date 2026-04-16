@@ -7,6 +7,12 @@ require 'bundler/setup'
 require 'rimless'
 require 'timecop'
 
+# Setup a default timezone for the tests
+# rubocop:disable Rails/TimeZoneAssignment -- because we need a configured time
+#   zone for +Time.zone.xxx+ calls
+Time.zone = 'UTC'
+# rubocop:enable Rails/TimeZoneAssignment
+
 # Load all support helpers and shared examples
 Dir[File.join(__dir__, 'support', '**', '*.rb')].each { |f| require f }
 

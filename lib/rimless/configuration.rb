@@ -134,6 +134,11 @@ module Rimless
       Rimless::Consumer::AvroDeserializer
     end
 
+    # This configuration allows to configure the default Apache Avro
+    # deserializer to automatically parse date/time/datetime's from deeply
+    # nested strings.
+    config_accessor(:avro_deserializer_parse_datetimes) { false }
+
     # The ActiveJob job queue to use for consuming jobs
     config_accessor(:consumer_job_queue) do
       ENV.fetch(
