@@ -1,6 +1,9 @@
 ### next
 
-* TODO: Replace this bullet point with an actual description of a change.
+* Added a new configuration (`avro_deserializer_parse_datetimes`) which allows
+  to configure the default Apache Avro deserializer to automatically parse
+  date/time/datetime's from deeply nested strings (disabled by default for
+  compatibility) (#76)
 
 ### 3.2.0 (7 April 2026)
 
