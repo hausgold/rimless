@@ -4,8 +4,8 @@
 module Rimless
   # The version of the +rimless+ gem
   # TODO: Change back before release.
-  # VERSION = '3.2.0'
-  VERSION = '3.2.0'
+  # VERSION = '3.3.0'
+  VERSION = '3.3.0'
 
   class << self
     # Returns the version of gem as a string.
