@@ -322,13 +322,13 @@ architecture looks like this:
               |
               v
   +-----------------------------+
-  | Karafka/Rimless Consumer    |    +--------------------------------------+
-  |   Shares a single consumer  |--->| ActiveJob                            |
-  |   group, multiple processes |    |   Runs the consumer class (children  |
-  +-----------------------------+    |   of Rimless::BaseConsumer) for each |
-                                     |   message (Rimless::ConsumerJob),    |
-                                     |   one message per job                |
-                                     +--------------------------------------+
+  | Karafka/Rimless Consumer    |    +----------------------------------------+
+  |   Shares a single consumer  |--->| ActiveJob                              |
+  |   group, multiple processes |    |   Runs the consumer class (children    |
+  +-----------------------------+    |   of Rimless::Consumer::Base) for each |
+                                     |   message (Rimless::Consumer::Job),    |
+                                     |   one message per job                  |
+                                     +----------------------------------------+
 ```
 
 This architecture allows the consumer process to run mostly non-blocking and
