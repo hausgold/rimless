@@ -33,10 +33,10 @@ Gem::Specification.new do |spec|
   spec.executables = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ['lib']
 
-  spec.required_ruby_version = '>= 3.3'
+  spec.required_ruby_version = '>= 4.0'
 
-  spec.add_dependency 'activejob', '>= 8.0'
-  spec.add_dependency 'activesupport', '>= 8.0'
+  spec.add_dependency 'activejob', '>= 8.1'
+  spec.add_dependency 'activesupport', '>= 8.1'
   spec.add_dependency 'avro_turf', '~> 1.20'
   spec.add_dependency 'karafka', '~> 2.5'
   spec.add_dependency 'karafka-testing', '~> 2.5'
