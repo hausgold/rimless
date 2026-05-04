@@ -1,6 +1,10 @@
 ### next
 
-* Dropped Ruby 3.x and Rails <8.1 support (#77)
+* TODO: Replace this bullet point with an actual description of a change.
+
+### 3.4.0 (4 May 2026)
+
+* Dropped Ruby 3.x and Rails <8.1 support ([#77](https://github.com/hausgold/rimless/pull/77))
 
 ### 3.3.0 (16 April 2026)
 
