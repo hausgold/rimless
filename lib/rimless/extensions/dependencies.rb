@@ -49,7 +49,7 @@ module Rimless
           # for situations like Rails asset precompilations, etc. - on runtime
           # the settings should be available, otherwise the message producing
           # just fails/raise.
-          return if Rimless.configuration.kafka_brokers.empty? \
+          return if Rimless.configuration.kafka_brokers.empty?
             || Rimless.configuration.client_id.blank?
 
           # Register a global waterdrop producer instance

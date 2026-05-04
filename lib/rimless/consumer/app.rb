@@ -118,10 +118,10 @@ module Rimless
       # @param topics [Hash{Hash => Class, Proc}] the topic to consumer mapping
       # @yield the given block on the routing table
       # @return [Rimless::Consumer::App] the application instance for chaining
-      def topics(topics = [], &block)
+      def topics(topics = [], &)
         routes.draw do
           consumer_group(Rimless.configuration.client_id) do
-            instance_exec(&block) if block_given?
+            instance_exec(&) if block_given?
 
             topics.each do |topic_parts, dest_consumer|
               Rimless.consumer.topic_names(topic_parts).each do |topic_name|

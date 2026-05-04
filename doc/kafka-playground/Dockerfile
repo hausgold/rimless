@@ -2,7 +2,7 @@ FROM hausgold/ruby:4.0
 LABEL org.opencontainers.image.authors="containers@hausgold.de"
 
 # Update system gem
-RUN gem update --system '4.0.9'
+RUN gem update --system '4.0.11'
 
 # Install nodejs 25
 RUN curl -sL https://deb.nodesource.com/setup_25.x | bash -
@@ -14,7 +14,7 @@ RUN apt-get update -yqqq && \
     ca-certificates jq curl cmake \
     bash-completion inotify-tools && \
   echo 'en_US.UTF-8 UTF-8' >> /etc/locale.gen && /usr/sbin/locale-gen && \
-  gem install bundler -v '~> 4.0.9' --no-document --no-prerelease
+  gem install bundler -v '~> 4.0.11' --no-document --no-prerelease
 
 # Install kcat (formerly known as kafkacat)
 RUN curl -sL -o - \

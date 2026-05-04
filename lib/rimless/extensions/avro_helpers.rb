@@ -23,7 +23,7 @@ module Rimless
         # @param schema [String, Symbol] name of the schema that should be used
         # @param opts [Hash{Symbol => Mixed}] additional options
         # @return [String] the Apache Avro blob
-        def avro_encode(data, schema:, **opts)
+        def avro_encode(data, schema:, **)
           data = avro_sanitize(data)
 
           # When the deep-relative form (+.deep.deep[..]+) is present, we add
@@ -31,7 +31,7 @@ module Rimless
           schema = avro_utils.namespace + schema.to_s \
             if schema.to_s.start_with? '.'
 
-          avro.encode(data, schema_name: schema.to_s, **opts)
+          avro.encode(data, schema_name: schema.to_s, **)
         end
         alias_method :encode, :avro_encode
 
@@ -40,8 +40,8 @@ module Rimless
         # @param data [String] the Apache Avro blob
         # @param opts [Hash{Symbol => Mixed}] additional options
         # @return [Mixed] the decoded data structure
-        def avro_decode(data, **opts)
-          avro.decode(data, **opts).deep_symbolize_keys!
+        def avro_decode(data, **)
+          avro.decode(data, **).deep_symbolize_keys!
         end
         alias_method :decode, :avro_decode
 
