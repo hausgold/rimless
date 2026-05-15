@@ -4,8 +4,8 @@ LABEL org.opencontainers.image.authors="containers@hausgold.de"
 # Update system gem
 RUN gem update --system '4.0.11'
 
-# Install nodejs 25
-RUN curl -sL https://deb.nodesource.com/setup_25.x | bash -
+# Install nodejs 26
+RUN curl -sL https://deb.nodesource.com/setup_26.x | bash -
 
 # Install system packages and the ruby bundless
 RUN apt-get update -yqqq && \
