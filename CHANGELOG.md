@@ -1,6 +1,10 @@
 ### next
 
-* Updated the kafka-playground (#78)
+* TODO: Replace this bullet point with an actual description of a change.
+
+### 3.5.0 (15 May 2026)
+
+* Updated the kafka-playground ([#78](https://github.com/hausgold/rimless/pull/78))
 
 ### 3.4.0 (4 May 2026)
 
