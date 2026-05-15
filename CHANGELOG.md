@@ -1,6 +1,6 @@
 ### next
 
-* TODO: Replace this bullet point with an actual description of a change.
+* Updated the kafka-playground (#78)
 
 ### 3.4.0 (4 May 2026)
 
