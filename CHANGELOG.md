@@ -1,6 +1,10 @@
 ### next
 
-* Corrected some RuboCop glitches (#79)
+* TODO: Replace this bullet point with an actual description of a change.
+
+### 3.6.0 (20 May 2026)
+
+* Corrected some RuboCop glitches ([#79](https://github.com/hausgold/rimless/pull/79))
 
 ### 3.5.0 (15 May 2026)
 
