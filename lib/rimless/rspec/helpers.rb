@@ -22,7 +22,8 @@ module Rimless
       # @param metadata [Hash{Symbol => Mixed}] the message metadata
       # @return [RSpec::Mocks::InstanceVerifyingDouble] the Kafka message double
       #
-      # rubocop:disable Metrics/MethodLength -- because of the metadata handling
+      # rubocop:disable-next Metrics/MethodLength -- because of the metadata
+      #   handling
       def kafka_message(topic: nil, headers: {}, metadata: {}, **payload)
         metadata = {
           topic: topic ? Rimless.topic(topic) : nil,
@@ -48,7 +49,6 @@ module Rimless
           **metadata
         )
       end
-      # rubocop:enable Metrics/MethodLength
 
       # Capture all Apache Kafka messages of the given block.
       #
