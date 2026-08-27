@@ -4,7 +4,7 @@ module Rimless
   module Extensions
     # The top-level configuration handling.
     #
-    # rubocop:disable Style/ClassVars -- because we split module code
+    # rubocop:disable-next Style/ClassVars -- because we split module code
     module ConfigurationHandling
       extend ActiveSupport::Concern
 
@@ -72,6 +72,5 @@ module Rimless
         delegate :logger, to: :configuration
       end
     end
-    # rubocop:enable Style/ClassVars
   end
 end

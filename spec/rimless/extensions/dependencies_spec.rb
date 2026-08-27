@@ -29,12 +29,11 @@ RSpec.describe Rimless::Extensions::Dependencies do
         receive(:schema_registry_url).at_least(:once).and_call_original
     end
 
-    # rubocop:disable RSpec/AnyInstance -- because it cannot be substituted
+    # rubocop:disable-next RSpec/AnyInstance -- because it cannot be substituted
     it 'recompiles the Apache Avro schema templates' do
       expect_any_instance_of(Rimless::AvroUtils).to \
         receive(:recompile_schemas).once
     end
-    # rubocop:enable RSpec/AnyInstance
 
     it 'sets the global AvroUtils handle' do
       Rimless.avro_utils = nil

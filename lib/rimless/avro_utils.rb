@@ -51,7 +51,8 @@ module Rimless
     # @param dest [Pathname, File, IO] the file to check
     # @raise [JSON::ParserError] when invalid
     #
-    # rubocop:disable Security/JSONLoad -- because we wrote the file contents
+    # rubocop:disable-next Security/JSONLoad -- because we wrote the file
+    #   contents
     def validate_file(dest)
       JSON.load(dest)
     rescue JSON::ParserError => e
@@ -61,7 +62,6 @@ module Rimless
       e.message.prepend("#{prefix} - ")
       raise e
     end
-    # rubocop:enable Security/JSONLoad
 
     # Clear previous compiled Avro schema files to provide a clean rebuild.
     def clear

@@ -40,7 +40,8 @@ RSpec.configure do |config|
 
   # Clear the test configuration before we begin
   #
-  # rubocop:disable RSpec/RemoveConst -- because of the Rails constant cleanup
+  # rubocop:disable-next RSpec/RemoveConst -- because of the Rails constant
+  #   cleanup
   config.before do
     # We do not ship a Rails dummy application here, so this causes issues on
     # the Rimless gem configuration as we check if the +Rails+ constant is
@@ -51,7 +52,6 @@ RSpec.configure do |config|
 
     reset_test_configuration!
   end
-  # rubocop:enable RSpec/RemoveConst
 end
 
 require 'rimless/rspec'
