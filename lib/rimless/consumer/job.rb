@@ -4,6 +4,9 @@ module Rimless
   module Consumer
     # A simple consumer job, enqueued by the job bridge, after a message was
     # consumed from an Apache Kafka topic.
+    #
+    # rubocop:disable-next Rails/ApplicationJob -- because we're not at a
+    #   Rails application here
     class Job < ActiveJob::Base
       # Configure the default job queue
       queue_as Rimless.configuration.consumer_job_queue
