@@ -1,6 +1,6 @@
 ### next
 
-* TODO: Replace this bullet point with an actual description of a change.
+* Corrected some RuboCop glitches (#81)
 
 ### 3.7.0 (27 August 2026)
 
